@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+
 use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 class OccupancyRecord extends Model
 {
+    use HasFactory;
     protected $fillable = [
         'record_date',
         'occupancy_rate',

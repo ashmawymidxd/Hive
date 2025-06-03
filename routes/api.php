@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\OccupancyDataController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,3 +19,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// Occupancy data routes
+Route::get('/occupancy-data', [OccupancyDataController::class, 'getOccupancyData'])
+->name('occupancy-data.get');

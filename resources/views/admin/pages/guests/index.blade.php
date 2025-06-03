@@ -358,6 +358,7 @@
 
                                             </tbody>
                                         </table>
+                                        {{ $feedbacks->links('pagination::bootstrap-5') }}
 
                                     </div>
                                 </div>
@@ -430,7 +431,7 @@
                                                 @endforeach
                                             </tbody>
                                         </table>
-
+                                        {{ $blacklistedGuests->links('pagination::bootstrap-5') }}
                                     </div>
                                 </div>
                             </div>

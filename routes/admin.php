@@ -7,6 +7,9 @@ use App\Http\Controllers\Admin\ReservationStatusController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\GuestFeedbackController;
 use App\Http\Controllers\Admin\BlacklistedGuestController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ReservationController;
+use App\Http\Controllers\Admin\GuestController;
 /*
 |--------------------------------------------------------------------------
 | admin Routes
@@ -19,7 +22,7 @@ use App\Http\Controllers\Admin\BlacklistedGuestController;
 */
 
 
-Route::get('/admin', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])
+Route::get('/admin', [DashboardController::class, 'index'])
 ->middleware(['auth:admin', 'verified'])->name('admin');
 
 Route::get('/login-admin', function(){
@@ -40,13 +43,13 @@ Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function
     Route::post('rooms/{room}/upload-images', [RoomController::class, 'uploadImages'])->name('rooms.upload-images');
     Route::delete('rooms/images/{image}', [RoomController::class, 'deleteImage'])->name('rooms.delete-image');
     // reservations
-    Route::resource('reservations', \App\Http\Controllers\Admin\ReservationController::class);
+    Route::resource('reservations', ReservationController::class);
 
     // Guests routes
-    Route::resource('guests', \App\Http\Controllers\Admin\GuestController::class);
+    Route::resource('guests', GuestController::class);
 
     // For select2 in reservations
-    Route::get('guests/search', [\App\Http\Controllers\Admin\GuestController::class, 'index'])
+    Route::get('guests/search', [GuestController::class, 'index'])
         ->name('guests.search');
 
     // Reservation status routes

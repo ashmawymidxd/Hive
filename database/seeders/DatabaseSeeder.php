@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             RoomSeeder::class,
             GuestSeeder::class,
             GuestFeedbackSeeder::class,
+            OccupancyRecordSeeder::class,
             // other seeders...
         ]);
     }

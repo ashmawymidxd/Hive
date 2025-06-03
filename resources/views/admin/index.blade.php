@@ -142,7 +142,7 @@ $yesterdayRate = App\Models\OccupancyRecord::where('record_date', today()->subDa
 
                     <h3 class="text-dark font-bold">{{ $currentOccupancyRate }}%</h3>
 
-                  
+
 
                     <div class="d-flex justify-content-between">
                         <small class="text-secondary">{{ round($averageOccupancy) }}% 30-day avg</small>
@@ -255,7 +255,11 @@ $yesterdayRate = App\Models\OccupancyRecord::where('record_date', today()->subDa
                             <button id="monthlyBtn" class="btn btn-secondary btn-sm">Monthly</button>
                         </div>
                     </div>
-                    <canvas class="p-3" id="occupancyChart" height="300"></canvas>
+                    <canvas class="p-3" id="occupancyChart" height="300">
+                        <!-- Add these elements to your HTML for loading and error states -->
+                        <div id="chartLoading" class="d-none">Loading chart data...</div>
+                        <div id="chartError" class="d-none text-danger"></div>
+                    </canvas>
                 </div>
             </div>
         </div>
@@ -451,82 +455,152 @@ $yesterdayRate = App\Models\OccupancyRecord::where('record_date', today()->subDa
 
 @push('js')
     <script>
-        // Initial Data Sets
-        const dailyData = [65, 58, 78, 80, 90, 95, 85];
-        const weeklyData = [70, 75, 80, 78, 85, 90, 88];
-        const monthlyData = [60, 62, 65, 68, 70, 72, 75];
+        // Enhanced fetch function with error handling and loading states
+        async function fetchOccupancyData(timeFrame = 'daily') {
+            try {
+                const response = await $.ajax({
+                    url: '/api/occupancy-data',
+                    method: 'GET',
+                    data: {
+                        time_frame: timeFrame
+                    },
+                    beforeSend: function() {
+                        // Show loading indicator if needed
+                        document.getElementById('chartLoading').classList.remove('d-none');
+                    }
+                });
+                return response;
+            } catch (error) {
+                console.error('Error fetching occupancy data:', error);
+                // Show error message to user
+                document.getElementById('chartError').textContent = 'Failed to load data. Please try again.';
+                document.getElementById('chartError').classList.remove('d-none');
+                throw error; // Re-throw for further handling
+            } finally {
+                document.getElementById('chartLoading').classList.add('d-none');
+            }
+        }
 
-        // Labels are same for this example
-        const labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-
-        // Create Chart
-        const ctx = document.getElementById('occupancyChart').getContext('2d');
-        const occupancyChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Occupancy Rate',
-                    data: dailyData,
-                    backgroundColor: '#3b82f6',
-                    borderRadius: 5,
-                    barPercentage: 0.9,
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 100,
-                        ticks: {
-                            callback: function(value) {
-                                return value + '%';
+        // Main chart initialization and data loading
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Initialize chart with empty data first
+            const ctx = document.getElementById('occupancyChart').getContext('2d');
+            const occupancyChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [], // Will be updated with real data
+                    datasets: [{
+                        label: 'Occupancy Rate',
+                        data: [],
+                        backgroundColor: '#3b82f6',
+                        borderRadius: 5,
+                        barPercentage: 0.9,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Occupancy Rate'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Date'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'bottom'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y.toFixed(2) + '%';
+                                }
                             }
                         }
                     }
-                },
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'bottom'
-                    }
                 }
+            });
+
+            // Load all data and set up event listeners
+            try {
+                // Load initial data (daily) and other timeframes in parallel
+                const [daily, weekly, monthly] = await Promise.all([
+                    fetchOccupancyData('daily'),
+                    fetchOccupancyData('weekly'),
+                    fetchOccupancyData('monthly')
+                ]);
+
+                // Store data with labels
+                const chartData = {
+                    daily: {
+                        rates: daily.occupancy_rates,
+                        labels: daily.labels
+                    },
+                    weekly: {
+                        rates: weekly.occupancy_rates,
+                        labels: weekly.labels
+                    },
+                    monthly: {
+                        rates: monthly.occupancy_rates,
+                        labels: monthly.labels
+                    }
+                };
+
+                // Function to update chart with proper labels
+                function updateChart(timeFrame) {
+                    const data = chartData[timeFrame];
+                    occupancyChart.data.labels = data.labels;
+                    occupancyChart.data.datasets[0].data = data.rates;
+                    occupancyChart.data.datasets[0].label = `Occupancy Rate (${timeFrame})`;
+                    occupancyChart.update();
+                    setActiveButton(timeFrame);
+                }
+
+                // Set active button style
+                function setActiveButton(timeFrame) {
+                    const buttons = document.querySelectorAll('.time-frame-btn');
+                    buttons.forEach(btn => {
+                        btn.classList.remove('btn-primary');
+                        btn.classList.add('btn-outline-primary');
+                        if (btn.dataset.timeframe === timeFrame) {
+                            btn.classList.remove('btn-outline-primary');
+                            btn.classList.add('btn-primary');
+                        }
+                    });
+                }
+
+                // Set up event listeners
+                document.querySelectorAll('.time-frame-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        updateChart(this.dataset.timeframe);
+                    });
+                });
+
+                // Initialize with daily data
+                updateChart('daily');
+
+            } catch (error) {
+                console.error('Error initializing chart:', error);
             }
         });
-
-        // Function to update chart
-        function updateChart(data) {
-            occupancyChart.data.datasets[0].data = data;
-            occupancyChart.update();
-        }
-
-        // Button click events
-        document.getElementById('dailyBtn').addEventListener('click', function() {
-            updateChart(dailyData);
-            setActiveButton(this);
-        });
-        document.getElementById('weeklyBtn').addEventListener('click', function() {
-            updateChart(weeklyData);
-            setActiveButton(this);
-        });
-        document.getElementById('monthlyBtn').addEventListener('click', function() {
-            updateChart(monthlyData);
-            setActiveButton(this);
-        });
-
-        // Function to handle active button style
-        function setActiveButton(activeBtn) {
-            document.getElementById('dailyBtn').classList.remove('btn-primary');
-            document.getElementById('dailyBtn').classList.add('btn-outline-primary');
-            document.getElementById('weeklyBtn').classList.remove('btn-primary');
-            document.getElementById('weeklyBtn').classList.add('btn-outline-primary');
-            document.getElementById('monthlyBtn').classList.remove('btn-primary');
-            document.getElementById('monthlyBtn').classList.add('btn-outline-primary');
-
-            activeBtn.classList.remove('btn-outline-primary');
-            activeBtn.classList.add('btn-primary');
-        }
     </script>
+
+
 
     <script>
         $(document).ready(function() {
@@ -549,6 +623,4 @@ $yesterdayRate = App\Models\OccupancyRecord::where('record_date', today()->subDa
             });
         });
     </script>
-
-
 @endpush
