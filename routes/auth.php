@@ -59,6 +59,6 @@ Route::middleware('auth')->group(function () {
 });
 
 
-// Route::get('login/{provider}', [SocialLoginController::class, 'redirect'])->name('social.login');
-// Route::get('login/{provider}/callback', [SocialLoginController::class, 'callback']);
+Route::get('login/{provider}', [SocialLoginController::class, 'redirect'])->name('social.login');
+Route::get('login/{provider}/callback', [SocialLoginController::class, 'callback']);
 
