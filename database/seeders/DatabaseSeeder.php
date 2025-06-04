@@ -19,7 +19,6 @@ class DatabaseSeeder extends Seeder
             GuestSeeder::class,
             GuestFeedbackSeeder::class,
             OccupancyRecordSeeder::class,
-            // other seeders...
         ]);
     }
 }

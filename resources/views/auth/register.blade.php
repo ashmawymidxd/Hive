@@ -180,12 +180,12 @@
 
                         <!-- Social Login Buttons -->
                         <div class="d-flex  gap-3">
-                            <a href="{{ route('social.login', ['provider' => 'google']) }}"
+                            <a href="{{ route('auth.google') }}"
                                 class="btn btn-outline-danger d-flex align-items-center justify-content-center gap-2">
                                 <i class="fab fa-google"></i> Continue with Google
                             </a>
 
-                            <a href="{{ route('social.login', ['provider' => 'facebook']) }}"
+                            <a href=""
                                 class="btn btn-outline-primary d-flex align-items-center justify-content-center gap-2">
                                 <i class="fab fa-facebook-f"></i> Continue with Facebook
                             </a>

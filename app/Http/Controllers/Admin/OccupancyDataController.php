@@ -4,96 +4,81 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 
 use App\Models\OccupancyRecord;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class OccupancyDataController extends Controller
 {
-    public function getOccupancyData(Request $request)
+    public function getOccupancyData($period = 'daily')
     {
-        $timeFrame = $request->input('time_frame', 'daily'); // daily, weekly, or monthly
-        
-        switch ($timeFrame) {
+        $now = Carbon::now();
+        $data = [];
+        $labels = [];
+
+        switch ($period) {
             case 'weekly':
-                $data = $this->getWeeklyData();
+                // Get data for last 8 weeks (to show 7 full weeks)
+                $startDate = $now->copy()->subWeeks(7)->startOfWeek();
+                $endDate = $now->copy()->endOfWeek();
+
+                $records = OccupancyRecord::whereBetween('record_date', [$startDate, $endDate])
+                    ->orderBy('record_date')
+                    ->get()
+                    ->groupBy(function($date) {
+                        return Carbon::parse($date->record_date)->format('W-Y');
+                    });
+
+                foreach ($records as $week => $weekRecords) {
+                    $weekNumber = explode('-', $week)[0];
+                    $year = explode('-', $week)[1];
+                    $labels[] = "Week $weekNumber, $year";
+
+                    $avgRate = $weekRecords->avg('occupancy_rate');
+                    $data[] = round($avgRate, 2);
+                }
                 break;
+
             case 'monthly':
-                $data = $this->getMonthlyData();
+                // Get data for last 12 months
+                $startDate = $now->copy()->subMonths(11)->startOfMonth();
+                $endDate = $now->copy()->endOfMonth();
+
+                $records = OccupancyRecord::whereBetween('record_date', [$startDate, $endDate])
+                    ->orderBy('record_date')
+                    ->get()
+                    ->groupBy(function($date) {
+                        return Carbon::parse($date->record_date)->format('m-Y');
+                    });
+
+                foreach ($records as $month => $monthRecords) {
+                    $monthNumber = explode('-', $month)[0];
+                    $year = explode('-', $month)[1];
+                    $labels[] = Carbon::createFromDate($year, $monthNumber, 1)->format('M Y');
+
+                    $avgRate = $monthRecords->avg('occupancy_rate');
+                    $data[] = round($avgRate, 2);
+                }
                 break;
+
             default: // daily
-                $data = $this->getDailyData();
+                // Get data for last 30 days
+                $startDate = $now->copy()->subDays(29);
+                $endDate = $now->copy();
+
+                $records = OccupancyRecord::whereBetween('record_date', [$startDate, $endDate])
+                    ->orderBy('record_date')
+                    ->get();
+
+                foreach ($records as $record) {
+                    $labels[] = $record->record_date->format('M j');
+                    $data[] = $record->occupancy_rate;
+                }
         }
 
         return response()->json([
-            'occupancy_rates' => $data['rates'],
-            'labels' => $data['labels'],
-            'time_frame' => $timeFrame
+            'labels' => $labels,
+            'data' => $data,
+            'period' => $period
         ]);
-    }
-
-    protected function getDailyData()
-    {
-        $records = OccupancyRecord::orderBy('record_date', 'desc')
-                    ->take(7)
-                    ->get()
-                    ->reverse()
-                    ->values();
-
-        return [
-            'rates' => $records->pluck('occupancy_rate')->toArray(),
-            'labels' => $records->pluck('record_date')->map(function ($date) {
-                return $date->format('D, M j');
-            })->toArray()
-        ];
-    }
-
-    protected function getWeeklyData()
-    {
-        $records = OccupancyRecord::select(
-                    DB::raw('YEAR(record_date) as year'),
-                    DB::raw('WEEK(record_date) as week'),
-                    DB::raw('AVG(occupancy_rate) as avg_rate')
-                )
-                ->groupBy('year', 'week')
-                ->orderBy('year', 'desc')
-                ->orderBy('week', 'desc')
-                ->take(7)
-                ->get()
-                ->reverse()
-                ->values();
-
-        return [
-            'rates' => $records->pluck('avg_rate')->map(function ($rate) {
-                return round($rate, 2);
-            })->toArray(),
-            'labels' => $records->pluck('week')->map(function ($week, $index) use ($records) {
-                return "Week " . $week . " (" . $records[$index]->year . ")";
-            })->toArray()
-        ];
-    }
-
-    protected function getMonthlyData()
-    {
-        $records = OccupancyRecord::select(
-                    DB::raw('YEAR(record_date) as year'),
-                    DB::raw('MONTH(record_date) as month'),
-                    DB::raw('AVG(occupancy_rate) as avg_rate')
-                )
-                ->groupBy('year', 'month')
-                ->orderBy('year', 'desc')
-                ->orderBy('month', 'desc')
-                ->take(7)
-                ->get()
-                ->reverse()
-                ->values();
-
-        return [
-            'rates' => $records->pluck('avg_rate')->map(function ($rate) {
-                return round($rate, 2);
-            })->toArray(),
-            'labels' => $records->map(function ($record) {
-                return date('M Y', mktime(0, 0, 0, $record->month, 1, $record->year));
-            })->toArray()
-        ];
     }
 }

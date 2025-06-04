@@ -5,6 +5,55 @@
 @endsection
 
 @push('css')
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- jQuery (required) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <style>
+        /* Customize Select2 container */
+        .select2-container--default .select2-selection--single {
+            height: 42px;
+            padding: 5px 10px;
+            font-size: 1rem;
+            box-shadow: none;
+            transition: border-color 0.3s;
+        }
+
+        /* On focus */
+        .select2-container--default .select2-selection--single:focus {
+            border-color: #86b7fe;
+            outline: 0;
+        }
+
+        /* Dropdown arrow icon */
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 100%;
+            right: 10px;
+        }
+
+        /* Text inside the selected field */
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            color: #495057;
+            line-height: 36px;
+        }
+
+        /* Dropdown menu style */
+        .select2-container--default .select2-results>.select2-results__options {
+            max-height: 300px;
+            overflow-y: auto;
+            background-color: #fff;
+            border: 1px solid #ced4da;
+            border-radius: 0.5rem;
+        }
+
+        /* Hover on options */
+        .select2-results__option--highlighted {
+            background-color: #0d6efd;
+            color: white;
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -35,17 +84,17 @@
                                 </ul>
                             </div>
                         @endif
-
                         <form action="{{ route('admin.reservations.store') }}" method="POST">
                             @csrf
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label for="guest_id" class="form-label">Guest</label>
-                                    <select class="form-select" id="guest_id" name="guest_id" required>
+                                    <label for="room_id" class="form-label">Guest</label>
+                                    <select class="form-select select2" id="guest_id" name="guest_id" required>
                                         <option value="">Select Guest</option>
                                         @foreach ($guests as $guest)
-                                            <option value="{{ $guest->id }}">{{ $guest->full_name }}
-                                                ({{ $guest->email }})
+                                            <option value="{{ $guest->id }}"
+                                                {{ old('guest_id') == $guest->id ? 'selected' : '' }}>
+                                                {{ $guest->full_name }} ({{ $guest->email }})
                                             </option>
                                         @endforeach
                                     </select>
@@ -89,7 +138,7 @@
                                     <textarea class="form-control" id="special_requests" name="special_requests" rows="3"></textarea>
                                 </div>
                                 <div class="col-12">
-                                    <button type="submit" class="btn btn-primary">Create Reservation</button>
+                                    <button type="submit" class="btn btn-primary shadow-0">Create Reservation</button>
                                 </div>
                             </div>
                         </form>
@@ -101,6 +150,14 @@
 @endsection
 
 @push('js')
+    <script>
+        $(document).ready(function() {
+            $('#guest_id').select2({
+                placeholder: "Select a guest",
+                allowClear: true
+            });
+        });
+    </script>
     <script>
         $(document).ready(function() {
             // Set minimum dates for date pickers

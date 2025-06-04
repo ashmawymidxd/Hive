@@ -96,9 +96,9 @@
   height: 5px;
 }
 
-
-
-
+.bg-info-tranc{
+    background-color: rgba(108, 84, 216, 0.26);
+}
 
 /* Sidebar styles */
 .sidebar {

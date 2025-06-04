@@ -2,7 +2,12 @@
 
 @section('content')
     <section>
-        <h3 class="font-bold text-dark">Guest Management</h3>
+        <div class="d-flex align-items-center justify-content-between">
+            <h3 class="font-bold text-dark">Guest Management</h3>
+            <a href="{{ route('admin.guests.create') }}" class="btn btn-primary shadow-0">
+                <i class="fa fa-add"></i>
+            </a>
+        </div>
 
         <div class="row mt-4">
             <div class="col-md-12">
@@ -36,7 +41,7 @@
                                 <input id="serch_guest" type="search" class="form-control border-0" name=""
                                     id="">
                             </div>
-                            <a href="{{ route('admin.guests.create') }}" class="btn btn-primary shadow-0">add guest</a>
+
                         </div>
 
                         {{-- success message alert cloce --}}
@@ -82,24 +87,24 @@
                                             <td>{{ $guest->reservations_count ?? $guest->reservations()->count() }}</td>
                                             <td>
                                                 <a href="{{ route('admin.guests.show', $guest->id) }}"
-                                                    class="btn btn-light btn-sm shadow-0 me-1">
+                                                    class="btn btn-light border btn-sm shadow-0 me-1">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
                                                 <a href="{{ route('admin.guests.edit', $guest->id) }}"
-                                                    class="btn btn-light btn-sm shadow-0 me-1">
+                                                    class="btn btn-light border btn-sm shadow-0 me-1">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
                                                 <form action="{{ route('admin.guests.destroy', $guest->id) }}"
                                                     method="POST" class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-light btn-sm shadow-0"
+                                                    <button type="submit" class="btn btn-light border btn-sm shadow-0"
                                                         onclick="return confirm('Are you sure?')">
                                                         <i class="fa fa-trash"></i>
                                                     </button>
                                                 </form>
 
-                                                <button class="btn btn-sm btn-danger"
+                                                <button class="btn btn-sm btn-danger shadow-0"
                                                     onclick="openBlacklistModal({{ $guest->id }})"
                                                     title="Add to Blacklist">
                                                     <i class="fas fa-ban"></i>
@@ -486,7 +491,7 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
                                         data-mdb-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-danger">Add to Blacklist</button>
+                                    <button type="submit" class="btn btn-danger shadow-0">Add to Blacklist</button>
                                 </div>
                             </form>
                         </div>

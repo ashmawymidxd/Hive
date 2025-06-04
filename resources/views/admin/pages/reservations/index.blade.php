@@ -26,12 +26,14 @@
 
 @section('content')
     <section>
-        <h3 class="font-bold text-dark">Reservations</h3>
-
         <div class="d-flex align-items-center justify-content-between">
-            <p class="text-secondary">Manage all hotel reservations and bookings</p>
-            <a class="btn btn-secondary" href="{{ route('admin.reservations.create') }}">add</a>
+            <h3 class="font-bold text-dark">Reservations</h3>
+            <a class="btn btn-primary shadow-0" href="{{ route('admin.reservations.create') }}">
+                <i class="fa fa-add"></i>
+            </a>
         </div>
+        <p class="text-secondary">Manage all hotel reservations and bookings</p>
+
 
         <!-- Bootstrap Tabs -->
         <ul class="nav nav-tabs mb-4 border-bottom" id="reservationTabs" role="tablist">
@@ -124,11 +126,11 @@
                                                 <td>${{ number_format($reservation->amount, 2) }}</td>
                                                 <td>
                                                     <a href="{{ route('admin.reservations.show', $reservation->id) }}"
-                                                        class="btn btn-light btn-sm shadow-0 me-1">
+                                                        class="btn btn-light border btn-sm shadow-0 me-1">
                                                         <i class="fa fa-eye"></i>
                                                     </a>
                                                     <a href="{{ route('admin.reservations.edit', $reservation->id) }}"
-                                                        class="btn btn-light btn-sm shadow-0 me-1">
+                                                        class="btn btn-light border btn-sm shadow-0 me-1">
                                                         <i class="fa fa-edit"></i>
                                                     </a>
                                                     <form
@@ -136,7 +138,7 @@
                                                         method="POST" class="d-inline">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-light btn-sm shadow-0"
+                                                        <button type="submit" class="btn btn-light border btn-sm shadow-0"
                                                             onclick="return confirm('Are you sure?')">
                                                             <i class="fa fa-trash"></i>
                                                         </button>
@@ -243,18 +245,18 @@
                                         <td>${{ number_format($reservation->amount, 2) }}</td>
                                         <td>
                                             <a href="{{ route('admin.reservations.show', $reservation->id) }}"
-                                                class="btn btn-light btn-sm shadow-0 me-1">
+                                                class="btn btn-light border btn-sm shadow-0 me-1">
                                                 <i class="fa fa-eye"></i>
                                             </a>
                                             <a href="{{ route('admin.reservations.edit', $reservation->id) }}"
-                                                class="btn btn-light btn-sm shadow-0 me-1">
+                                                class="btn btn-light border btn-sm shadow-0 me-1">
                                                 <i class="fa fa-edit"></i>
                                             </a>
                                             <form action="{{ route('admin.reservations.destroy', $reservation->id) }}"
                                                 method="POST" class="d-inline">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-light btn-sm shadow-0"
+                                                <button type="submit" class="btn btn-light border btn-sm shadow-0"
                                                     onclick="return confirm('Are you sure?')">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
@@ -359,18 +361,18 @@
                                             <td>${{ number_format($reservation->amount, 2) }}</td>
                                             <td>
                                                 <a href="{{ route('admin.reservations.show', $reservation->id) }}"
-                                                    class="btn btn-light btn-sm shadow-0 me-1">
+                                                    class="btn btn-light border btn-sm shadow-0 me-1">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
                                                 <a href="{{ route('admin.reservations.edit', $reservation->id) }}"
-                                                    class="btn btn-light btn-sm shadow-0 me-1">
+                                                    class="btn btn-light border btn-sm shadow-0 me-1">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
                                                 <form action="{{ route('admin.reservations.destroy', $reservation->id) }}"
                                                     method="POST" class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-light btn-sm shadow-0"
+                                                    <button type="submit" class="btn btn-light border btn-sm shadow-0"
                                                         onclick="return confirm('Are you sure?')">
                                                         <i class="fa fa-trash"></i>
                                                     </button>
@@ -477,18 +479,18 @@
                                             <td>${{ number_format($reservation->amount, 2) }}</td>
                                             <td>
                                                 <a href="{{ route('admin.reservations.show', $reservation->id) }}"
-                                                    class="btn btn-light btn-sm shadow-0 me-1">
+                                                    class="btn btn-light border btn-sm shadow-0 me-1">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
                                                 <a href="{{ route('admin.reservations.edit', $reservation->id) }}"
-                                                    class="btn btn-light btn-sm shadow-0 me-1">
+                                                    class="btn btn-light border btn-sm shadow-0 me-1">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
                                                 <form action="{{ route('admin.reservations.destroy', $reservation->id) }}"
                                                     method="POST" class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-light btn-sm shadow-0"
+                                                    <button type="submit" class="btn btn-light border btn-sm shadow-0"
                                                         onclick="return confirm('Are you sure?')">
                                                         <i class="fa fa-trash"></i>
                                                     </button>

@@ -20,5 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // Occupancy data routes
-Route::get('/occupancy-data', [OccupancyDataController::class, 'getOccupancyData'])
-->name('occupancy-data.get');
+Route::get('/occupancy-data/{period}', [OccupancyDataController::class, 'getOccupancyData']);

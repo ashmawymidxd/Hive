@@ -14,7 +14,7 @@ return new class extends Migration
       // In the generated migration file
         Schema::create('occupancy_records', function (Blueprint $table) {
             $table->id();
-            $table->date('record_date')->unique();
+            $table->date('record_date');
             $table->decimal('occupancy_rate', 5, 2); // Stores percentage with 2 decimal places
             $table->integer('occupied_rooms');
             $table->integer('total_rooms');

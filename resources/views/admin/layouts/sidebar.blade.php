@@ -1,8 +1,8 @@
  <nav class="sidebar" id="sidebar">
      <div class="sidebar-header bg-navy border-b">
          <div class="d-flex align-items-center gap-3">
-             <span class="rounded-2 bg-info p-1">
-                 <img draggable="false" class="rounded-2" src="{{ asset('assets/admin/img/logo/hive.png') }}" width="30px"
+             <span class="rounded-2 bg-info-tranc p-1">
+                 <img draggable="false" class="rounded-2 shadow" src="{{ asset('assets/admin/img/logo/hive.png') }}" width="30px"
                      alt="" srcset="">
              </span>
              <h4 class="font-bold text-duration p-1">Hotel Hive</h4>

@@ -97,15 +97,15 @@
         <div class="d-flex align-items-center justify-content-between">
             <h3 class="font-bold text-dark">Room Management</h3>
             <div class="d-flex flex-md-row flex-column gap-3 ">
-                <button class="btn shadow-0 btn-outline-secondary"><i class="fas fa-home mx-1"></i>Housekeeping</button>
-                <button class="btn shadow-0 btn-outline-secondary"> <i class="fas fa-tools mx-1"></i>
+                <button class="btn shadow-0 btn-secondary"><i class="fas fa-home mx-1"></i>Housekeeping</button>
+                <button class="btn shadow-0 btn-secondary"> <i class="fas fa-tools mx-1"></i>
                     Maintenance</button>
-                <button class="btn btn-outline-secondary btn-sm me-2" data-mdb-toggle="modal"
+                <button class="btn btn-secondary btn-sm" data-mdb-toggle="modal"
                     data-mdb-target="#amenitiesModal">
-                    <i class="fa fa-list"></i> Manage Amenities
+                    <i class="fa fa-list"></i> Amenities
                 </button>
-                <button class="btn btn-primary btn-sm" data-mdb-toggle="modal" data-mdb-target="#addRoomModal">
-                    <i class="fa fa-plus"></i> Add Room
+                <button class="btn btn-primary btn-sm shadow-0" data-mdb-toggle="modal" data-mdb-target="#addRoomModal">
+                    <i class="fa fa-plus"></i>
                 </button>
             </div>
         </div>
@@ -190,7 +190,7 @@
                             </button>
                             <input type="search" class="form-control border-0" id="roomSearch"
                                 placeholder="Search by room number...">
-                            <button class="btn btn-light shadow-0" id="clearSearch" title="Clear search">
+                            <button class="btn btn-light border shadow-0" id="clearSearch" title="Clear search">
                                 <i class="fa fa-times"></i>
                             </button>
                         </div>
@@ -277,15 +277,15 @@
                                                     </td>
                                                     <td>
                                                         <a href="{{ route('admin.rooms.show', $room->id) }}"
-                                                            class="btn btn-light btn-sm shadow-0 me-1">
+                                                            class="btn btn-light border btn-sm shadow-0 me-1">
                                                             <i class="fa fa-eye"></i>
                                                         </a>
-                                                        <button class="btn btn-light btn-sm shadow-0 edit-room-btn"
+                                                        <button class="btn btn-light border btn-sm shadow-0 edit-room-btn"
                                                             data-room="{{ json_encode($room) }}"
                                                             data-amenities="{{ json_encode($room->amenities->pluck('id')->toArray()) }}">
                                                             <i class="fa fa-edit"></i>
                                                         </button>
-                                                        <button class="btn btn-light btn-sm shadow-0 delete-room-btn"
+                                                        <button class="btn btn-light border btn-sm shadow-0 delete-room-btn"
                                                             data-id="{{ $room->id }}">
                                                             <i class="fa fa-trash"></i>
                                                         </button>
@@ -348,15 +348,15 @@
                                                     </td>
                                                     <td>
                                                         <a href="{{ route('admin.rooms.show', $room->id) }}"
-                                                            class="btn btn-light btn-sm shadow-0 me-1">
+                                                            class="btn btn-light border btn-sm shadow-0 me-1">
                                                             <i class="fa fa-eye"></i>
                                                         </a>
-                                                        <button class="btn btn-light btn-sm shadow-0 edit-room-btn"
+                                                        <button class="btn btn-light border btn-sm shadow-0 edit-room-btn"
                                                             data-room="{{ json_encode($room) }}"
                                                             data-amenities="{{ json_encode($room->amenities->pluck('id')->toArray()) }}">
                                                             <i class="fa fa-edit"></i>
                                                         </button>
-                                                        <button class="btn btn-light btn-sm shadow-0 delete-room-btn"
+                                                        <button class="btn btn-light border btn-sm shadow-0 delete-room-btn"
                                                             data-id="{{ $room->id }}">
                                                             <i class="fa fa-trash"></i>
                                                         </button>
@@ -418,15 +418,15 @@
                                                     </td>
                                                     <td>
                                                         <a href="{{ route('admin.rooms.show', $room->id) }}"
-                                                            class="btn btn-light btn-sm shadow-0 me-1">
+                                                            class="btn btn-light border btn-sm shadow-0 me-1">
                                                             <i class="fa fa-eye"></i>
                                                         </a>
-                                                        <button class="btn btn-light btn-sm shadow-0 edit-room-btn"
+                                                        <button class="btn btn-light border btn-sm shadow-0 edit-room-btn"
                                                             data-room="{{ json_encode($room) }}"
                                                             data-amenities="{{ json_encode($room->amenities->pluck('id')->toArray()) }}">
                                                             <i class="fa fa-edit"></i>
                                                         </button>
-                                                        <button class="btn btn-light btn-sm shadow-0 delete-room-btn"
+                                                        <button class="btn btn-light border btn-sm shadow-0 delete-room-btn"
                                                             data-id="{{ $room->id }}">
                                                             <i class="fa fa-trash"></i>
                                                         </button>
@@ -489,15 +489,15 @@
                                                     </td>
                                                     <td>
                                                         <a href="{{ route('admin.rooms.show', $room->id) }}"
-                                                            class="btn btn-light btn-sm shadow-0 me-1">
+                                                            class="btn btn-light border btn-sm shadow-0 me-1">
                                                             <i class="fa fa-eye"></i>
                                                         </a>
-                                                        <button class="btn btn-light btn-sm shadow-0 edit-room-btn"
+                                                        <button class="btn btn-light border btn-sm shadow-0 edit-room-btn"
                                                             data-room="{{ json_encode($room) }}"
                                                             data-amenities="{{ json_encode($room->amenities->pluck('id')->toArray()) }}">
                                                             <i class="fa fa-edit"></i>
                                                         </button>
-                                                        <button class="btn btn-light btn-sm shadow-0 delete-room-btn"
+                                                        <button class="btn btn-light border btn-sm shadow-0 delete-room-btn"
                                                             data-id="{{ $room->id }}">
                                                             <i class="fa fa-trash"></i>
                                                         </button>
@@ -559,15 +559,15 @@
                                                     </td>
                                                     <td>
                                                         <a href="{{ route('admin.rooms.show', $room->id) }}"
-                                                            class="btn btn-light btn-sm shadow-0 me-1">
+                                                            class="btn btn-light border btn-sm shadow-0 me-1">
                                                             <i class="fa fa-eye"></i>
                                                         </a>
-                                                        <button class="btn btn-light btn-sm shadow-0 edit-room-btn"
+                                                        <button class="btn btn-light border btn-sm shadow-0 edit-room-btn"
                                                             data-room="{{ json_encode($room) }}"
                                                             data-amenities="{{ json_encode($room->amenities->pluck('id')->toArray()) }}">
                                                             <i class="fa fa-edit"></i>
                                                         </button>
-                                                        <button class="btn btn-light btn-sm shadow-0 delete-room-btn"
+                                                        <button class="btn btn-light border btn-sm shadow-0 delete-room-btn"
                                                             data-id="{{ $room->id }}">
                                                             <i class="fa fa-trash"></i>
                                                         </button>
@@ -722,10 +722,10 @@
                     <td>${amenity.name}</td>
                     <td>${amenity.icon ? `<i class="fa ${amenity.icon}"></i>` : '-'}</td>
                     <td>
-                        <button class="btn btn-sm btn-light edit-amenity-btn" data-id="${amenity.id}" data-name="${amenity.name}" data-icon="${amenity.icon || ''}">
+                        <button class="btn btn-sm btn-light border edit-amenity-btn" data-id="${amenity.id}" data-name="${amenity.name}" data-icon="${amenity.icon || ''}">
                             <i class="fa fa-edit"></i>
                         </button>
-                        <button class="btn btn-sm btn-light delete-amenity-btn" data-id="${amenity.id}">
+                        <button class="btn btn-sm btn-light border delete-amenity-btn" data-id="${amenity.id}">
                             <i class="fa fa-trash"></i>
                         </button>
                     </td>

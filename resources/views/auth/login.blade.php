@@ -142,7 +142,7 @@
 
                             <!-- Remember Me & Forgot Password -->
                             <div class="d-flex justify-content-between align-items-center mb-4">
-                                <div class="form-check">
+                                <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" name="remember" id="remember"
                                         {{ old('remember') ? 'checked' : '' }}>
                                     <label class="form-check-label" for="remember">Remember Me</label>
@@ -162,19 +162,20 @@
                             </div>
 
                         </form>
-                         <!-- OR Divider -->
+                        <!-- OR Divider -->
                         <div class="text-center my-3 d-flex align-items-center justify-content-center">
-                          <span class="border-bottom p-1 w-50"></span><span class="p-2">or</span> <span class="border-bottom p-1 w-50"></span>
+                            <span class="border-bottom p-1 w-50"></span><span class="p-2">or</span> <span
+                                class="border-bottom p-1 w-50"></span>
                         </div>
 
                         <!-- Social Login Buttons -->
                         <div class="d-flex  gap-3">
-                            <a href="{{ route('social.login', ['provider' => 'google']) }}"
+                            <a href="{{ route('auth.google') }}"
                                 class="btn btn-outline-danger d-flex align-items-center justify-content-center gap-2">
                                 <i class="fab fa-google"></i> Continue with Google
                             </a>
 
-                            <a href="{{ route('social.login', ['provider' => 'facebook']) }}"
+                            <a href=""
                                 class="btn btn-outline-primary d-flex align-items-center justify-content-center gap-2">
                                 <i class="fab fa-facebook-f"></i> Continue with Facebook
                             </a>
