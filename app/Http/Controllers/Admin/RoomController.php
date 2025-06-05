@@ -12,11 +12,11 @@ class RoomController extends Controller
 {
     public function index()
     {
-        $rooms = Room::with('amenities')->latest()->paginate(10);
-        $availableRooms = Room::where('status', 'Available')->with('amenities')->latest()->paginate(10);
-        $occupiedRooms = Room::where('status', 'Occupied')->with('amenities')->latest()->paginate(10);
-        $maintenanceRooms = Room::where('status', 'Maintenance')->with('amenities')->latest()->paginate(10);
-        $cleaningRooms = Room::where('status', 'Cleaning')->with('amenities')->latest()->paginate(10);
+        $rooms = Room::with('amenities')->latest()->get();
+        $availableRooms = Room::where('status', 'Available')->with('amenities')->latest()->get();
+        $occupiedRooms = Room::where('status', 'Occupied')->with('amenities')->latest()->get();
+        $maintenanceRooms = Room::where('status', 'Maintenance')->with('amenities')->latest()->get();
+        $cleaningRooms = Room::where('status', 'Cleaning')->with('amenities')->latest()->get();
         $amenities = Amenity::all();
         return view('admin.pages.rooms.index', compact('rooms', 'amenities','availableRooms','occupiedRooms','maintenanceRooms','cleaningRooms'));
     }

@@ -13,7 +13,7 @@ class GuestController extends Controller
 {
     public function index(Request $request)
     {
-        $guests = Guest::latest()->paginate(10);
+        $guests = Guest::latest()->get();
 
         if ($request->ajax() || $request->wantsJson()) {
             return response()->json($guests);
@@ -23,11 +23,11 @@ class GuestController extends Controller
 
         $feedbacks = GuestFeedback::with('guest')
             ->latest()
-            ->paginate(10);
+            ->get();
 
         $blacklistedGuests = BlacklistedGuest::with(['guest', 'addedBy'])
             ->latest()
-            ->paginate(10);
+            ->get();
 
         return view('admin.pages.guests.index', compact('guests', 'feedbacks', 'blacklistedGuests'));
     }

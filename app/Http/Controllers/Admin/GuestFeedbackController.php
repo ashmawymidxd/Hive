@@ -38,7 +38,7 @@ class GuestFeedbackController extends Controller
     {
         $feedbacks = GuestFeedback::with(['guest', 'reservation'])
             ->latest()
-            ->paginate(10);
+            ->get();
 
         return view('admin.feedbacks.index', compact('feedbacks'));
     }

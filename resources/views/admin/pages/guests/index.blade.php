@@ -33,17 +33,6 @@
                 <div class="tab-content mt-3" id="managementTabsContent">
                     <!-- Directory Tab -->
                     <div class="tab-pane fade show active" id="directory" role="tabpanel">
-                        <div class="d-flex align-items-center justify-content-between pb-3">
-                            <div class="btn-group shadow-0 border">
-                                <button class="btn btn-light shadow-0 ">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                                <input id="serch_guest" type="search" class="form-control border-0" name=""
-                                    id="">
-                            </div>
-
-                        </div>
-
                         {{-- success message alert cloce --}}
                         @if (session('success'))
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -66,7 +55,7 @@
                         @endif
 
                         <div class="table-responsive">
-                            <table class="table">
+                            <table class="table w-100" id="guesttable1">
                                 <thead class="bg-light">
                                     <tr>
                                         <th>ID</th>
@@ -115,7 +104,6 @@
                                 </tbody>
 
                             </table>
-                            {{ $guests->links('pagination::bootstrap-5') }}
                         </div>
 
                     </div>
@@ -208,7 +196,7 @@
                                         Guest Feedback & Complaints
                                     </h4>
                                     <div class="table-responsive">
-                                        <table class="table ">
+                                        <table class="table w-100" id="guesttable2">
                                             <thead class="bg-light">
                                                 <tr>
                                                     <th>Guest</th>
@@ -363,8 +351,6 @@
 
                                             </tbody>
                                         </table>
-                                        {{ $feedbacks->links('pagination::bootstrap-5') }}
-
                                     </div>
                                 </div>
                             </div>
@@ -380,7 +366,7 @@
                                         Blacklisted Guests
                                     </h4>
                                     <div class="table-responsive">
-                                        <table class="table">
+                                        <table class="table w-100" id="guesttable3">
                                             <thead class="bg-light">
                                                 <tr>
                                                     <th>Name</th>
@@ -436,7 +422,6 @@
                                                 @endforeach
                                             </tbody>
                                         </table>
-                                        {{ $blacklistedGuests->links('pagination::bootstrap-5') }}
                                     </div>
                                 </div>
                             </div>
@@ -526,5 +511,11 @@
                 document.getElementById(formId).submit();
             });
         });
+    </script>
+
+    <script>
+        new DataTable("#guesttable1")
+        new DataTable("#guesttable2")
+        new DataTable("#guesttable3")
     </script>
 @endpush

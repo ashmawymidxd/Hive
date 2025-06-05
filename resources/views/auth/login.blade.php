@@ -60,7 +60,6 @@
         .auth-footer {
             text-align: center;
             padding-top: 1.5rem;
-            border-top: 1px solid #eee;
             margin-top: 1.5rem;
             font-size: 0.9rem;
         }

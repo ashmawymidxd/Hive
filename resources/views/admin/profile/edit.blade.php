@@ -20,7 +20,7 @@
         @endif
 
         <div class="row mt-4">
-            <div class="col-lg-6 col-md-12 mt-2">
+            <div class="col-lg-6 col-md-12 mt-2" data-aos="fade-up" data-aos-delay="100">
                 <form action="{{ route('admin.profile.update') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
@@ -99,7 +99,7 @@
                 </form>
 
             </div>
-            <div class="col-lg-6 col-md-12 mt-2">
+            <div class="col-lg-6 col-md-12 mt-2" data-aos="fade-up" data-aos-delay="200">
                 <form action="{{ route('admin.security.update') }}" method="POST">
                     @csrf
                     @method('PUT')
@@ -149,64 +149,69 @@
                 </form>
             </div>
         </div>
+        <div class="col-md-12" data-aos="fade-up" data-aos-delay="300">
+            <form action="{{ route('admin.preferences.update') }}" method="POST" id="preferencesForm">
+                @csrf
+                @method('PUT')
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <div class="card shadow-0 border p-3">
+                            <h4 class="text-dark">Account Preferences</h4>
 
-        <form action="{{ route('admin.preferences.update') }}" method="POST" id="preferencesForm">
-            @csrf
-            @method('PUT')
-            <div class="row mt-4">
-                <div class="col-md-12">
-                    <div class="card shadow-0 border p-3">
-                        <h4 class="text-dark">Account Preferences</h4>
+                            @if ($errors->preferences->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->preferences->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
 
-                        @if ($errors->preferences->any())
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->preferences->all() as $error)
-                                        <li>{{ $error }}</li>
+                            <div class="mt-3">
+                                <label for="timezone">Timezone</label>
+                                <select name="timezone"
+                                    class="form-control p-2 bg-light @error('timezone', 'preferences') is-invalid @enderror">
+                                    @foreach (timezone_identifiers_list() as $timezone)
+                                        <option value="{{ $timezone }}"
+                                            {{ old('timezone', $admin->timezone) == $timezone ? 'selected' : '' }}>
+                                            {{ $timezone }}
+                                        </option>
                                     @endforeach
-                                </ul>
+                                </select>
+                                @error('timezone', 'preferences')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
-                        @endif
-
-                        <div class="mt-3">
-                            <label for="timezone">Timezone</label>
-                            <select name="timezone"
-                                class="form-control p-2 bg-light @error('timezone', 'preferences') is-invalid @enderror">
-                                @foreach (timezone_identifiers_list() as $timezone)
-                                    <option value="{{ $timezone }}"
-                                        {{ old('timezone', $admin->timezone) == $timezone ? 'selected' : '' }}>
-                                        {{ $timezone }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('timezone', 'preferences')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="mt-3">
-                            <label for="language">Language</label>
-                            <select name="language"
-                                class="form-control p-2 bg-light @error('language', 'preferences') is-invalid @enderror">
-                                <option value="en" {{ old('language', $admin->language) == 'en' ? 'selected' : '' }}>
-                                    English</option>
-                                <option value="fr" {{ old('language', $admin->language) == 'fr' ? 'selected' : '' }}>
-                                    French</option>
-                                <option value="es" {{ old('language', $admin->language) == 'es' ? 'selected' : '' }}>
-                                    Spanish</option>
-                                <option value="ar" {{ old('language', $admin->language) == 'ar' ? 'selected' : '' }}>
-                                    Arabic</option>
-                            </select>
-                            @error('language', 'preferences')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="mt-4 d-flex align-item-center justify-content-end">
-                            <button type="submit" class="btn btn-primary shadow-0 p-2">Save Preferences</button>
+                            <div class="mt-3">
+                                <label for="language">Language</label>
+                                <select name="language"
+                                    class="form-control p-2 bg-light @error('language', 'preferences') is-invalid @enderror">
+                                    <option value="en"
+                                        {{ old('language', $admin->language) == 'en' ? 'selected' : '' }}>
+                                        English</option>
+                                    <option value="fr"
+                                        {{ old('language', $admin->language) == 'fr' ? 'selected' : '' }}>
+                                        French</option>
+                                    <option value="es"
+                                        {{ old('language', $admin->language) == 'es' ? 'selected' : '' }}>
+                                        Spanish</option>
+                                    <option value="ar"
+                                        {{ old('language', $admin->language) == 'ar' ? 'selected' : '' }}>
+                                        Arabic</option>
+                                </select>
+                                @error('language', 'preferences')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="mt-4 d-flex align-item-center justify-content-end">
+                                <button type="submit" class="btn btn-primary shadow-0 p-2">Save Preferences</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </section>
 
 
@@ -242,5 +247,9 @@
                 document.querySelector('#securityForm').submit();
             });
         }
+    </script>
+
+    <script>
+        AOS.init()
     </script>
 @endpush

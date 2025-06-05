@@ -29,7 +29,7 @@
         <h3 class="font-bold text-dark">Dashboard</h3>
         <p class="text-secondary">Welcome back to Hotel Hive management system.</p>
         <div class="row mt-4">
-            <div class="col-md-6 col-lg-3 mb-4">
+            <div class="col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="100">
                 <div class="card p-3 shadow-2">
                     <div class="d-flex align-items-center justify-content-between">
                         <p class="text-secondary">Available Rooms</p>
@@ -64,7 +64,7 @@
                     </small>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-3 mb-4">
+            <div class="col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="200">
                 <div class="card p-3 shadow-2">
                     <div class="d-flex align-items-center justify-content-between">
                         <p class="text-secondary">New Guests</p>
@@ -88,7 +88,7 @@
                     </small>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-3 mb-4">
+            <div class="col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="300">
                 <div class="card p-3 shadow-2">
                     <div class="d-flex align-items-center justify-content-between">
                         <p class="text-secondary">Today's Revenue</p>
@@ -109,7 +109,7 @@
 
                 </div>
             </div>
-            <div class="col-md-6 col-lg-3 mb-4">
+            <div class="col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="400">
                 <div class="card p-3 shadow-2">
                     @php
                         // Current occupancy
@@ -126,8 +126,8 @@
                         $averageOccupancy = $occupancyRecords->avg('occupancy_rate');
 
                         // Yesterday's rate for trend
-                        $yesterdayRate = App\Models\OccupancyRecord::where('record_date', today()->subDay())->value(
-                            'occupancy_rate',
+$yesterdayRate = App\Models\OccupancyRecord::where('record_date', today()->subDay())->value(
+    'occupancy_rate',
                         );
                         $trend = $yesterdayRate ? $currentOccupancyRate - $yesterdayRate : 0;
                     @endphp
@@ -159,7 +159,7 @@
 
     <section>
         <div class="row">
-            <div class="col-md-12 col-lg-4 mt-1">
+            <div class="col-md-12 col-lg-4 mt-1" data-aos="fade-up" data-aos-delay="500">
                 <div class="card shadow-2 p-3" style="height: 380px;">
                     @php
                         $totalRooms = App\Models\Room::count();
@@ -243,7 +243,7 @@
                 </div>
             </div>
 
-            <div class="col-md-12 col-lg-8 mt-1">
+            <div class="col-md-12 col-lg-8 mt-1" data-aos="fade-up" data-aos-delay="600">
                 <div class="card shadow-2 p-3" style="height: 380px">
                     <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
                         <h5 class="font-bold">Occupancy Rate</h5>
@@ -261,14 +261,15 @@
     </section>
 
     <section>
-        <div class="row mt-4">
+        <div class="row mt-4" data-aos="fade-up" data-aos-delay="200">
             <div class="col-md-12">
                 <div class="bg-white rounded-3 shadow-2 p-3">
                     <div class="">
                         <h6 class="font-bold text-dark">Quick Actions</h6>
                     </div>
                     <div class="row mt-3">
-                        <a href="{{ route('admin.reservations.create') }}" class="col-lg-3 col-md-6 text-center mt-1">
+                        <a href="{{ route('admin.reservations.create') }}" class="col-lg-3 col-md-6 text-center mt-1"
+                            data-aos="flip-up" data-aos-delay="100">
                             <div
                                 class="hover-primary rounded-3 border d-flex flex-column align-items-center justify-content-center p-3">
                                 <span
@@ -279,7 +280,8 @@
                                 <h6 class="mt-3 text-dark font-bold">New Booking</h6>
                             </div>
                         </a>
-                        <a href="{{ route('admin.reservations.index') }}" class="col-lg-3 col-md-6 text-center mt-1">
+                        <a href="{{ route('admin.reservations.index') }}" class="col-lg-3 col-md-6 text-center mt-1"
+                            data-aos="flip-up" data-aos-delay="200">
                             <div
                                 class="hover-primary rounded-3 border d-flex flex-column align-items-center justify-content-center p-3">
                                 <span
@@ -290,7 +292,8 @@
                                 <h6 class="mt-3 text-dark font-bold">Check In</h6>
                             </div>
                         </a>
-                        <a href="{{ route('admin.reservations.index') }}" class="col-lg-3 col-md-6 text-center mt-1">
+                        <a href="{{ route('admin.reservations.index') }}" class="col-lg-3 col-md-6 text-center mt-1"
+                            data-aos="flip-up" data-aos-delay="300">
                             <div
                                 class="hover-primary rounded-3 border d-flex flex-column align-items-center justify-content-center p-3">
                                 <span
@@ -301,7 +304,8 @@
                                 <h6 class="mt-3 text-dark font-bold">Check Out</h6>
                             </div>
                         </a>
-                        <a href="{{ route('admin.rooms.index') }}" class="col-lg-3 col-md-6 text-center mt-1">
+                        <a href="{{ route('admin.rooms.index') }}" class="col-lg-3 col-md-6 text-center mt-1"
+                            data-aos="flip-up" data-aos-delay="400">
                             <div
                                 class="hover-primary rounded-3 border d-flex flex-column align-items-center justify-content-center p-3">
                                 <span
@@ -320,7 +324,7 @@
 
     <section>
         <div class="row mt-4">
-            <div class="col-md-12 col-lg-8 mt-1">
+            <div class="col-md-12 col-lg-8 mt-1" data-aos="fade-up" data-aos-delay="300">
                 <div class="card shadow-2 p-0">
                     <div class="p-3">
                         <h6 class="font-bold text-dark">Recent Bookings</h6>
@@ -378,7 +382,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-12 col-lg-4 mt-1">
+            <div class="col-md-12 col-lg-4 mt-1" data-aos="fade-up" data-aos-delay="400">
                 <div class="card shadow-2">
                     <div class="card-header d-flex align-items-center justify-content-between p-3">
                         <h6 class="font-bold text-dark">Notifications</h6>
@@ -578,5 +582,9 @@
                 });
             });
         });
+    </script>
+
+    <script>
+        AOS.init();
     </script>
 @endpush

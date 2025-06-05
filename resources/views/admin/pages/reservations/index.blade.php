@@ -64,7 +64,7 @@
         </ul>
 
         <!-- Tab Content -->
-        <div class="tab-content" id="reservationTabsContent">
+        <div class="tab-content" id="reservationTabsContent" data-aos="fade-up" data-aos-delay="100">
             <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
                 <!-- Content for All Reservations -->
                 <div class="row mt-4">
@@ -82,7 +82,7 @@
                                 {{ \App\Models\Reservation::count() }}
                                 total reservations</p>
                             <div class="table-responsive">
-                                <table class="table">
+                                <table class="table w-100" id="reservations">
                                     <thead class="bg-light">
                                         <tr>
                                             <th>Reservation ID</th>
@@ -201,7 +201,7 @@
                         total upcoming reservations
                     </p>
                     <div class="table-responsive">
-                        <table class="table ">
+                        <table class="table w-100" id="PendingReservations">
                             <thead class="bg-light">
                                 <tr>
                                     <th>Reservation ID</th>
@@ -244,58 +244,61 @@
                                         </td>
                                         <td>${{ number_format($reservation->amount, 2) }}</td>
                                         <td>
-                                            <a href="{{ route('admin.reservations.show', $reservation->id) }}"
-                                                class="btn btn-light border btn-sm shadow-0 me-1">
-                                                <i class="fa fa-eye"></i>
-                                            </a>
-                                            <a href="{{ route('admin.reservations.edit', $reservation->id) }}"
-                                                class="btn btn-light border btn-sm shadow-0 me-1">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
-                                            <form action="{{ route('admin.reservations.destroy', $reservation->id) }}"
-                                                method="POST" class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-light border btn-sm shadow-0"
-                                                    onclick="return confirm('Are you sure?')">
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
-                                            </form>
-
-                                            @if ($reservation->status === 'confirmed')
-                                                <form
-                                                    action="{{ route('admin.reservations.check-in', $reservation->id) }}"
+                                            <div class="d-flex gap-2">
+                                                <a href="{{ route('admin.reservations.show', $reservation->id) }}"
+                                                    class="btn btn-light border btn-sm shadow-0 me-1">
+                                                    <i class="fa fa-eye"></i>
+                                                </a>
+                                                <a href="{{ route('admin.reservations.edit', $reservation->id) }}"
+                                                    class="btn btn-light border btn-sm shadow-0 me-1">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
+                                                <form action="{{ route('admin.reservations.destroy', $reservation->id) }}"
                                                     method="POST" class="d-inline">
                                                     @csrf
-                                                    <button type="submit" class="btn btn-success btn-sm shadow-0"
-                                                        title="Check In">
-                                                        <i class="fa fa-sign-in-alt"></i>
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-light border btn-sm shadow-0"
+                                                        onclick="return confirm('Are you sure?')">
+                                                        <i class="fa fa-trash"></i>
                                                     </button>
                                                 </form>
-                                            @endif
 
-                                            @if ($reservation->isCheckedIn())
-                                                <form
-                                                    action="{{ route('admin.reservations.check-out', $reservation->id) }}"
-                                                    method="POST" class="d-inline">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-warning btn-sm shadow-0"
-                                                        title="Check Out">
-                                                        <i class="fa fa-sign-out-alt"></i>
-                                                    </button>
-                                                </form>
-                                            @endif
+                                                @if ($reservation->status === 'confirmed')
+                                                    <form
+                                                        action="{{ route('admin.reservations.check-in', $reservation->id) }}"
+                                                        method="POST" class="d-inline">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-success btn-sm shadow-0"
+                                                            title="Check In">
+                                                            <i class="fa fa-sign-in-alt"></i>
+                                                        </button>
+                                                    </form>
+                                                @endif
 
-                                            @if ($reservation->status === 'confirmed' && $reservation->check_in->isPast())
-                                                <form action="{{ route('admin.reservations.no-show', $reservation->id) }}"
-                                                    method="POST" class="d-inline">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-danger btn-sm shadow-0"
-                                                        title="Mark as No Show">
-                                                        <i class="fa fa-user-times"></i>
-                                                    </button>
-                                                </form>
-                                            @endif
+                                                @if ($reservation->isCheckedIn())
+                                                    <form
+                                                        action="{{ route('admin.reservations.check-out', $reservation->id) }}"
+                                                        method="POST" class="d-inline">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-warning btn-sm shadow-0"
+                                                            title="Check Out">
+                                                            <i class="fa fa-sign-out-alt"></i>
+                                                        </button>
+                                                    </form>
+                                                @endif
+
+                                                @if ($reservation->status === 'confirmed' && $reservation->check_in->isPast())
+                                                    <form
+                                                        action="{{ route('admin.reservations.no-show', $reservation->id) }}"
+                                                        method="POST" class="d-inline">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-danger btn-sm shadow-0"
+                                                            title="Mark as No Show">
+                                                            <i class="fa fa-user-times"></i>
+                                                        </button>
+                                                    </form>
+                                                @endif
+                                            </div>
 
                                         </td>
                                     </tr>
@@ -317,7 +320,7 @@
                             Of total reservations
                         </p>
                         <div class="table-responsive">
-                            <table class="table">
+                            <table class="table w-100" id="checked_in_reservations">
                                 <thead class="bg-light">
                                     <tr>
                                         <th>Reservation ID</th>
@@ -360,59 +363,63 @@
                                             </td>
                                             <td>${{ number_format($reservation->amount, 2) }}</td>
                                             <td>
-                                                <a href="{{ route('admin.reservations.show', $reservation->id) }}"
-                                                    class="btn btn-light border btn-sm shadow-0 me-1">
-                                                    <i class="fa fa-eye"></i>
-                                                </a>
-                                                <a href="{{ route('admin.reservations.edit', $reservation->id) }}"
-                                                    class="btn btn-light border btn-sm shadow-0 me-1">
-                                                    <i class="fa fa-edit"></i>
-                                                </a>
-                                                <form action="{{ route('admin.reservations.destroy', $reservation->id) }}"
-                                                    method="POST" class="d-inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-light border btn-sm shadow-0"
-                                                        onclick="return confirm('Are you sure?')">
-                                                        <i class="fa fa-trash"></i>
-                                                    </button>
-                                                </form>
-
-                                                @if ($reservation->status === 'confirmed')
+                                                <div class="d-flex gap-2">
+                                                    <a href="{{ route('admin.reservations.show', $reservation->id) }}"
+                                                        class="btn btn-light border btn-sm shadow-0 me-1">
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
+                                                    <a href="{{ route('admin.reservations.edit', $reservation->id) }}"
+                                                        class="btn btn-light border btn-sm shadow-0 me-1">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
                                                     <form
-                                                        action="{{ route('admin.reservations.check-in', $reservation->id) }}"
+                                                        action="{{ route('admin.reservations.destroy', $reservation->id) }}"
                                                         method="POST" class="d-inline">
                                                         @csrf
-                                                        <button type="submit" class="btn btn-success btn-sm shadow-0"
-                                                            title="Check In">
-                                                            <i class="fa fa-sign-in-alt"></i>
+                                                        @method('DELETE')
+                                                        <button type="submit"
+                                                            class="btn btn-light border btn-sm shadow-0"
+                                                            onclick="return confirm('Are you sure?')">
+                                                            <i class="fa fa-trash"></i>
                                                         </button>
                                                     </form>
-                                                @endif
 
-                                                @if ($reservation->isCheckedIn())
-                                                    <form
-                                                        action="{{ route('admin.reservations.check-out', $reservation->id) }}"
-                                                        method="POST" class="d-inline">
-                                                        @csrf
-                                                        <button type="submit" class="btn btn-warning btn-sm shadow-0"
-                                                            title="Check Out">
-                                                            <i class="fa fa-sign-out-alt"></i>
-                                                        </button>
-                                                    </form>
-                                                @endif
+                                                    @if ($reservation->status === 'confirmed')
+                                                        <form
+                                                            action="{{ route('admin.reservations.check-in', $reservation->id) }}"
+                                                            method="POST" class="d-inline">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-success btn-sm shadow-0"
+                                                                title="Check In">
+                                                                <i class="fa fa-sign-in-alt"></i>
+                                                            </button>
+                                                        </form>
+                                                    @endif
 
-                                                @if ($reservation->status === 'confirmed' && $reservation->check_in->isPast())
-                                                    <form
-                                                        action="{{ route('admin.reservations.no-show', $reservation->id) }}"
-                                                        method="POST" class="d-inline">
-                                                        @csrf
-                                                        <button type="submit" class="btn btn-danger btn-sm shadow-0"
-                                                            title="Mark as No Show">
-                                                            <i class="fa fa-user-times"></i>
-                                                        </button>
-                                                    </form>
-                                                @endif
+                                                    @if ($reservation->isCheckedIn())
+                                                        <form
+                                                            action="{{ route('admin.reservations.check-out', $reservation->id) }}"
+                                                            method="POST" class="d-inline">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-warning btn-sm shadow-0"
+                                                                title="Check Out">
+                                                                <i class="fa fa-sign-out-alt"></i>
+                                                            </button>
+                                                        </form>
+                                                    @endif
+
+                                                    @if ($reservation->status === 'confirmed' && $reservation->check_in->isPast())
+                                                        <form
+                                                            action="{{ route('admin.reservations.no-show', $reservation->id) }}"
+                                                            method="POST" class="d-inline">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-danger btn-sm shadow-0"
+                                                                title="Mark as No Show">
+                                                                <i class="fa fa-user-times"></i>
+                                                            </button>
+                                                        </form>
+                                                    @endif
+                                                </div>
 
                                             </td>
                                         </tr>
@@ -435,7 +442,7 @@
                             Of total reservations
                         </p>
                         <div class="table-responsive">
-                            <table class="table">
+                            <table class="table  w-100" id="checked_out_reservations">
                                 <thead class="bg-light">
                                     <tr>
                                         <th>Reservation ID</th>
@@ -478,59 +485,63 @@
                                             </td>
                                             <td>${{ number_format($reservation->amount, 2) }}</td>
                                             <td>
-                                                <a href="{{ route('admin.reservations.show', $reservation->id) }}"
-                                                    class="btn btn-light border btn-sm shadow-0 me-1">
-                                                    <i class="fa fa-eye"></i>
-                                                </a>
-                                                <a href="{{ route('admin.reservations.edit', $reservation->id) }}"
-                                                    class="btn btn-light border btn-sm shadow-0 me-1">
-                                                    <i class="fa fa-edit"></i>
-                                                </a>
-                                                <form action="{{ route('admin.reservations.destroy', $reservation->id) }}"
-                                                    method="POST" class="d-inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-light border btn-sm shadow-0"
-                                                        onclick="return confirm('Are you sure?')">
-                                                        <i class="fa fa-trash"></i>
-                                                    </button>
-                                                </form>
-
-                                                @if ($reservation->status === 'confirmed')
+                                                <div class="d-flex gap-2">
+                                                    <a href="{{ route('admin.reservations.show', $reservation->id) }}"
+                                                        class="btn btn-light border btn-sm shadow-0 me-1">
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
+                                                    <a href="{{ route('admin.reservations.edit', $reservation->id) }}"
+                                                        class="btn btn-light border btn-sm shadow-0 me-1">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
                                                     <form
-                                                        action="{{ route('admin.reservations.check-in', $reservation->id) }}"
+                                                        action="{{ route('admin.reservations.destroy', $reservation->id) }}"
                                                         method="POST" class="d-inline">
                                                         @csrf
-                                                        <button type="submit" class="btn btn-success btn-sm shadow-0"
-                                                            title="Check In">
-                                                            <i class="fa fa-sign-in-alt"></i>
+                                                        @method('DELETE')
+                                                        <button type="submit"
+                                                            class="btn btn-light border btn-sm shadow-0"
+                                                            onclick="return confirm('Are you sure?')">
+                                                            <i class="fa fa-trash"></i>
                                                         </button>
                                                     </form>
-                                                @endif
 
-                                                @if ($reservation->isCheckedIn())
-                                                    <form
-                                                        action="{{ route('admin.reservations.check-out', $reservation->id) }}"
-                                                        method="POST" class="d-inline">
-                                                        @csrf
-                                                        <button type="submit" class="btn btn-warning btn-sm shadow-0"
-                                                            title="Check Out">
-                                                            <i class="fa fa-sign-out-alt"></i>
-                                                        </button>
-                                                    </form>
-                                                @endif
+                                                    @if ($reservation->status === 'confirmed')
+                                                        <form
+                                                            action="{{ route('admin.reservations.check-in', $reservation->id) }}"
+                                                            method="POST" class="d-inline">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-success btn-sm shadow-0"
+                                                                title="Check In">
+                                                                <i class="fa fa-sign-in-alt"></i>
+                                                            </button>
+                                                        </form>
+                                                    @endif
 
-                                                @if ($reservation->status === 'confirmed' && $reservation->check_in->isPast())
-                                                    <form
-                                                        action="{{ route('admin.reservations.no-show', $reservation->id) }}"
-                                                        method="POST" class="d-inline">
-                                                        @csrf
-                                                        <button type="submit" class="btn btn-danger btn-sm shadow-0"
-                                                            title="Mark as No Show">
-                                                            <i class="fa fa-user-times"></i>
-                                                        </button>
-                                                    </form>
-                                                @endif
+                                                    @if ($reservation->isCheckedIn())
+                                                        <form
+                                                            action="{{ route('admin.reservations.check-out', $reservation->id) }}"
+                                                            method="POST" class="d-inline">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-warning btn-sm shadow-0"
+                                                                title="Check Out">
+                                                                <i class="fa fa-sign-out-alt"></i>
+                                                            </button>
+                                                        </form>
+                                                    @endif
+
+                                                    @if ($reservation->status === 'confirmed' && $reservation->check_in->isPast())
+                                                        <form
+                                                            action="{{ route('admin.reservations.no-show', $reservation->id) }}"
+                                                            method="POST" class="d-inline">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-danger btn-sm shadow-0"
+                                                                title="Mark as No Show">
+                                                                <i class="fa fa-user-times"></i>
+                                                            </button>
+                                                        </form>
+                                                    @endif
+                                                </div>
 
                                             </td>
                                         </tr>
@@ -547,4 +558,14 @@
 @endsection
 
 @push('js')
+    <script>
+        new DataTable('#reservations');
+        new DataTable('#PendingReservations');
+        new DataTable('#checked_in_reservations');
+        new DataTable('#checked_out_reservations');
+    </script>
+
+    <script>
+        AOS.init()
+    </script>
 @endpush

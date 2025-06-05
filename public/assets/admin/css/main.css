@@ -1,321 +1,372 @@
 * {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 }
 
 .s-font {
-  font-family: "Playwrite CU", cursive;
-  font-optical-sizing: auto;
-  font-weight: bold;
-  font-style: normal;
+    font-family: "Playwrite CU", cursive;
+    font-optical-sizing: auto;
+    font-weight: bold;
+    font-style: normal;
 }
 
 .t-font {
-  font-family: "Protest Guerrilla", sans-serif;
-  font-weight: 400;
-  font-style: normal;
+    font-family: "Protest Guerrilla", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .mingzat-regular {
-  font-family: "Mingzat", sans-serif;
-  font-weight: 400;
-  font-style: normal;
+    font-family: "Mingzat", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
-.text-duration{
+.text-duration {
     text-decoration: underline;
 }
 
 .legend-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
 }
 
 .legend-color {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  margin-right: 5px;
-  border-radius: 2px;
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 5px;
+    border-radius: 2px;
 }
 
 .font-bold {
-  font-weight: bold;
+    font-weight: bold;
 }
 
 .h-10 {
-  height: 10%;
+    height: 10%;
 }
 
 .h-20 {
-  height: 20%;
+    height: 20%;
 }
 
 .h-30 {
-  height: 100%;
+    height: 100%;
 }
 
 .h-40 {
-  height: 40%;
+    height: 40%;
 }
 
 .h-50 {
-  height: 50%;
+    height: 50%;
+}
+.h-50vh {
+    height: 50vh;
+}
+.h-100vh{
+    height: 100vh;
 }
 
 .h-60 {
-  height: 60%;
+    height: 60%;
 }
 
 .h-70 {
-  height: 70%;
+    height: 70%;
 }
 
 .h-80 {
-  height: 80%;
+    height: 80%;
 }
 
 .h-90 {
-  height: 90%;
+    height: 90%;
+}
+
+.bg-gradient-main {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: navy;
-  /* Change to blue or any color you like */
-  border-radius: 30px;
-  /* Adjust the radius to make it more "beautiful" */
+    background-color: navy;
+    /* Change to blue or any color you like */
+    border-radius: 30px;
+    /* Adjust the radius to make it more "beautiful" */
 }
 
 ::-webkit-scrollbar {
-  background-color: white;
-  /* Change to blue or any color you like */
-  width: 3px;
-  /* Set a width for the scrollbar */
-  margin-right: 10px;
-  height: 5px;
+    background-color: white;
+    /* Change to blue or any color you like */
+    width: 3px;
+    /* Set a width for the scrollbar */
+    margin-right: 10px;
+    height: 5px;
 }
 
-.bg-info-tranc{
+.bg-info-tranc {
     background-color: rgba(108, 84, 216, 0.26);
 }
 
 /* Sidebar styles */
 .sidebar {
-  background:
-    linear-gradient(to bottom, rgba(0, 31, 63, 0.952), rgba(0, 31, 63, 0.95)),
-    url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80') center/cover no-repeat;
-  color: white;
-  height: 100vh;
-  width: 250px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  transition: all 0.3s;
-  z-index: 1000;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(
+            to bottom,
+            rgba(0, 31, 63, 0.952),
+            rgba(0, 31, 63, 0.95)
+        ),
+        url("https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80")
+            center/cover no-repeat;
+    color: white;
+    height: 100vh;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transition: all 0.3s;
+    z-index: 1000;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .bg-navy {
-  background-color: #001f3f;
-  /* Navy color */
+    background-color: #001f3f;
+    /* Navy color */
 }
 
 .sidebar-header {
-  padding: 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .sidebar-menu {
-  padding: 15px 15px;
+    padding: 15px 15px;
 }
 
 .sidebar-menu a {
-  color: white;
-  padding: 10px 20px;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  transition: all 0.3s;
-  border-radius: 7px;
-  margin-top: 5px;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: all 0.1s;
+    border-radius: 7px;
+    margin-top: 5px;
 }
 
 .sidebar-menu a:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .active-link {
-  background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.1);
+    border-left: 2px solid white;
 }
 
 .sidebar-menu a i {
-  margin-right: 10px;
-  width: 20px;
-  text-align: center;
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
 }
 
 /* Header styles */
 .main-header {
-  background-color: white;
-  padding: 15px 20px;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-  position: fixed;
-  top: 0;
-  left: 250px;
-  right: 0;
-  z-index: 900;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    background-color: white;
+    padding: 15px 20px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 250px;
+    right: 0;
+    z-index: 900;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .main-content {
-  margin-left: 250px;
-  margin-top: 70px;
-  padding: 20px;
+    margin-left: 250px;
+    margin-top: 70px;
+    padding: 20px;
 }
 
 /* Mobile toggle button */
 .menu-toggle {
-  display: none;
-  background: none;
-  border: none;
-  color: #001f3f;
-  font-size: 20px;
-  cursor: pointer;
+    display: none;
+    background: none;
+    border: none;
+    color: #001f3f;
+    font-size: 20px;
+    cursor: pointer;
 }
 
 /* Notification dropdown styles */
 .notification-dropdown {
-  position: relative;
-  display: inline-block;
+    position: relative;
+    display: inline-block;
 }
 
 .notification-content {
-  display: none;
-  position: absolute;
-  right: 0;
-  background-color: #fff;
-  min-width: 300px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-  border-radius: 5px;
-  padding: 10px;
-  max-height: 450px;
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #fff;
+    min-width: 300px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    border-radius: 5px;
+    padding: 10px;
+    max-height: 450px;
 }
 
 .notification-content.show {
-  display: block;
+    display: block;
 }
 
 .hover-primary {
-  transition-duration: 350ms;
-  cursor: pointer;
+    transition-duration: 350ms;
+    cursor: pointer;
 }
 
 .hover-primary:hover {
-  background-color: rgba(0, 0, 255, 0.034);
+    background-color: rgba(0, 0, 255, 0.034);
 }
 
 .notification-item {
-  padding: 10px;
-  border-bottom: 1px solid #eee;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
 }
 
 .notification-item:last-child {
-  border-bottom: none;
+    border-bottom: none;
 }
 
 .notification-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  border-bottom: 1px solid #eee;
-  margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 10px;
 }
 
 .badge-notification {
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  background-color: red;
-  color: white;
-  border-radius: 50%;
-  padding: 2px 6px;
-  font-size: 12px;
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 12px;
 }
 
 /* Admin profile section styles */
 .admin-profile {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 15px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 15px;
 }
-.border-b{
+.border-b {
     border-bottom: 1px solid #a7a7a7;
 }
 
 .admin-info {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
 }
 
 .admin-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin-right: 10px;
-  background-color: #6c757d75;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    background-color: #6c757d75;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .overflow-scrole {
-  overflow-x: scroll;
+    overflow-x: scroll;
 }
 
 .visible-calendar {
-  /* Calendar styling to make it always visible */
-  margin-top: 10px;
+    /* Calendar styling to make it always visible */
+    margin-top: 10px;
 }
 
 .ui-datepicker {
-  width: auto !important;
-  padding: 0.2em;
+    width: auto !important;
+    padding: 0.2em;
 }
 
 .highlight-period {
-  background-color: #ffeb3b;
+    background-color: #ffeb3b;
+}
+
+
+.patterns-axiom {
+    background-image: url("https://www.transparenttextures.com/patterns/axiom-pattern.png");
+}
+
+.patterns-gplay {
+    background-image: url("https://www.transparenttextures.com/patterns/gplay.png");
+}
+
+.patterns-stardust {
+    background-image: url("https://www.transparenttextures.com/patterns/stardust.png");
+}
+
+.patterns-washi {
+    background-image: url("https://www.transparenttextures.com/patterns/washi.png");
+}
+
+.patterns-crossword {
+    background-image: url("https://www.transparenttextures.com/patterns/crossword.png");
+}
+
+.patterns-carbon-fiber {
+    background-image: url("https://www.transparenttextures.com/patterns/carbon-fibre.png");
+}
+
+.patterns-diagmonds {
+    background-image: url("https://www.transparenttextures.com/patterns/diagmonds.png");
+}
+
+.patterns-paper {
+    background-image: url("https://www.transparenttextures.com/patterns/paper.png");
+}
+.patterns-tweed {
+    background-image: url("https://www.transparenttextures.com/patterns/tweed.png");
 }
 
 /* Responsive styles */
 @media (max-width: 768px) {
-  .sidebar {
-    left: -250px;
-  }
+    .sidebar {
+        left: -250px;
+    }
 
-  .sidebar.active {
-    left: 0;
-  }
+    .sidebar.active {
+        left: 0;
+    }
 
-  .main-header {
-    left: 0;
-  }
+    .main-header {
+        left: 0;
+    }
 
-  .main-content {
-    margin-left: 0;
-  }
+    .main-content {
+        margin-left: 0;
+    }
 
-  .menu-toggle {
-    display: block;
-  }
+    .menu-toggle {
+        display: block;
+    }
 }

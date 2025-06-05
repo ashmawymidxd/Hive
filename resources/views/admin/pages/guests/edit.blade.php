@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-12">
             <div class="card shadow-0 border">
-                <div class="card-header">
+                <div class="card-header d-flex align-items-center justify-content-between">
                     <h4 class="card-title">Edit Guest - {{ $guest->full_name }}</h4>
                     <a href="{{ route('admin.guests.index') }}" class="btn btn-secondary btn-sm">
                         <i class="fa fa-arrow-left"></i> Back

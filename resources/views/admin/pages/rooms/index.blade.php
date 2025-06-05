@@ -95,13 +95,12 @@
 @section('content')
     <section>
         <div class="d-flex align-items-center justify-content-between">
-            <h3 class="font-bold text-dark">Room Management</h3>
-            <div class="d-flex flex-md-row flex-column gap-3 ">
+            <h3 class="font-bold text-dark" data-aos="fade-up-right" data-aos-delay="100">Room Management</h3>
+            <div class="d-flex flex-md-row flex-column gap-3" data-aos="fade-up-right" data-aos-delay="200">
                 <button class="btn shadow-0 btn-secondary"><i class="fas fa-home mx-1"></i>Housekeeping</button>
                 <button class="btn shadow-0 btn-secondary"> <i class="fas fa-tools mx-1"></i>
                     Maintenance</button>
-                <button class="btn btn-secondary btn-sm" data-mdb-toggle="modal"
-                    data-mdb-target="#amenitiesModal">
+                <button class="btn btn-secondary btn-sm" data-mdb-toggle="modal" data-mdb-target="#amenitiesModal">
                     <i class="fa fa-list"></i> Amenities
                 </button>
                 <button class="btn btn-primary btn-sm shadow-0" data-mdb-toggle="modal" data-mdb-target="#addRoomModal">
@@ -112,7 +111,7 @@
     </section>
     <section>
         <div class="row mt-4">
-            <div class="col-md-6 col-lg-3 mb-4">
+            <div class="col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="100">
                 <div class="card p-2 shadow-2 border">
                     <div class="d-flex flex-row align-items-center gap-3">
                         <span class="badge rounded-circle p-3 badge-success">
@@ -128,7 +127,7 @@
                 </div>
             </div>
 
-            <div class="col-md-6 col-lg-3 mb-4">
+            <div class="col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="200">
                 <div class="card p-2 shadow-2 border">
                     <div class="d-flex flex-row align-items-center gap-3">
                         <span class="badge rounded-circle p-3 badge-success">
@@ -144,7 +143,7 @@
                 </div>
             </div>
 
-            <div class="col-md-6 col-lg-3 mb-4">
+            <div class="col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="300">
                 <div class="card p-2 shadow-2 border">
                     <div class="d-flex flex-row align-items-center gap-3">
                         <span class="badge rounded-circle p-3 badge-primary">
@@ -160,7 +159,7 @@
                 </div>
             </div>
 
-            <div class="col-md-6 col-lg-3 mb-4">
+            <div class="col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="400">
                 <div class="card p-2 shadow-2 border">
                     <div class="d-flex flex-row align-items-center gap-3">
                         <span class="badge rounded-circle p-3 badge-warning">
@@ -178,25 +177,13 @@
         </div>
     </section>
     <section>
-        <div class="row mt-2">
+        <div class="row mt-2" data-aos="fade-up" data-aos-delay="300">
             <div class="col-md-12">
                 <div class="card shadow-2 p-3">
 
                     <div class="d-flex align-items-center justify-content-between border-bottom pb-3">
                         <h5 class="text-dark font-bold">Room Inventory</h5>
-                        <div class="btn-group shadow-0 border">
-                            <button class="btn btn-light shadow-0" id="searchButton">
-                                <i class="fa fa-search"></i>
-                            </button>
-                            <input type="search" class="form-control border-0" id="roomSearch"
-                                placeholder="Search by room number...">
-                            <button class="btn btn-light border shadow-0" id="clearSearch" title="Clear search">
-                                <i class="fa fa-times"></i>
-                            </button>
-                        </div>
                     </div>
-
-
                     <div class="col-12">
                         <!-- Nav Tabs -->
                         <ul class="nav nav-tabs" id="roomStatusTabs" role="tablist">
@@ -216,8 +203,8 @@
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="maintenance-tab" data-mdb-toggle="tab"
-                                    data-mdb-target="#maintenance" type="button" role="tab"
-                                    aria-controls="maintenance" aria-selected="false">Maintenance</button>
+                                    data-mdb-target="#maintenance" type="button" role="tab" aria-controls="maintenance"
+                                    aria-selected="false">Maintenance</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="cleaning-tab" data-mdb-toggle="tab"
@@ -231,7 +218,7 @@
                             <div class="tab-pane fade show active" id="all" role="tabpanel"
                                 aria-labelledby="all-tab">
                                 <div class="table-responsive">
-                                    <table class="table ">
+                                    <table class="table w-100" id="roomstable1">
                                         <thead class="bg-light">
                                             <tr>
                                                 <th>Room #</th>
@@ -285,7 +272,8 @@
                                                             data-amenities="{{ json_encode($room->amenities->pluck('id')->toArray()) }}">
                                                             <i class="fa fa-edit"></i>
                                                         </button>
-                                                        <button class="btn btn-light border btn-sm shadow-0 delete-room-btn"
+                                                        <button
+                                                            class="btn btn-light border btn-sm shadow-0 delete-room-btn"
                                                             data-id="{{ $room->id }}">
                                                             <i class="fa fa-trash"></i>
                                                         </button>
@@ -296,13 +284,12 @@
                                     </table>
 
                                     {{-- paginate --}}
-                                    {{ $rooms->links('pagination::bootstrap-5') }}
                                 </div>
 
                             </div>
                             <div class="tab-pane fade" id="available" role="tabpanel" aria-labelledby="available-tab">
                                 <div class="table-responsive">
-                                    <table class="table ">
+                                    <table class="table w-100" id="roomstable2">
                                         <thead class="bg-light">
                                             <tr>
                                                 <th>Room #</th>
@@ -347,19 +334,23 @@
                                                         @endforeach
                                                     </td>
                                                     <td>
-                                                        <a href="{{ route('admin.rooms.show', $room->id) }}"
-                                                            class="btn btn-light border btn-sm shadow-0 me-1">
-                                                            <i class="fa fa-eye"></i>
-                                                        </a>
-                                                        <button class="btn btn-light border btn-sm shadow-0 edit-room-btn"
-                                                            data-room="{{ json_encode($room) }}"
-                                                            data-amenities="{{ json_encode($room->amenities->pluck('id')->toArray()) }}">
-                                                            <i class="fa fa-edit"></i>
-                                                        </button>
-                                                        <button class="btn btn-light border btn-sm shadow-0 delete-room-btn"
-                                                            data-id="{{ $room->id }}">
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
+                                                        <div class="d-flex gap-2">
+                                                            <a href="{{ route('admin.rooms.show', $room->id) }}"
+                                                                class="btn btn-light border btn-sm shadow-0 me-1">
+                                                                <i class="fa fa-eye"></i>
+                                                            </a>
+                                                            <button
+                                                                class="btn btn-light border btn-sm shadow-0 edit-room-btn"
+                                                                data-room="{{ json_encode($room) }}"
+                                                                data-amenities="{{ json_encode($room->amenities->pluck('id')->toArray()) }}">
+                                                                <i class="fa fa-edit"></i>
+                                                            </button>
+                                                            <button
+                                                                class="btn btn-light border btn-sm shadow-0 delete-room-btn"
+                                                                data-id="{{ $room->id }}">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -367,12 +358,11 @@
                                     </table>
 
                                     {{-- paginate --}}
-                                    {{ $availableRooms->links('pagination::bootstrap-5') }}
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="occupied" role="tabpanel" aria-labelledby="occupied-tab">
                                 <div class="table-responsive">
-                                    <table class="table ">
+                                    <table class="table w-100" id="roomstable3">
                                         <thead class="bg-light">
                                             <tr>
                                                 <th>Room #</th>
@@ -417,19 +407,23 @@
                                                         @endforeach
                                                     </td>
                                                     <td>
-                                                        <a href="{{ route('admin.rooms.show', $room->id) }}"
-                                                            class="btn btn-light border btn-sm shadow-0 me-1">
-                                                            <i class="fa fa-eye"></i>
-                                                        </a>
-                                                        <button class="btn btn-light border btn-sm shadow-0 edit-room-btn"
-                                                            data-room="{{ json_encode($room) }}"
-                                                            data-amenities="{{ json_encode($room->amenities->pluck('id')->toArray()) }}">
-                                                            <i class="fa fa-edit"></i>
-                                                        </button>
-                                                        <button class="btn btn-light border btn-sm shadow-0 delete-room-btn"
-                                                            data-id="{{ $room->id }}">
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
+                                                        <div class="d-flex gap-2">
+                                                            <a href="{{ route('admin.rooms.show', $room->id) }}"
+                                                                class="btn btn-light border btn-sm shadow-0 me-1">
+                                                                <i class="fa fa-eye"></i>
+                                                            </a>
+                                                            <button
+                                                                class="btn btn-light border btn-sm shadow-0 edit-room-btn"
+                                                                data-room="{{ json_encode($room) }}"
+                                                                data-amenities="{{ json_encode($room->amenities->pluck('id')->toArray()) }}">
+                                                                <i class="fa fa-edit"></i>
+                                                            </button>
+                                                            <button
+                                                                class="btn btn-light border btn-sm shadow-0 delete-room-btn"
+                                                                data-id="{{ $room->id }}">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -437,13 +431,12 @@
                                     </table>
 
                                     {{-- paginate --}}
-                                    {{ $occupiedRooms->links('pagination::bootstrap-5') }}
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="maintenance" role="tabpanel"
                                 aria-labelledby="maintenance-tab">
                                 <div class="table-responsive">
-                                    <table class="table ">
+                                    <table class="table w-100" id="roomstable4">
                                         <thead class="bg-light">
                                             <tr>
                                                 <th>Room #</th>
@@ -488,19 +481,23 @@
                                                         @endforeach
                                                     </td>
                                                     <td>
-                                                        <a href="{{ route('admin.rooms.show', $room->id) }}"
-                                                            class="btn btn-light border btn-sm shadow-0 me-1">
-                                                            <i class="fa fa-eye"></i>
-                                                        </a>
-                                                        <button class="btn btn-light border btn-sm shadow-0 edit-room-btn"
-                                                            data-room="{{ json_encode($room) }}"
-                                                            data-amenities="{{ json_encode($room->amenities->pluck('id')->toArray()) }}">
-                                                            <i class="fa fa-edit"></i>
-                                                        </button>
-                                                        <button class="btn btn-light border btn-sm shadow-0 delete-room-btn"
-                                                            data-id="{{ $room->id }}">
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
+                                                        <div class="d-flex gap-2">
+                                                            <a href="{{ route('admin.rooms.show', $room->id) }}"
+                                                                class="btn btn-light border btn-sm shadow-0 me-1">
+                                                                <i class="fa fa-eye"></i>
+                                                            </a>
+                                                            <button
+                                                                class="btn btn-light border btn-sm shadow-0 edit-room-btn"
+                                                                data-room="{{ json_encode($room) }}"
+                                                                data-amenities="{{ json_encode($room->amenities->pluck('id')->toArray()) }}">
+                                                                <i class="fa fa-edit"></i>
+                                                            </button>
+                                                            <button
+                                                                class="btn btn-light border btn-sm shadow-0 delete-room-btn"
+                                                                data-id="{{ $room->id }}">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -508,12 +505,11 @@
                                     </table>
 
                                     {{-- paginate --}}
-                                    {{ $maintenanceRooms->links('pagination::bootstrap-5') }}
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="cleaning" role="tabpanel" aria-labelledby="cleaning-tab">
                                 <div class="table-responsive">
-                                    <table class="table ">
+                                    <table class="table w-100" id="roomstable5">
                                         <thead class="bg-light">
                                             <tr>
                                                 <th>Room #</th>
@@ -558,19 +554,23 @@
                                                         @endforeach
                                                     </td>
                                                     <td>
-                                                        <a href="{{ route('admin.rooms.show', $room->id) }}"
-                                                            class="btn btn-light border btn-sm shadow-0 me-1">
-                                                            <i class="fa fa-eye"></i>
-                                                        </a>
-                                                        <button class="btn btn-light border btn-sm shadow-0 edit-room-btn"
-                                                            data-room="{{ json_encode($room) }}"
-                                                            data-amenities="{{ json_encode($room->amenities->pluck('id')->toArray()) }}">
-                                                            <i class="fa fa-edit"></i>
-                                                        </button>
-                                                        <button class="btn btn-light border btn-sm shadow-0 delete-room-btn"
-                                                            data-id="{{ $room->id }}">
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
+                                                        <div class="d-flex gap-2">
+                                                            <a href="{{ route('admin.rooms.show', $room->id) }}"
+                                                                class="btn btn-light border btn-sm shadow-0 me-1">
+                                                                <i class="fa fa-eye"></i>
+                                                            </a>
+                                                            <button
+                                                                class="btn btn-light border btn-sm shadow-0 edit-room-btn"
+                                                                data-room="{{ json_encode($room) }}"
+                                                                data-amenities="{{ json_encode($room->amenities->pluck('id')->toArray()) }}">
+                                                                <i class="fa fa-edit"></i>
+                                                            </button>
+                                                            <button
+                                                                class="btn btn-light border btn-sm shadow-0 delete-room-btn"
+                                                                data-id="{{ $room->id }}">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -578,7 +578,6 @@
                                     </table>
 
                                     {{-- paginate --}}
-                                    {{ $cleaningRooms->links('pagination::bootstrap-5') }}
                                 </div>
                             </div>
                         </div>
@@ -839,5 +838,17 @@
                 }
             });
         });
+    </script>
+
+    <script>
+        new DataTable("#roomstable1");
+        new DataTable("#roomstable2");
+        new DataTable("#roomstable3");
+        new DataTable("#roomstable4");
+        new DataTable("#roomstable5");
+    </script>
+
+    <script>
+        AOS.init()
     </script>
 @endpush
