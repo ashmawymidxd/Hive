@@ -16,7 +16,7 @@
          <a href="{{ route('admin.reservations.index') }}"><i class="fas fa-calendar-alt"></i> Reservations</a>
          <a href="{{ route('admin.rooms.index') }}"><i class="fas fa-bed"></i> Rooms</a>
          <a href="{{route('admin.guests.index')}}"><i class="fas fa-users"></i> Guests</a>
-         <a href="./pages/staff.html"><i class="fas fa-clock"></i> Staff</a>
+         <a href="{{route('admin.staff.index')}}"><i class="fas fa-clock"></i> Staff</a>
          <a href="./pages/inventory.html"><i class="fas fa-box"></i> Inventory</a>
          <a href="./pages/billing.html"><i class="fas fa-file-invoice-dollar"></i> Billing</a>
          <a href="./pages/analytics.html"><i class="fas fa-chart-line"></i> Reports</a>

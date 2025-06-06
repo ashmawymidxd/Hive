@@ -10,6 +10,10 @@ use App\Http\Controllers\Admin\BlacklistedGuestController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ReservationController;
 use App\Http\Controllers\Admin\GuestController;
+use App\Http\Controllers\Admin\StaffController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\DepartmentController;
+use App\Http\Controllers\Admin\TaskController;
 /*
 |--------------------------------------------------------------------------
 | admin Routes
@@ -79,7 +83,20 @@ Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function
     Route::post('/blacklist', [BlacklistedGuestController::class, 'store'])->name('blacklist.store');
     Route::put('/blacklist/{blacklistedGuest}/status', [BlacklistedGuestController::class, 'updateStatus'])->name('blacklist.update-status');
 
+    // Staff Management Routes
+    Route::resource('staff',StaffController::class);
 
+    // Roles management
+    Route::get('staff/roles', [RoleController::class, 'roles'])->name('staff.roles');
+    Route::post('staff/roles', [RoleController::class, 'storeRole'])->name('staff.storeRole');
+    Route::put('staff/roles/{role}', [RoleController::class, 'updateRole'])->name('staff.updateRole');
+    Route::delete('staff/roles/{role}', [RoleController::class, 'destroyRole'])->name('staff.destroyRole');
+
+    // Department routes
+    Route::resource('departments', DepartmentController::class)->except(['create', 'edit', 'show']);
+
+    // routes/web.php
+    Route::post('/staff/{staff}/tasks/', [TaskController::class, 'store'])->name('admin.staff.tasks.store');
 });
 
 
