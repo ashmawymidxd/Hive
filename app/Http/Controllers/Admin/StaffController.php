@@ -25,7 +25,7 @@ class StaffController extends Controller
         $departments = Department::all();
         $roles = Role::all();
         $staff = Staff::all();
-        $tasks = Task::latest()->get();
+        $tasks = Task::latest()->paginate(10);
 
         return view('admin.pages.staff.index', compact('staff', 'departments', 'roles','tasks'));
     }

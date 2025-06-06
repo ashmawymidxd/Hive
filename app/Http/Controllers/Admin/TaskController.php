@@ -35,4 +35,30 @@ class TaskController extends Controller
         ]);
     }
 
+    public function show(Task $task)
+    {
+        return response()->json($task);
+    }
+
+    public function update(Request $request, Task $task)
+    {
+        $validated = $request->validate([
+            'status' => 'sometimes|in:pending,in_progress,completed,overdue',
+            'priority' => 'sometimes|in:low,medium,high',
+            'name' => 'sometimes|string|max:255',
+            'description' => 'sometimes|nullable|string',
+            'due_date' => 'sometimes|nullable|date'
+        ]);
+
+        $task->update($validated);
+
+        return response()->json(['message' => 'Task updated successfully', 'task' => $task]);
+    }
+
+    public function destroy(Task $task)
+    {
+        $task->delete();
+        return response()->json(['message' => 'Task deleted successfully']);
+    }
+
 }

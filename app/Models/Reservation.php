@@ -20,7 +20,7 @@ class Reservation extends Model
         'special_requests'
     ];
 
-        protected $dates = [
+    protected $dates = [
         'check_in',
         'check_out',
         'actual_check_in',

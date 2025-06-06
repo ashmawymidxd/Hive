@@ -14,12 +14,12 @@
         <div class="d-flex align-items-center justify-content-between">
             <h3 class="font-bold text-dark">Staff Management</h3>
             <!-- Add this button to the card header -->
-            <button class="btn btn-secondary float-right mr-2 shadow-0" data-mdb-toggle="modal"
+            <button class="btn btn-light bg-white border float-right mr-2 shadow-0" data-mdb-toggle="modal"
                 data-mdb-target="#departmentModal">
-                Manage Departments
+                <i class="fa fa-building"></i> |
+                Departments
             </button>
         </div>
-
 
         <p class="text-secondary">Manage employees, roles, schedules, and tasks</p>
         <!-- Nav Tabs -->
@@ -57,14 +57,15 @@
         </ul>
 
         <!-- Tab Content -->
-        <div class="tab-content mt-3" id="managementTabsContent">
+        <div class="tab-content mt-3" id="managementTabsContent" data-aos="fade-up" data-aos-delay="200">
             <div class="tab-pane fade show active" id="directory" role="tabpanel" aria-labelledby="directory-tab">
                 <div class="card p-4 border shadow-0">
                     <div class="d-flex align-items-center justify-content-between">
                         <h4 class="text-dark font-bold">Employee Directory</h4>
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary shadow-0" id="AddEmployeeBtn">
-                            <i class="fa fa-user-group"></i>
+                            <i class="fa fa-plus"></i>
+                            <i class="fa fa-users"></i>
                         </button>
                     </div>
 
@@ -298,13 +299,16 @@
                 <div class="card shadow-0 p-4 border">
                     <h4 class="text-dark font-bold">Task Assignments</h4>
                     @foreach ($tasks as $task)
-                        <div
-                            class="hover-primary d-flex align-items-center justify-content-between border p-3 rounded-3 mt-4">
-                            <div class="">
+                        <div class="task-item hover-primary d-flex align-items-center justify-content-between border p-3 rounded-3 mt-4"
+                            data-task-id="{{ $task->id }}" data-task-name="{{ $task->name }}"
+                            data-task-description="{{ $task->description }}" data-task-status="{{ $task->status }}"
+                            data-task-priority="{{ $task->priority }}" data-task-due-date="{{ $task->due_date }}">
+                            <div>
                                 <h6 class="text-dark font-bold">{{ $task->name }}</h6>
                                 <h6 class="text-secondary">Assigned to: {{ $task->staff->fullName }}</h6>
+
                             </div>
-                            <div class="">
+                            <div class="d-flex align-items-center justify-content-between gap-2">
                                 <span
                                     class="badge badge-{{ $task->status == 'completed'
                                         ? 'success'
@@ -319,9 +323,19 @@
                                     class="badge badge-{{ $task->priority == 'high' ? 'danger' : ($task->priority == 'medium' ? 'warning' : 'info') }}">
                                     {{ ucfirst($task->priority) }}
                                 </span>
+                                <button class="btn btn-sm btn-light text-danger border delete-task-btn"
+                                    data-task-id="{{ $task->id }}">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                                <button class="btn btn-sm btn-light text-info border">
+                                    <i class="fa fa-edit"></i>
+                                </button>
                             </div>
                         </div>
                     @endforeach
+                    <div class="mt-3">
+                        {{$tasks->links('pagination::bootstrap-5')}}
+                    </div>
                 </div>
             </div>
         </div>
@@ -333,6 +347,8 @@
         @include('admin.pages.staff.componets.edit_staff_modal')
         @include('admin.pages.staff.componets.delete_staff_modal')
         @include('admin.pages.staff.componets.task_modal')
+        @include('admin.pages.staff.componets.delete_task_modal')
+        @include('admin.pages.staff.componets.update_task_modal')
     </section>
 @endsection
 {{-- roles --}}
@@ -469,16 +485,18 @@
                         <tr>
                             <td>${department.name}</td>
                             <td>
-                                <button class="btn btn-sm btn-primary shadow-0 edit-department"
-                                    data-id="${department.id}"
-                                    data-name="${department.name}"
-                                    data-description="${department.description}">
-                                    Edit
-                                </button>
-                                <button class="btn btn-sm btn-danger shadow-0 delete-department"
-                                    data-id="${department.id}">
-                                    Delete
-                                </button>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-sm btn-light border shadow-0 edit-department"
+                                        data-id="${department.id}"
+                                        data-name="${department.name}"
+                                        data-description="${department.description}">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-light border shadow-0 delete-department"
+                                        data-id="${department.id}">
+                                        <i class="fa fa-trash text-danger"></i>
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     `;
@@ -758,7 +776,7 @@
         });
     </script>
 @endpush
-
+{{-- scadual --}}
 @push('js')
     <!-- Include jQuery and jQuery UI for the datepicker -->
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -803,7 +821,7 @@
         });
     </script>
 @endpush
-
+{{-- tasks --}}
 @push('js')
     <script>
         // In your main JavaScript file or in a script section
@@ -853,5 +871,87 @@
                 });
             });
         });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            // When a task is clicked (you'll need to adjust the selector based on your task listing)
+            $(document).on('click', '.task-item', function() {
+                const taskId = $(this).data('task-id');
+                // Fetch task data
+                $.get({
+                    url: "{{ route('admin.tasks.show', '') }}/" + taskId,
+                    success: function(response) {
+                        // Populate the update form
+                        $('#task_id').val(response.id);
+                        $('#name').val(response.name);
+                        $('#description').val(response.description);
+                        $('#status').val(response.status);
+                        $('#priority').val(response.priority);
+                        $('#due_date').val(response.due_date);
+
+                        // Show the modal
+                        $('#updateTaskModal').modal('show');
+                    },
+                    error: function(xhr) {
+                        console.error(xhr);
+                        alert('Failed to fetch task details');
+                    }
+                });
+            });
+
+            // Update task
+            $('#updateTaskBtn').click(function() {
+                const taskId = $('#task_id').val();
+                const formData = $('#updateTaskForm').serialize();
+
+                $.ajax({
+                    url: "{{ route('admin.tasks.update', '') }}/" + taskId,
+                    type: 'PUT',
+                    data: formData,
+                    success: function(response) {
+                        $('#updateTaskModal').modal('hide');
+                        location.reload();
+                    },
+                    error: function(xhr) {
+                        console.error(xhr);
+                        alert('Failed to update task');
+                    }
+                });
+            });
+
+            // Delete task modal trigger
+            $(document).on('click', '.delete-task-btn', function(e) {
+                e.stopPropagation();
+                const taskId = $(this).data('task-id');
+                $('#delete_task_id').val(taskId);
+                $('#deleteTaskModal').modal('show');
+            });
+
+            // Delete task
+            $('#deleteTaskBtn').click(function() {
+                const taskId = $('#delete_task_id').val();
+
+                $.ajax({
+                    url: "{{ route('admin.tasks.destroy', '') }}/" + taskId,
+                    type: 'DELETE',
+                    data: $('#deleteTaskForm').serialize(),
+                    success: function(response) {
+                        $('#deleteTaskModal').modal('hide');
+                        // Remove the task from the UI or refresh the list
+                        $(`[data-task-id="${taskId}"]`).remove();
+                        // alert(response.message);
+                    },
+                    error: function(xhr) {
+                        console.error(xhr);
+                        alert('Failed to delete task');
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+        AOS.init();
     </script>
 @endpush
