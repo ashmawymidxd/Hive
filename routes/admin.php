@@ -97,19 +97,7 @@ Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function
     Route::resource('departments', DepartmentController::class)->except(['create', 'edit', 'show']);
 
     // routes/web.php
-    Route::post('/staff/{staff}/tasks/', [TaskController::class, 'store'])->name('staff.tasks.store');
-    Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
-    Route::put('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
-    Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
-
-    // inventory management
-    Route::get('/inventories_page', 
-    function ()
-    {
-        return view('admin.pages.inventories.index');
-    }
-    )->name('inventories.page');
-    Route::resource('inventories', InventoryController::class)->except(['create', 'edit']);
+    Route::post('/staff/{staff}/tasks/', [TaskController::class, 'store'])->name('admin.staff.tasks.store');
 });
 
 
