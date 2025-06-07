@@ -24,6 +24,9 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             StaffSeeder::class,
             TaskSeeder::class,
+            InventorySeeder::class,
+            HousekeepingItemSeeder::class,
+            VendorSeeder::class,
             // Other seeders...
         ]);
     }

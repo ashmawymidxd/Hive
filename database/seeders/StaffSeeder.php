@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Staff;
 use Illuminate\Database\Seeder;
+use Nette\Utils\Random;
 
 class StaffSeeder extends Seeder
 {
@@ -20,13 +21,13 @@ class StaffSeeder extends Seeder
             'last_name' => 'User',
             'department_id' => 1, // Assuming HR is department_id 1
             'role_id' => 1, // Assuming Admin is role_id 1
-            'email' => 'admin@example.com',
+            'email' => Random::generate(10, 'a-z') . '@example.com',
             'phone' => '1234567890',
             'status' => 'active',
             'hire_date' => '2020-01-01',
         ]);
 
         // Create random staff members
-        Staff::factory()->count(50)->create();
+        Staff::factory()->count(10)->create();
     }
 }

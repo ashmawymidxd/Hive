@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Reservation; // Assuming you have a Reservation model
+use App\Http\Resources\ReservationResource;
 
 class ReservationController extends Controller
 {
@@ -14,7 +15,7 @@ class ReservationController extends Controller
     public function index()
     {
         // Fetch all reservations, you can add pagination or filtering as needed
-        $reservations = Reservation::all();
+        $reservations = ReservationResource::collection(Reservation::all());
 
         // Return the reservations as a JSON response
         return response()->json($reservations);

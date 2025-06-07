@@ -15,6 +15,8 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\TaskController;
 use App\Http\Controllers\Admin\InventoryController;
+use App\Http\Controllers\Admin\HousekeepingItemController;
+use App\Http\Controllers\Admin\VendorController;
 /*
 |--------------------------------------------------------------------------
 | admin Routes
@@ -110,7 +112,16 @@ Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function
     }
     )->name('inventories.page');
     Route::resource('inventories', InventoryController::class)->except(['create', 'edit']);
+
+    // Housekeeping items management
+    Route::resource('housekeeping-items', HousekeepingItemController::class)->except(['create', 'edit']);
+    Route::get('housekeeping-items-alerts', [HousekeepingItemController::class, 'alerts'])->name('housekeeping-items.alerts');
+    Route::post('housekeeping-items/{housekeepingItem}/update-reorder', [HousekeepingItemController::class, 'updateReorderPoint']);
+
+    // Vendor Management
+    Route::resource('vendors', VendorController::class)->except(['create', 'edit']);
 });
+
 
 
 
