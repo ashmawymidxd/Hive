@@ -10,7 +10,7 @@
              <div class="modal-body">
                  <div class="row mb-3">
                      <div class="col-md-6">
-                         <div class="card shadow-0 p-4 border">
+                         <div class="card shadow-0 p-3 border h-35vh">
                              <h5>Add New Department</h5>
                              <form id="departmentForm">
                                  @csrf
@@ -23,7 +23,7 @@
                                      <label for="description">Description</label>
                                      <textarea class="form-control" id="description" name="description" rows="2"></textarea>
                                  </div>
-                                 <button type="submit" class="btn btn-primary shadow-0 mt-3 w-100"
+                                 <button type="submit" class="btn btn-primary shadow-0 mt-3 w-100 p-3"
                                      id="saveDepartmentBtn">Save
                                      Department</button>
                              </form>

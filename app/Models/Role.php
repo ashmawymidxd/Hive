@@ -16,7 +16,7 @@ class Role extends Model
     ];
 
     protected $casts = [
-        'permissions' => 'array', // Cast permissions to an array
+        'permissions' => 'array',
     ];
 
     public function staff()

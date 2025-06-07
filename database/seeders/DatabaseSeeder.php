@@ -18,7 +18,13 @@ class DatabaseSeeder extends Seeder
             RoomSeeder::class,
             GuestSeeder::class,
             GuestFeedbackSeeder::class,
+            ReservationSeeder::class,
             OccupancyRecordSeeder::class,
+            DepartmentSeeder::class,
+            RoleSeeder::class,
+            StaffSeeder::class,
+            TaskSeeder::class,
+            // Other seeders...
         ]);
     }
 }
