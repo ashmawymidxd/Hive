@@ -53,11 +53,12 @@
     <div class="d-flex align-items-center">
         <!-- Notification Dropdown -->
         <div class="notification-dropdown mx-2 position-relative">
-            <i class="fas fa-bell mx-4 notification-icon" id="notificationIcon"></i>
             @if (auth()->user()->unreadNotifications->count() > 0)
-                <span class="badge-notification mx-1">{{ auth()->user()->unreadNotifications->count() }}</span>
+            <i class="fas fa-bell mx-3 notification-icon" id="notificationIcon"></i>
+            <span class="badge-notification">{{ auth()->user()->unreadNotifications->count() }}</span>
             @else
-                <span class="badge-notification mx-1">0</span>
+            <i class="fas fa-bell-slash mx-3 notification-icon" id="notificationIcon"></i>
+                <span class="badge-notification">0</span>
             @endif
             <div class="notification-content" id="notificationDropdown">
                 <div class="notification-header d-flex justify-content-between align-items-center p-3">
@@ -102,7 +103,7 @@
                         </a>
                         @empty
                             <div class="notification-item p-3 text-center">
-                                <p class="mb-0 text-muted">No new notifications</p>
+                                <i class="fas fa-bell-slash text-muted mb-2 fa-2xl"></i>
                             </div>
                         @endforelse
                     </div>

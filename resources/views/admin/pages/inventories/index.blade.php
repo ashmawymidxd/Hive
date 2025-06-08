@@ -37,7 +37,7 @@
                     </li>
                 </ul>
 
-                <div class="tab-content mt-3" id="managementTabsContent">
+                <div class="tab-content mt-3" id="managementTabsContent" data-aos="fade-up" data-aos-delay="200">
                     <div class="tab-pane fade show active" id="food" role="tabpanel" aria-labelledby="food-tab">
                         <div class="row">
                             <div class="col-md-3">
@@ -953,5 +953,9 @@
                 });
             }
         });
+    </script>
+
+    <script>
+        AOS.init();
     </script>
 @endpush

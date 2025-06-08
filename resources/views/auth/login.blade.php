@@ -154,7 +154,7 @@
                             </div>
 
                             <!-- Submit Button -->
-                            <div class="d-grid mb-3">
+                            <div class="d-grid mb-2">
                                 <button type="submit" class="btn btn-primary btn-login btn-lg">
                                     <i class="fas fa-sign-in-alt me-2"></i> Login
                                 </button>
@@ -162,13 +162,13 @@
 
                         </form>
                         <!-- OR Divider -->
-                        <div class="text-center my-3 d-flex align-items-center justify-content-center">
+                        <div class="text-center mt-2 d-flex align-items-center justify-content-center">
                             <span class="border-bottom p-1 w-50"></span><span class="p-2">or</span> <span
                                 class="border-bottom p-1 w-50"></span>
                         </div>
 
                         <!-- Social Login Buttons -->
-                        <div class="d-flex  gap-3">
+                        <div class="d-flex gap-3">
                             <a href="{{ route('auth.google') }}"
                                 class="btn btn-outline-danger d-flex align-items-center justify-content-center gap-2">
                                 <i class="fab fa-google"></i> Continue with Google
