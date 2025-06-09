@@ -228,6 +228,8 @@
             background-color: rgba(255, 193, 7, 0.1);
             color: #ffc107;
         }
+
+
     </style>
 @endpush
 
@@ -245,19 +247,28 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="detail-item">
-                                    <div class="detail-label">Room Number</div>
-                                    <div class="detail-value">{{ $room->room_number }}</div>
+                                <div class="detail-item mb-3 p-3 bg-light rounded">
+                                    <div class="detail-label fw-bold text-muted mb-1 small">ROOM NUMBER</div>
+                                    <div class="detail-value fs-5">
+                                        <i class="fas fa-door-open me-2 text-primary"></i>
+                                        {{ $room->room_number }}
+                                    </div>
                                 </div>
 
-                                <div class="detail-item">
-                                    <div class="detail-label">Type</div>
-                                    <div class="detail-value">{{ $room->type }}</div>
+                                <div class="detail-item mb-3 p-3 bg-light rounded">
+                                    <div class="detail-label fw-bold text-muted mb-1 small">ROOM TYPE</div>
+                                    <div class="detail-value fs-5">
+                                        <i class="fas fa-bed me-2 text-primary"></i>
+                                        {{ $room->type }}
+                                    </div>
                                 </div>
 
-                                <div class="detail-item">
-                                    <div class="detail-label">Floor</div>
-                                    <div class="detail-value">{{ $room->floor }}</div>
+                                <div class="detail-item mb-3 p-3 bg-light rounded">
+                                    <div class="detail-label fw-bold text-muted mb-1 small">Floor</div>
+                                    <div class="detail-value fs-5">
+                                        <i class="fas fa-layer-group me-2 text-primary"></i>
+                                        {{ $room->floor }}
+                                    </div>
                                 </div>
 
                                 <div class="detail-item">
@@ -273,10 +284,14 @@
                             <div class="col-md-6">
                                 <div class="detail-item">
                                     <div class="detail-label">Price</div>
-                                    <div class="detail-value">${{ number_format($room->price, 2) }} <small
-                                            class="text-muted">/ night</small></div>
+                                    <div class="detail-value">
+                                        <span class="text-success fw-bold fs-4">${{ number_format($room->price, 2) }}</span>
+                                        <small class="text-muted">/ night</small>
+                                        @if ($room->discount)
+                                            <span class="badge bg-danger ms-2">Save {{ $room->discount }}%</span>
+                                        @endif
+                                    </div>
                                 </div>
-
                                 <div class="detail-item">
                                     <div class="detail-label">Capacity</div>
                                     <div class="detail-value">{{ $room->capacity }} <small class="text-muted">guests</small>
@@ -291,10 +306,13 @@
 
                                 <div class="detail-item">
                                     <div class="detail-label">Amenities</div>
-                                    <div class="detail-value">
+                                    <div class="detail-value amenity-container">
                                         @forelse ($room->amenities as $amenity)
-                                            <span class="amenity-badge"><i class="fa {{ $amenity->icon }} me-1"></i> |
-                                                {{ $amenity->name }}</span>
+                                            <span class="amenity-badge badge bg-light text-dark border me-2 mb-2 p-2"
+                                                data-bs-toggle="tooltip" title="{{ $amenity->description }}">
+                                                <i class="fa {{ $amenity->icon }} me-1 text-primary"></i>
+                                                {{ $amenity->name }}
+                                            </span>
                                         @empty
                                             <span class="text-muted">No amenities added</span>
                                         @endforelse
@@ -303,9 +321,19 @@
                             </div>
 
                             <div class="col-12">
-                                <div class="detail-item">
-                                    <div class="detail-label">Description</div>
-                                    <div class="detail-value">{{ $room->description ?? 'No description provided' }}</div>
+                                <div class="col-12">
+                                    <div class="detail-item">
+                                        <div class="detail-label">Description</div>
+                                        <div class="detail-value">
+                                            <div class="read-more-container" style="max-height: 100px; overflow: hidden;">
+                                                {{ $room->description ?? 'No description provided' }}
+                                            </div>
+                                            @if (strlen($room->description) > 150)
+                                                <a href="#" class="read-more-toggle text-primary small">Read
+                                                    more...</a>
+                                            @endif
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -13,8 +13,8 @@
                         <h4 class="card-title">Notifications</h4>
                         <form action="{{ route('admin.notifications.mark-all-read') }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn btn-primary btn-sm">
-                                <i class="fas fa-check-double"></i> Mark All as Read
+                            <button type="submit" class="btn btn-primary btn-sm shadow-0">
+                                <i class="fas fa-check-double me-2"></i> | Mark All as Read
                             </button>
                         </form>
                     </div>
@@ -51,7 +51,11 @@
                                         @endif
                                     </p>
                                     <small class="text-muted">
-                                        {{ $notification->read_at ? 'Read' : 'Unread' }}
+                                        @if ($notification->read_at)
+                                            <i class="fa fa-eye"></i> Read
+                                        @else
+                                            <i class="fa fa-eye-slash"></i> UnRead
+                                        @endif
                                     </small>
                                 </a>
                             @empty
