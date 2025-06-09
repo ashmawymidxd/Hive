@@ -78,6 +78,13 @@
                                     aria-label="Close"></button>
                             </div>
                         @endif
+                        @if (session('error'))
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                {{ session('error') }}
+                                <button type="button" class="btn-close" data-mdb-dismiss="alert"
+                                    aria-label="Close"></button>
+                            </div>
+                        @endif
                         {{-- Validate --}}
                         @if ($errors->any())
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -184,7 +191,6 @@
                                     <th>Permissions</th>
                                     <th>Members</th>
                                     <th>Actions</th>
-
                                 </tr>
                             </thead>
                             <tbody>

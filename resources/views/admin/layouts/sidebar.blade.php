@@ -5,7 +5,7 @@
                  <img draggable="false" class="rounded-2 shadow" src="{{ asset('assets/admin/img/logo/hive.png') }}" width="30px"
                      alt="" srcset="">
              </span>
-             <h4 class="font-bold text-duration p-1">Hotel Hive</h4>
+             <h4 class="font-bold p-1 ">Hotel Hive</h4>
          </div>
          <button class="btn btn-sm btn-outline-light d-md-none" id="closeSidebar">
              <i class="fas fa-times"></i>

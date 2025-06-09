@@ -8,8 +8,8 @@
     <section>
         <div class="row">
             <div class="col-md-4">
-                <div class="card shadow-0 border">
-                    <div class="card-header">
+                <div class="card shadow-0 border h-100">
+                    <div class="card-header bg-light">
                         <h3 class="card-title">Staff Information</h3>
                     </div>
                     <div class="card-body">
@@ -38,8 +38,8 @@
                 </div>
             </div>
             <div class="col-md-8">
-                <div class="card shadow-0 border">
-                    <div class="card-header">
+                <div class="card shadow-0 border h-100">
+                    <div class="card-header bg-light">
                         <h3 class="card-title">Staff Tasks</h3>
                     </div>
                     <div class="card-body">

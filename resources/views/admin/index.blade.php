@@ -383,7 +383,7 @@ $yesterdayRate = App\Models\OccupancyRecord::where('record_date', today()->subDa
                 </div>
             </div>
             <div class="col-md-12 col-lg-4 mt-1" data-aos="fade-up" data-aos-delay="400">
-                <div class="card shadow-2">
+                <div class="card shadow-2 h-100">
                     <div class="card-header d-flex align-items-center justify-content-between p-3">
                         <h6 class="font-bold text-dark">Notifications</h6>
                         <span class="badge rounded-pill badge-light">{{ auth()->user()->unreadNotifications->count() }}
