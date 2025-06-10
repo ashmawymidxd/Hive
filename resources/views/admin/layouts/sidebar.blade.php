@@ -2,8 +2,8 @@
      <div class="sidebar-header bg-navy border-b">
          <div class="d-flex align-items-center gap-3">
              <span class="rounded-2 bg-info-tranc p-1">
-                 <img draggable="false" class="rounded-2 shadow" src="{{ asset('assets/admin/img/logo/hive.png') }}" width="30px"
-                     alt="" srcset="">
+                 <img draggable="false" class="rounded-2 shadow" src="{{ asset('assets/admin/img/logo/hive.png') }}"
+                     width="30px" alt="" srcset="">
              </span>
              <h4 class="font-bold p-1 ">Hotel Hive</h4>
          </div>
@@ -12,12 +12,12 @@
          </button>
      </div>
      <div class="sidebar-menu">
-         <a href="{{ route('admin') }}"><i class="fas fa-home"></i> Dashboard</a>
+         <a href="{{ route('admin') }}"> <i class="fas fa-tachometer-alt"></i> Dashboard</a>
          <a href="{{ route('admin.reservations.index') }}"><i class="fas fa-calendar-alt"></i> Reservations</a>
          <a href="{{ route('admin.rooms.index') }}"><i class="fas fa-bed"></i> Rooms</a>
-         <a href="{{route('admin.guests.index')}}"><i class="fas fa-users"></i> Guests</a>
-         <a href="{{route('admin.staff.index')}}"><i class="fas fa-clock"></i> Staff</a>
-         <a href="{{route('admin.inventories.page')}}"><i class="fas fa-box"></i> Inventory</a>
+         <a href="{{ route('admin.guests.index') }}"><i class="fas fa-users"></i> Guests</a>
+         <a href="{{ route('admin.staff.index') }}"><i class="fas fa-clock"></i> Staff</a>
+         <a href="{{ route('admin.inventories.page') }}"><i class="fas fa-box"></i> Inventory</a>
          <a href="./pages/billing.html"><i class="fas fa-file-invoice-dollar"></i> Billing</a>
          <a href="./pages/analytics.html"><i class="fas fa-chart-line"></i> Reports</a>
          <a href="./pages/settings.html"><i class="fas fa-cog"></i> Settings</a>

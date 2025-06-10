@@ -103,7 +103,7 @@
                     </div>
 
                     <div class="p-4 p-lg-5">
-                        <div class="logo-circle p-2">
+                        <div class="logo-circle border-end border-secondary p-2">
                             <img class="rounded-circle" src="{{ asset('assets/admin/img/logo/hive.png') }}" alt="Admin Logo">
                         </div>
 
@@ -170,14 +170,6 @@
                                 </div>
                             </div>
 
-                            <!-- Display all errors -->
-                            {{-- @if ($errors->any())
-                                <div class="alert alert-danger">
-                                    @foreach ($errors->all() as $error)
-                                        <p class="mb-1">{{ $error }}</p>
-                                    @endforeach
-                                </div>
-                            @endif --}}
 
                             <!-- Submit Button -->
                             <div class="d-grid mb-3">

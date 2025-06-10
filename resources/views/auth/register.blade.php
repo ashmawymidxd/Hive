@@ -90,7 +90,7 @@
                     </div>
 
                     <div class="auth-body">
-                        <div class="logo-circle p-2">
+                        <div class="logo-circle border-end border-secondary p-2">
                             <!-- Replace with your logo -->
                             <img class="rounded-circle" src="{{ asset('assets/admin/img/logo/hive.png') }}" alt="Logo">
                         </div>

@@ -224,7 +224,9 @@
                                                 method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-light border">
+                                                <button type="submit" class="btn btn-sm btn-light border confirm-action"
+                                                    data-title="Delete Reservation"
+                                                    data-text="Are you sure you want to delete this reservation? This action cannot be undone.">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
                                             </form>
@@ -340,7 +342,7 @@
                         </div>
                     @endforeach
                     <div class="mt-3">
-                        {{$tasks->links('pagination::bootstrap-5')}}
+                        {{ $tasks->links('pagination::bootstrap-5') }}
                     </div>
                 </div>
             </div>
@@ -959,5 +961,35 @@
 
     <script>
         AOS.init();
+    </script>
+@endpush
+<!-- Confirmation Dialog Script -->
+@push('js')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.confirm-action').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const form = this.closest('form');
+                    const title = this.dataset.title;
+                    const text = this.dataset.text;
+
+                    Swal.fire({
+                        title: title,
+                        text: text,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, proceed'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        });
     </script>
 @endpush
