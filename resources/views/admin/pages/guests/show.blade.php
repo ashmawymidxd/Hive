@@ -53,6 +53,22 @@
                                             </a>
                                         </p>
                                     </div>
+                                    {{-- whats app --}}
+                                    <div class="mb-3">
+                                        <label class="form-label small text-muted d-flex align-items-center">
+                                            <i class="fab fa-whatsapp me-2 text-success"></i>WhatsApp
+                                        </label>
+                                        <p class="form-control-plaintext ps-4">
+                                            @if ($guest->phone)
+                                                <a href="https://wa.me/+2{{ $guest->phone }}" class="text-decoration-none link-success" target="_blank">
+                                                    <i class="fab fa-whatsapp me-2 fs-8 text-muted "></i>| 
+                                                    {{ $guest->phone }} 
+                                                </a>
+                                            @else
+                                                <span class="text-muted fst-italic">Not provided</span>
+                                            @endif
+                                        </p>    
+                                    </div>
                                 </div>
                             </div>
 

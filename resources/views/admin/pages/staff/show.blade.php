@@ -4,48 +4,176 @@
     Staff Details: {{ $staff->first_name }} {{ $staff->last_name }}
 @endsection
 
+@push('css')
+    <style>
+        .progress-circle {
+            position: relative;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: #0035d32a;
+            margin: 0 auto 10px;
+        }
+
+        .progress-circle:after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: white;
+            top: 5px;
+            left: 5px;
+        }
+
+        .progress-circle .progress-value {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.2rem;
+            font-weight: bold;
+            z-index: 2;
+        }
+
+        .progress-circle svg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .progress-circle circle {
+            fill: none;
+            stroke-width: 8;
+            stroke-linecap: round;
+            stroke-dasharray: 250;
+            stroke-dashoffset: 250;
+            transition: stroke-dashoffset 0.8s ease;
+        }
+    </style>
+@endpush
 @section('content')
     <section>
         <div class="row">
             <div class="col-md-4">
-                <div class="card shadow-0 border h-100">
+                <div class="card shadow-0 border">
                     <div class="card-header bg-light">
-                        <h3 class="card-title">Staff Information</h3>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h3 class="card-title">Staff Information</h3>
+
+                            <div class="">
+                                <a href="{{ route('admin.staff.index') }}"
+                                    class="btn btn-light border btn-sm float-end me-2"><i class="fa fa-arrow-left"></i></a>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body">
-                        <div class="text-center mb-4">
-                            <div class="staff-avatar">
-                                <span class="fa fa-user-circle fa-5x"></span>
-                            </div>
-                            <h4>{{ $staff->first_name }} {{ $staff->last_name }}</h4>
-                            <p class="text-muted">{{ $staff->role->name }}</p>
-                        </div>
 
                         <div class="staff-details">
-                            <p><strong>Email:</strong> {{ $staff->email }}</p>
-                            <p><strong>Phone:</strong> {{ $staff->phone }}</p>
-                            <p><strong>Department:</strong> {{ $staff->department->name }}</p>
-                            <p><strong>Status:</strong>
+                            {{-- task counts --}}
+                            <h4 class="text-center font-bold mb-3">{{ $staff->role->name }}</h4>
+                            <div class="text-center"> {{ $staff->phone }}</div>
+                            <div class="d-flex flex-column gap-3 justify-content-center align-items-center my-3 ">
+                                <i
+                                    class="fa fa-{{ $staff->status == 'active' ? 'check-circle text-success' : ($staff->status == 'on_leave' ? 'clock text-warning' : 'times-circle text-danger') }} fa-3x"></i>
                                 <span
                                     class="badge badge-{{ $staff->status == 'active' ? 'success' : ($staff->status == 'on_leave' ? 'warning' : 'danger') }}">
                                     {{ ucfirst($staff->status) }}
                                 </span>
-                            </p>
-                            <p><strong>Hire Date:</strong> {{ $staff->hire_date->format('M d, Y') }}</p>
+                            </div>
+
+
+                            <div class="border-top d-flex align-items-center justify-content-center mb-4 p-2">
+                                <div class="p-3 text-center">
+                                    <i class="fa solid fa-building"></i> <br>
+                                    <small>{{ $staff->department->name }}</small>
+                                </div>
+                                <div class="p-3 border-start text-center">
+                                    <i class="fa fa-calendar"></i> <br>
+                                    <small>{{ $staff->hire_date->format('M d, Y') }}</small>
+                                </div>
+                            </div>
                         </div>
+                        <div
+                            class="text-center mb-4 d-flex gap-3 align-items-center rounded-3 badge badge-info p-3  border-start border-3 border-info">
+                            <div
+                                class="staff-avatar border border-3 border-info rounded-circle d-flex justify-content-center align-items-center p-1">
+                                <span class="fa fa-user-circle fa-3x"></span>
+                            </div>
+                            <div class="d-flex flex-column align-items-start">
+                                <h5 class="text-dark fw-bold">{{ $staff->first_name }} {{ $staff->last_name }}</h5>
+                                <p class="text-muted">{{ $staff->email }}</p>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-around align-items-center justify-content-center mb-3 flex-wrap">
+                            <!-- Total Tasks Assigned -->
+                            <div class="p-2 text-center">
+                                <div class="progress-circle" data-value="{{ $staff->tasks->count() }}"
+                                    data-max="{{ max($staff->tasks->count(), 1) }}" data-color="#4e73df">
+                                    <span class="progress-value">{{ $staff->tasks->count() }}</span>
+                                </div>
+                                <small class="text-muted mt-2 d-block">All Tasks</small>
+                            </div>
+
+                            <!-- Completed Tasks -->
+                            <div class="p-2 text-center">
+                                <div class="progress-circle"
+                                    data-value="{{ $staff->tasks->where('status', 'completed')->count() }}"
+                                    data-max="{{ max($staff->tasks->count(), 1) }}" data-color="#1cc88a">
+                                    <span
+                                        class="progress-value">{{ $staff->tasks->where('status', 'completed')->count() }}</span>
+                                </div>
+                                <small class="text-muted mt-2 d-block">Completed</small>
+                            </div>
+
+                            <!-- In Progress Tasks -->
+                            <div class="p-2 text-center">
+                                <div class="progress-circle"
+                                    data-value="{{ $staff->tasks->where('status', 'in_progress')->count() }}"
+                                    data-max="{{ max($staff->tasks->count(), 1) }}" data-color="#f6c23e">
+                                    <span
+                                        class="progress-value">{{ $staff->tasks->where('status', 'in_progress')->count() }}</span>
+                                </div>
+                                <small class="text-muted mt-2 d-block">In Progress</small>
+                            </div>
+
+                            <!-- Pending Tasks -->
+                            <div class="p-2 text-center">
+                                <div class="progress-circle"
+                                    data-value="{{ $staff->tasks->where('status', 'pending')->count() }}"
+                                    data-max="{{ max($staff->tasks->count(), 1) }}" data-color="#858796">
+                                    <span
+                                        class="progress-value">{{ $staff->tasks->where('status', 'pending')->count() }}</span>
+                                </div>
+                                <small class="text-muted mt-2 d-block">Pending</small>
+                            </div>
+
+                            <!-- Overdue Tasks -->
+                            <div class="p-2 text-center">
+                                <div class="progress-circle"
+                                    data-value="{{ $staff->tasks->where('status', 'overdue')->count() }}"
+                                    data-max="{{ max($staff->tasks->count(), 1) }}" data-color="#e74a3b">
+                                    <span
+                                        class="progress-value">{{ $staff->tasks->where('status', 'overdue')->count() }}</span>
+                                </div>
+                                <small class="text-muted mt-2 d-block">Overdue</small>
+                            </div>
+                        </div>
+
                     </div>
 
                 </div>
             </div>
             <div class="col-md-8">
-                <div class="card shadow-0 border h-100">
+                <div class="card shadow-0 border">
                     <div class="card-header bg-light">
                         <h3 class="card-title">Staff Tasks</h3>
                     </div>
                     <div class="card-body">
 
                         @if ($staff->tasks->count() > 0)
-                            <table class="table w-100" id="taskTable">
+                            <table class="table w-100 table-hover" id="taskTable">
                                 <thead class="bg-light">
                                     <tr>
                                         <th>Task</th>
@@ -88,5 +216,38 @@
 @push('js')
     <script>
         new DataTable("#taskTable")
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const circles = document.querySelectorAll('.progress-circle');
+
+            circles.forEach(circle => {
+                const value = parseInt(circle.getAttribute('data-value'));
+                const max = parseInt(circle.getAttribute('data-max'));
+                const color = circle.getAttribute('data-color');
+                const percentage = (value / max) * 100;
+                const circumference = 250;
+                const offset = circumference - (percentage / 100) * circumference;
+
+                const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                const svgCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+
+                svg.setAttribute('viewBox', '0 0 100 100');
+                svgCircle.setAttribute('cx', '50');
+                svgCircle.setAttribute('cy', '50');
+                svgCircle.setAttribute('r', '40');
+                svgCircle.setAttribute('stroke', color);
+                svgCircle.setAttribute('stroke-dashoffset', offset);
+
+                svg.appendChild(svgCircle);
+                circle.insertBefore(svg, circle.firstChild);
+
+                // Adjust text color if the circle is too full
+                if (percentage > 70) {
+                    const valueElement = circle.querySelector('.progress-value');
+                    valueElement.style.color = color;
+                }
+            });
+        });
     </script>
 @endpush

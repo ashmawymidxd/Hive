@@ -684,45 +684,87 @@
                             }
 
                             var alertCard = `
-                    <div class="col-md-12 mt-3">
-                        <div class="card shadow-0 border">
-                            <div class="d-flex align-items-center justify-content-between card-header">
-                               <div class="d-flex align-items-center gap-3">
-                                <button class="btn btn-sm btn-light border edit-reorder-btn" data-id="${item.id}" data-reorder="${item.reorder_point}">
-                                    <i class="fas fa-edit"></i>
-                                    </button>
-                                    <h5 class="text-dark font-bold mb-0">${item.name}</h5>
-                                </div>
-                                <div>
-                                    <small class="badge rounded-pill text-white p-1 px-2 ${priorityClass} me-2">
-                                        ${item.priority} Priority
-                                    </small>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <p class="text-secondary">Category:</p>
-                                    <p class="text-dark">${item.category}</p>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <p class="text-secondary">Current Stock:</p>
-                                    <p class="text-dark">${item.quantity} ${item.unit}</p>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <p class="text-secondary">Reorder Point:</p>
-                                    <p class="text-dark">${item.reorder_point} ${item.unit}</p>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <p class="text-secondary">Status:</p>
-                                    <p class="text-dark">
-                                        <span class="badge rounded-pill text-white p-1 px-2 ${getStatusClass(item.status)}">
-                                            ${item.status}
-                                        </span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`;
+                                <div class="col-md-4 mt-3">
+                                    <div class="card shadow-1 border hover-shadow transition-all">
+                                        <div class="d-flex align-items-center justify-content-between card-header">
+                                            <div class="d-flex align-items-center gap-3">
+                                                <button class="btn btn-sm btn-light border edit-reorder-btn" 
+                                                        data-id="${item.id}" 
+                                                        data-reorder="${item.reorder_point}"
+                                                        data-bs-toggle="tooltip" 
+                                                        data-bs-placement="top" 
+                                                        title="Edit reorder point">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <h5 class="text-dark font-bold mb-0 d-flex align-items-center gap-2">
+                                                    <span class="material-icons-outlined">inventory_2</span>
+                                                    ${item.name}
+                                                </h5>
+                                            </div>
+                                            <div>
+                                                <small class="badge rounded-pill text-white p-1 px-2 ${priorityClass} me-2 shadow-sm">
+                                                    <i class="fas fa-${item.priority === 'High' ? 'exclamation-triangle' : item.priority === 'Medium' ? 'exclamation-circle' : 'info-circle'} me-1"></i>
+                                                    ${item.priority} Priority
+                                                </small>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <!-- Stock Level Indicator -->
+                                            <div class="mb-3">
+                                                <div class="d-flex justify-content-between mb-1">
+                                                    <span class="text-muted small">Stock Level</span>
+                                                    <span class="text-dark small fw-bold">${item.quantity}/${item.reorder_point} ${item.unit}</span>
+                                                </div>
+                                                <div class="progress" style="height: 8px;">
+                                                    <div class="progress-bar ${item.quantity <= item.reorder_point ? 'bg-danger' : 'bg-success'}" 
+                                                        role="progressbar" 
+                                                        style="width: ${Math.min(100, (item.quantity / item.reorder_point) * 100)}%" 
+                                                        aria-valuenow="${item.quantity}" 
+                                                        aria-valuemin="0" 
+                                                        aria-valuemax="${item.reorder_point}">
+                                                    </div>
+                                                </div>
+                                                ${item.quantity <= item.reorder_point ? 
+                                                    '<small class="text-danger mt-1 d-block"><i class="fas fa-exclamation-circle me-1"></i>Stock is below reorder point</small>' : 
+                                                    '<small class="text-success mt-1 d-block"><i class="fas fa-check-circle me-1"></i>Stock level is good</small>'}
+                                            </div>
+                                            
+                                            <!-- Compact Info Grid -->
+                                            <div class="row g-2">
+                                                <div class="col-6">
+                                                    <div class="p-2 border rounded bg-light-hover">
+                                                        <p class="text-muted small mb-1"><i class="fas fa-tag me-1"></i>Category</p>
+                                                        <p class="text-dark mb-0 fw-bold">${item.category}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="p-2 border rounded bg-light-hover">
+                                                        <p class="text-muted small mb-1"><i class="fas fa-boxes me-1"></i>Current Stock</p>
+                                                        <p class="text-dark mb-0 fw-bold">${item.quantity} ${item.unit}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="p-2 border rounded bg-light-hover">
+                                                        <p class="text-muted small mb-1"><i class="fas fa-bell me-1"></i>Reorder Point</p>
+                                                        <p class="text-dark mb-0 fw-bold">${item.reorder_point} ${item.unit}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="p-2 border rounded bg-light-hover">
+                                                        <p class="text-muted small mb-1"><i class="fas fa-info-circle me-1"></i>Status</p>
+                                                        <p class="mb-0">
+                                                            <span class="badge rounded-pill text-white p-1 ${getStatusClass(item.status)}">
+                                                                ${item.status}
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`;
+
+
 
                             alertsContainer.append(alertCard);
                         });
