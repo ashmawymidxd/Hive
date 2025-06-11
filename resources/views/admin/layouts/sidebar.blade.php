@@ -18,7 +18,7 @@
          <a href="{{ route('admin.guests.index') }}"><i class="fas fa-users"></i> Guests</a>
          <a href="{{ route('admin.staff.index') }}"><i class="fas fa-clock"></i> Staff</a>
          <a href="{{ route('admin.inventories.page') }}"><i class="fas fa-box"></i> Inventory</a>
-         <a href="./pages/billing.html"><i class="fas fa-file-invoice-dollar"></i> Billing</a>
+         <a href="{{route('admin.invoices.index')}}"><i class="fas fa-file-invoice-dollar"></i> Billing</a>
          <a href="./pages/analytics.html"><i class="fas fa-chart-line"></i> Reports</a>
          <a href="./pages/settings.html"><i class="fas fa-cog"></i> Settings</a>
      </div>

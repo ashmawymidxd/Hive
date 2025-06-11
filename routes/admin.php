@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\TaskController;
 use App\Http\Controllers\Admin\InventoryController;
 use App\Http\Controllers\Admin\HousekeepingItemController;
 use App\Http\Controllers\Admin\VendorController;
+use App\Http\Controllers\Admin\InvoiceController;
 /*
 |--------------------------------------------------------------------------
 | admin Routes
@@ -120,8 +121,14 @@ Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function
 
     // Vendor Management
     Route::resource('vendors', VendorController::class)->except(['create', 'edit']);
-});
 
+    // billing and payments
+   
+    Route::resource('invoices', InvoiceController::class)->except(['edit', 'update', 'destroy']);
+    Route::get('invoices/{invoice}/download', [InvoiceController::class, 'download'])->name('invoices.download');
+    Route::get('invoices/{invoice}/print', [InvoiceController::class, 'print'])->name('invoices.print');
+    Route::post('invoices/{invoice}/mark-as-paid', [InvoiceController::class, 'markAsPaid'])->name('invoices.mark-as-paid');
+});
 
 
 
