@@ -1,0 +1,582 @@
+body {
+    background-color: #f5f5f5;
+}
+
+.main-font {
+    font-family: "Vladimir Script", cursive;
+}
+
+.second-font {
+    font-family: "Montserrat", sans-serif;
+}
+
+.third-font {
+    font-family: "Aclonica", sans-serif;
+}
+
+.fa-20 {
+    font-size: 20px;
+}
+.fa-30 {
+    font-size: 25px;
+}
+.fa-40 {
+    font-size: 40px;
+}
+.fa-50 {
+    font-size: 50px;
+}
+.fa-60 {
+    font-size: 60px;
+}
+.fa-70 {
+    font-size: 70px;
+}
+.fa-80 {
+    font-size: 80px;
+}
+
+.bg-main {
+    background-color: #063309;
+}
+.bg-main-light {
+    background-color: hsla(124, 79%, 11%, 0.7);
+}
+.bg-second {
+    background-color: #856767;
+}
+.bg-second-light {
+    background-color: #8567672f;
+}
+.bg-third {
+    background-color: #29ff00;
+}
+.bg-third-light {
+    background-color: #2bff0048;
+}
+/* text */
+.text-main {
+    color: #063309;
+}
+.text-second {
+    color: #856767;
+}
+.text-third {
+    color: #29ff00;
+}
+.bold {
+    font-weight: bolder;
+}
+/* borders */
+
+.border-main {
+    border: 4px solid #063309;
+}
+.border-second {
+    border: 4px solid #856767;
+}
+.border-third {
+    border: 4px solid #29ff00;
+}
+.border-white {
+    border: 4px solid #ffffff;
+}
+.nav-item{
+    transition-duration: 200ms;
+    border-bottom: 2px solid #2bff0000;
+}
+.nav-item:hover {
+    background-color: #06330950;
+    border-bottom: 2px solid #29ff00;
+}
+.active-link {
+    background-color: #06330950;
+    border-bottom: 2px solid #ffffff;
+}
+
+.hover {
+    transition-duration: 600ms;
+    cursor: pointer;
+}
+.hover-border-main:hover {
+    border: 4px solid #063309;
+}
+.hover-border-second:hover {
+    border: 4px solid #8b8b8b;
+}
+.hover-border-third:hover {
+    border: 4px solid #29ff00;
+}
+
+.border-left-main {
+    border-left: 4px solid #063309;
+}
+.border-right-main {
+    border-right: 4px solid #063309;
+}
+.border-left-second {
+    border-left: 4px solid #8b8b8b;
+}
+.border-right-second {
+    border-right: 4px solid #8b8b8b;
+}
+.border-left-third {
+    border-left: 4px solid #29ff00;
+}
+.border-right-third {
+    border-right: 4px solid #29ff00;
+}
+
+.hover-border-left-main:hover {
+    border-left: 4px solid #063309;
+}
+.hover-border-right-main:hover {
+    border-right: 4px solid #063309;
+}
+.hover-border-left-second:hover {
+    border-left: 4px solid #8b8b8b;
+}
+.hover-border-right-second:hover {
+    border-right: 4px solid #8b8b8b;
+}
+.hover-border-left-third:hover {
+    border-left: 4px solid #29ff00;
+}
+.hover-border-right-third:hover {
+    border-right: 4px solid #29ff00;
+}
+
+/* patterns */
+.patterns-axiom {
+    background-image: url("https://www.transparenttextures.com/patterns/axiom-pattern.png");
+}
+
+.patterns-gplay {
+    background-image: url("https://www.transparenttextures.com/patterns/gplay.png");
+}
+
+.patterns-stardust {
+    background-image: url("https://www.transparenttextures.com/patterns/stardust.png");
+}
+
+.patterns-washi {
+    background-image: url("https://www.transparenttextures.com/patterns/washi.png");
+}
+
+.patterns-crossword {
+    background-image: url("https://www.transparenttextures.com/patterns/crossword.png");
+}
+
+.patterns-carbon-fiber {
+    background-image: url("https://www.transparenttextures.com/patterns/carbon-fibre.png");
+}
+
+.patterns-diagmonds {
+    background-image: url("https://www.transparenttextures.com/patterns/diagmonds.png");
+}
+
+.patterns-paper {
+    background-image: url("https://www.transparenttextures.com/patterns/paper.png");
+}
+.patterns-tweed {
+    background-image: url("https://www.transparenttextures.com/patterns/tweed.png");
+}
+
+/* ========================================== 3D Flibing =============================== */
+
+/* Card flipping styles */
+.flip-card {
+    perspective: 1000px;
+    height: 300px;
+    /* Adjust height as needed */
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.flip-card-back {
+    background-color: #ffffff;
+    transform: rotateY(180deg);
+}
+
+.book-btn {
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    margin-top: 15px;
+    transition: all 0.3s;
+}
+
+.book-btn:hover {
+    transform: scale(1.05);
+}
+
+.amenity-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.card-title {
+    margin-bottom: 10px;
+}
+
+.card-desc {
+    color: #6c757d;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+/* ======================================= second slider =================================== */
+
+.slider-container {
+    position: relative;
+    max-width: 700px;
+    height: 400px;
+    perspective: 1000px;
+    margin-left: -250px;
+}
+
+.slider {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+}
+
+.slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.8s ease, z-index 0.5s ease, opacity 0.8s ease;
+    transform-origin: center center;
+    border: 1px solid #fff;
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.controls {
+    position: absolute;
+    top: 15px;
+    right: -75px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background-color: #0633097e;
+}
+.border-l {
+    border-radius: 15px 0 0 15px;
+}
+.border-r {
+    border-radius: 0px 15px 15px 0px;
+}
+
+.nav-btn {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background 0.3s;
+}
+
+.nav-btn:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.pagination {
+    display: flex;
+    gap: 10px;
+}
+
+.pagination-dot {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: 4px solid white;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.pagination-dot.active {
+    background: white;
+}
+
+/* Initial positions for slides */
+.slide:nth-child(1) {
+    transform: translateX(100px);
+    z-index: 4;
+}
+
+.slide:nth-child(2) {
+    transform: translateX(75px) translateY(25px) scale(0.95);
+    z-index: 3;
+    opacity: 0.9;
+}
+
+.slide:nth-child(3) {
+    transform: translateX(50px) translateY(45px) scale(0.9);
+    z-index: 2;
+    opacity: 0.8;
+}
+
+.slide:nth-child(4) {
+    transform: translateX(25px) translateY(65px) scale(0.85);
+    z-index: 1;
+    opacity: 0.7;
+}
+/* ============================================ end slider ============================================== */
+
+/* ====================================== CSS for the Image Slider========================================== */
+
+.room-slider {
+    position: relative;
+    overflow: hidden;
+    height: 400px; /* Adjust based on your needs */
+    margin-right: -150px;
+}
+
+.slide-img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.slide-img img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 15px;
+    border: 1px solid #fff;
+}
+
+.slide-img.active {
+    opacity: 1;
+}
+
+.controls-sections {
+    position: absolute;
+    top: 110px;
+    left: 100px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #0633097e;
+    padding: 8px 12px;
+    border-radius: 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.nav-sliding-btn {
+    background: #063309;
+    color: white;
+    border: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.nav-sliding-btn:hover {
+    background: #063309;
+    transform: scale(1.05);
+}
+
+.pagination {
+    display: flex;
+    gap: 10px;
+}
+
+.pagination-dot-circle {
+    width: 25px;
+    height: 25px;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.pagination-dot-circle.active-circle {
+    background: #ffffff;
+}
+/* ========================================end first slider css======================================= */
+/*============================================= scrole css ======================================== */
+::-webkit-scrollbar {
+    width: 3px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    background-color: #063309;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    background-color: #29ff00;
+}
+
+/* hero */
+.h-100vh {
+    height: 100vh;
+}
+/* ================================================sm screen============================================ */
+@media (max-width: 768px) {
+    .slider-container {
+        max-width: 100%;
+        height: 300px;
+        margin-left: -100px;
+    }
+    .controls {
+        top: 10px;
+        right: -50px;
+    }
+    .nav-btn {
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+    }
+    .border-left-second {
+        border-right: none;
+    }
+    .border-right-second {
+        border-left: none;
+    }
+
+    .fa-20 {
+        font-size: 15px;
+    }
+    .fa-30 {
+        font-size: 20px;
+    }
+    .fa-40 {
+        font-size: 30px;
+    }
+    .fa-50 {
+        font-size: 40px;
+    }
+    .fa-60 {
+        font-size: 50px;
+    }
+    .fa-70 {
+        font-size: 60px;
+    }
+    .fa-80 {
+        font-size: 70px;
+    }
+    .sm-hide {
+        display: none;
+    }
+
+    .room-slider {
+        position: relative;
+        overflow: hidden;
+        height: 400px; /* Adjust based on your needs */
+        margin-right: 0px;
+    }
+
+    .slide-img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .slide-img img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        border-radius: 15px;
+    }
+
+    .controls-sections {
+        position: absolute;
+        top: 150px;
+        left: 30px;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background-color: #0633097e;
+        padding: 8px 12px;
+        border-radius: 30px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+}
+
+/*======================================= midum scrren ==============================================*/
+@media (min-width: 768px) and (max-width: 1024px) {
+    .slider-container {
+        max-width: 100%;
+        height: 300px;
+        margin-left: -100px;
+    }
+    .controls {
+        top: 10px;
+        right: -50px;
+    }
+    .nav-btn {
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+    }
+
+    .border-left-second {
+        border-right: none;
+    }
+    .border-right-second {
+        border-left: none;
+    }
+}
