@@ -16,7 +16,7 @@
             box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25);
         }
         .btn-login {
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            background: linear-gradient(135deg, #063309 0%, #09520e 100%);
             border: none;
             padding: 12px;
             font-weight: 600;
@@ -40,6 +40,7 @@
 @section('title') Confirm Password @endsection
 
 @section('content')
+<div class="container-fluid bg-main patterns-stardust">
     <div class="container my-5">
         <div class="row justify-content-center align-items-center">
             <div class="col-md-8 col-lg-6 col-xl-5">
@@ -82,6 +83,7 @@
             </div>
         </div>
     </div>
+</div>
 @endsection
 
 @push('pagescripts')

@@ -93,6 +93,7 @@
 @endsection
 
 @section('content')
+<div class="container-fluid bg-navy patterns-stardust">
     <div class="container">
         <div class="row justify-content-center align-items-center min-vh-100 py-5">
             <div class="col-md-8 col-lg-6 col-xl-5">
@@ -183,6 +184,8 @@
             </div>
         </div>
     </div>
+
+</div>
 
     @push('js')
         <script>

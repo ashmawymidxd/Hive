@@ -21,7 +21,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto second-font">
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="{{route('home')}}">Home</a>
+                        <a class="nav-link text-white" href="{{ route('home') }}">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="#">Rooms & Suites</a>
@@ -47,36 +47,57 @@
                 <div class="me-2">
                     @if (!auth('web')->check())
                         <a href="{{ route('login') }}"
-                            class="btn btn-rounded bg-main text-white border border-white">Login</a>
+                            class="btn btn-rounded bg-main text-white border border-white md-my-0 my-3 w-md-auto w-100">Login</a>
                     @else
-                        <button class="btn btn-rounded bg-main text-white border border-white">Book Now</button>
+                        <button class="btn btn-rounded bg-main text-white border border-white md-my-0 my-3 w-md-auto w-100">Book Now</button>
                     @endif
                 </div>
 
                 {{-- profile --}}
-                <div class="dropdown">
-                    <button class="btn btn-rounded bg-main text-white border border-white dropdown-toggle"
-                        type="button" id="dropdownMenuButton1" data-mdb-toggle="dropdown" aria-expanded="false">
-                        <i class="fa fa-user"></i>
-                    </button>
 
-                    <ul class="dropdown-menu bg-main-light p-3 border border-white mt-3"
-                        aria-labelledby="dropdownMenuButton1">
-                        <div class="bg-white">
-                            <li><a class="dropdown-item" href="#">
-                                    <i class=" fa fa-user text-main me-2"></i>
-                                    Profile</a></li>
-                            <li>
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <button class="dropdown-item" type="submit">
-                                        <i class="fa fa-sign-out text-main me-2"></i> Logout
-                                    </button>
-                                </form>
-                            </li>
-                        </div>
-                    </ul>
-                </div>
+                @if (auth('web')->check())
+                    <div class="dropdown">
+                        <button class="btn btn-rounded bg-main text-white border border-white dropdown-toggle w-md-auto w-100"
+                            type="button" id="dropdownMenuButton1" data-mdb-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-user"></i>
+                        </button>
+
+                        <ul class="dropdown-menu bg-main-light p-3 border border-white mt-3"
+                            aria-labelledby="dropdownMenuButton1">
+                            <div class="bg-white">
+                                <li class="border-bottom border-2 border-warning">
+                                    <a class="dropdown-item" href="#">
+                                        <i class=" fa fa-user text-main me-2"></i>
+                                        Profile</a>
+                                </li>
+                                <li class="border-bottom border-2 border-warning">
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fa fa-cog text-main me-2"></i>
+                                        Settings</a>
+                                </li>
+                                <li class="border-bottom border-2 border-warning">
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fa fa-bell text-main me-2"></i>
+                                        Notifications</a>
+                                </li>
+                                {{-- booking history --}}
+                                <li class="border-bottom border-2 border-warning">
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fa fa-history text-main me-2"></i>
+                                        Booking History</a>
+                                </li>
+                                <li class="border-bottom border-2 border-warning">
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <button class="dropdown-item" type="submit">
+                                            <i class="fa fa-sign-out text-main me-2"></i> Logout
+                                        </button>
+                                    </form>
+                                </li>
+                            </div>
+                        </ul>
+                    </div>
+                @endif
             </div>
         </div>
     </nav>

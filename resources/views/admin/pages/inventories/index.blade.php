@@ -688,16 +688,15 @@
                                     <div class="card shadow-1 border hover-shadow transition-all">
                                         <div class="d-flex align-items-center justify-content-between card-header">
                                             <div class="d-flex align-items-center gap-3">
-                                                <button class="btn btn-sm btn-light border edit-reorder-btn" 
-                                                        data-id="${item.id}" 
+                                                <button class="btn btn-sm btn-light border edit-reorder-btn"
+                                                        data-id="${item.id}"
                                                         data-reorder="${item.reorder_point}"
-                                                        data-bs-toggle="tooltip" 
-                                                        data-bs-placement="top" 
+                                                        data-bs-toggle="tooltip"
+                                                        data-bs-placement="top"
                                                         title="Edit reorder point">
                                                     <i class="fas fa-edit"></i>
                                                 </button>
                                                 <h5 class="text-dark font-bold mb-0 d-flex align-items-center gap-2">
-                                                    <span class="material-icons-outlined">inventory_2</span>
                                                     ${item.name}
                                                 </h5>
                                             </div>
@@ -716,19 +715,19 @@
                                                     <span class="text-dark small fw-bold">${item.quantity}/${item.reorder_point} ${item.unit}</span>
                                                 </div>
                                                 <div class="progress" style="height: 8px;">
-                                                    <div class="progress-bar ${item.quantity <= item.reorder_point ? 'bg-danger' : 'bg-success'}" 
-                                                        role="progressbar" 
-                                                        style="width: ${Math.min(100, (item.quantity / item.reorder_point) * 100)}%" 
-                                                        aria-valuenow="${item.quantity}" 
-                                                        aria-valuemin="0" 
+                                                    <div class="progress-bar ${item.quantity <= item.reorder_point ? 'bg-danger' : 'bg-success'}"
+                                                        role="progressbar"
+                                                        style="width: ${Math.min(100, (item.quantity / item.reorder_point) * 100)}%"
+                                                        aria-valuenow="${item.quantity}"
+                                                        aria-valuemin="0"
                                                         aria-valuemax="${item.reorder_point}">
                                                     </div>
                                                 </div>
-                                                ${item.quantity <= item.reorder_point ? 
-                                                    '<small class="text-danger mt-1 d-block"><i class="fas fa-exclamation-circle me-1"></i>Stock is below reorder point</small>' : 
+                                                ${item.quantity <= item.reorder_point ?
+                                                    '<small class="text-danger mt-1 d-block"><i class="fas fa-exclamation-circle me-1"></i>Stock is below reorder point</small>' :
                                                     '<small class="text-success mt-1 d-block"><i class="fas fa-check-circle me-1"></i>Stock level is good</small>'}
                                             </div>
-                                            
+
                                             <!-- Compact Info Grid -->
                                             <div class="row g-2">
                                                 <div class="col-6">

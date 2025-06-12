@@ -9,7 +9,7 @@
         }
 
         .auth-header {
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+           background: linear-gradient(135deg, #063309 0%, #0a570f 100%);
             color: white;
             padding: 2rem;
             text-align: center;
@@ -44,7 +44,7 @@
         }
 
         .btn-login {
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+           background: linear-gradient(135deg, #063309 0%, #09520e 100%);
             border: none;
             padding: 12px;
             font-weight: 600;
@@ -80,6 +80,7 @@
 @endsection
 
 @section('content')
+<div class="container-fluid bg-main patterns-stardust  d-flex align-items-center justify-content-center">
     <div class="container">
         <div class="row justify-content-center align-items-center min-vh-100 py-5">
             <div class="col-md-8 col-lg-6 col-xl-5">
@@ -191,11 +192,13 @@
                         </div>
                         <div class="auth-footer">
                             Already have an account?
-                            <a href="{{ route('login') }}" class="text-decoration-none fw-semibold text-primary">Login</a>
+                            <a href="{{ route('login') }}" class="text-decoration-none fw-semibold text-warning">Login</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+</div>
 @endsection

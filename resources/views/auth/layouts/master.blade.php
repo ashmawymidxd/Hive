@@ -17,9 +17,10 @@
     </title>
     @stack('pagestyles')
     @include('auth.layouts.styles')
+
 </head>
 
-<body class="bg-navy patterns-stardust">
+<body>
     @yield('content')
 </body>
 @include('auth.layouts.scripts')

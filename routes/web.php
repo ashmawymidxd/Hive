@@ -21,7 +21,7 @@ Route::get('/', function () {
 
 Route::get('/website', function () {
     return view('website.index');
-})->middleware(['auth'])->name('website');
+})->middleware(['auth','verified'])->name('website');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
