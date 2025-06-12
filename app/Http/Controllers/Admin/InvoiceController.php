@@ -8,6 +8,9 @@ use App\Models\Guest;
 use App\Models\Room;
 use Illuminate\Http\Request;
 use PDF;
+use App\Models\Admin;
+use App\Notifications\InvoiceNotification;
+use Illuminate\Support\Facades\Notification;
 
 
 class InvoiceController extends Controller
@@ -46,6 +49,14 @@ class InvoiceController extends Controller
             'due_date' => $request->due_date,
             'status' => 'pending',
         ]);
+
+        // Notify all admins
+        
+        $admins = Admin::all();
+        Notification::send($admins, new InvoiceNotification($invoice, 'created'));
+
+        // Notify the guest (email only)
+        $invoice->guest->notify(new InvoiceNotification($invoice, 'created', true));
 
         return redirect()->route('admin.invoices.index')->with('success', 'Invoice created successfully');
     }

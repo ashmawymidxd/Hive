@@ -71,7 +71,7 @@
                     </form>
                 </div>
                 <div class="notification-items" style="max-height: 300px; overflow-y: auto;">
-                    @forelse(auth()->user()->unreadNotifications->take(5) as $notification)
+                    @forelse(auth('admin')->user()->unreadNotifications->take(5) as $notification)
                         <a href="{{ $notification->data['url'] ?? '#' }}"
                             class="notification-item mark-as-read p-3 d-block text-dark"
                             data-id="{{ $notification->id }}">
@@ -93,6 +93,10 @@
 
                                     @case('App\Notifications\CheckOutNotification')
                                         <i class="fas fa-sign-out-alt text-info me-2"></i>
+                                    @break
+
+                                    @case('App\Notifications\InvoiceNotification')
+                                        <i class="fas fa-file-invoice-dollar text-warning me-2"></i>
                                     @break
 
                                     @default

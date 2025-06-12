@@ -47,8 +47,8 @@
                         <div class="d-flex align-items-center justify-content-between">
                             <h4 class="text-dark font-bold">Invoices</h4>
                             <button class="btn btn-primary shadow-0" id="generateInvoiceButton">
+                                <i class="fa fa-add me-1"></i>
                                 <i class="fa fa-file-invoice-dollar"></i>
-                                Generate New Invoice
                             </button>
                         </div>
                         <div class="row mt-4">
@@ -56,7 +56,24 @@
                                 <div class="card shadow-0 border p-4">
                                     <h4 class="text-dark">Recent Invoices</h4>
                                     <div class="table-responsive">
-                                        <table class="table table hover w-100" id="invoicesTable">
+                                        {{-- success messages closed alert --}}
+                                        @if (session('success'))
+                                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                {{ session('success') }}
+                                                <button type="button" class="btn-close" data-mdb-dismiss="alert"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                        @endif
+                                        {{-- error messages closed alert --}}
+                                        @if (session('error'))
+                                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                {{ session('error') }}
+                                                <button type="button" class="btn-close" data-mdb-dismiss="alert"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                        @endif
+
+                                        <table class="table w-100" id="invoicesTable">
                                             <thead class="bg-light">
                                                 <tr>
                                                     <th>Invoice #</th>
@@ -800,5 +817,4 @@
 
         new DataTable("#invoicesTable");
     </script>
-   
 @endpush

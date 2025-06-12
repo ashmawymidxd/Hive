@@ -106,7 +106,7 @@ Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function
     Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
 
     // inventory management
-    Route::get('/inventories_page', 
+    Route::get('/inventories_page',
     function ()
     {
         return view('admin.pages.inventories.index');
@@ -123,13 +123,11 @@ Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function
     Route::resource('vendors', VendorController::class)->except(['create', 'edit']);
 
     // billing and payments
-   
     Route::resource('invoices', InvoiceController::class)->except(['edit', 'update', 'destroy']);
     Route::get('invoices/{invoice}/download', [InvoiceController::class, 'download'])->name('invoices.download');
     Route::get('invoices/{invoice}/print', [InvoiceController::class, 'print'])->name('invoices.print');
     Route::post('invoices/{invoice}/mark-as-paid', [InvoiceController::class, 'markAsPaid'])->name('invoices.mark-as-paid');
+
 });
-
-
 
 require __DIR__.'/auth_admin.php';

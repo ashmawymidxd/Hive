@@ -34,6 +34,8 @@
                                                         => 'fa-sign-in-alt text-success',
                                                     'App\Notifications\CheckOutNotification'
                                                         => 'fa-sign-out-alt text-warning',
+                                                    'App\Notifications\InvoiceNotification'
+                                                        => 'fa-file-invoice-dollar text-warning',
                                                     default => 'fa-bell text-primary',
                                                 };
                                             @endphp

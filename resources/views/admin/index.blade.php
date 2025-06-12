@@ -408,6 +408,10 @@ $yesterdayRate = App\Models\OccupancyRecord::where('record_date', today()->subDa
                                             'icon' => 'fa-sign-out-alt',
                                             'color' => 'info',
                                         ],
+                                        'App\Notifications\InvoiceNotification' => [
+                                            'icon' => 'fa-file-invoice-dollar',
+                                            'color' => 'warning',
+                                        ],
                                         'default' => [
                                             'icon' => 'fa-bell',
                                             'color' => 'warning',

@@ -98,7 +98,7 @@
                                     <div class="flex-shrink-0">
                                         <div
                                             class="avatar avatar-md bg-dark text-white rounded-circle d-flex align-items-center justify-content-center">
-                                            {{ substr($invoice->guest->getFullNameAttribute(), 0, 1) }}
+                                            {{ substr($invoice->guest->getFullName(), 0, 1) }}
                                         </div>
                                     </div>
                                     <div class="flex-grow-1 ms-3">
@@ -177,7 +177,7 @@
                                         <td class="text-end">${{ number_format($invoice->amount, 2) }}</td>
                                     </tr>
 
-                                   
+
 
                                     <tr class="table-light">
                                         <td colspan="2" class="text-end"><strong>Subtotal:</strong></td>
@@ -256,16 +256,16 @@
                     <a href="{{ route('admin.invoices.index') }}" class="btn btn-outline-secondary">
                         <i class="fas fa-arrow-left me-2"></i>Back to Invoices
                     </a>
-                    <div class="btn-group" role="group">
-                        <a href="{{ route('admin.invoices.download', $invoice) }}" class="btn btn-outline-primary">
+                    <div class="btn-group shadow-0" role="group">
+                        <a href="{{ route('admin.invoices.download', $invoice) }}" class="btn btn-light border shadow-0">
                             <i class="fas fa-file-pdf me-2"></i>Download PDF
                         </a>
-                        <a href="{{ route('admin.invoices.print', $invoice) }}" class="btn btn-outline-success">
+                        <a href="{{ route('admin.invoices.print', $invoice) }}" class="btn btn-light border shadow-0">
                             <i class="fas fa-print me-2"></i>Print Invoice
                         </a>
                         @if ($invoice->status == 'pending')
-                            <button type="button" class="btn btn-warning" data-bs-toggle="modal"
-                                data-bs-target="#markAsPaidModal">
+                            <button type="button" class="btn btn-light border shadow-0" data-mdb-toggle="modal"
+                                data-mdb-target="#markAsPaidModal">
                                 <i class="fas fa-check-circle me-2"></i>Mark as Paid
                             </button>
                         @endif
@@ -275,48 +275,10 @@
         </div>
     </section>
 
-    <!-- Mark as Paid Modal -->
-    @if ($invoice->status == 'pending')
-        <div class="modal fade" id="markAsPaidModal" tabindex="-1" aria-labelledby="markAsPaidModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header bg-warning text-white">
-                        <h5 class="modal-title" id="markAsPaidModalLabel">Confirm Payment</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
-                    </div>
-                    <form action="{{ route('admin.invoices.mark-as-paid', $invoice) }}" method="POST">
-                        @csrf
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <label for="paymentMethod" class="form-label">Payment Method</label>
-                                <select class="form-select" id="paymentMethod" name="payment_method" required>
-                                    <option value="">Select payment method</option>
-                                    <option value="cash">Cash</option>
-                                    <option value="credit_card">Credit Card</option>
-                                    <option value="bank_transfer">Bank Transfer</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="transactionId" class="form-label">Transaction ID (if applicable)</label>
-                                <input type="text" class="form-control" id="transactionId" name="transaction_id">
-                            </div>
-                            <div class="mb-3">
-                                <label for="paymentDate" class="form-label">Payment Date</label>
-                                <input type="datetime-local" class="form-control" id="paymentDate" name="payment_date"
-                                    value="{{ now()->format('Y-m-d\TH:i') }}" required>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-warning">Confirm Payment</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    @endif
+    <!-- Mark as Paid Modal include-->
+    @include('admin.pages.billing.partials.mark_as_paid')
+
+
 
 
 @endsection
