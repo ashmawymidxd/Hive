@@ -142,30 +142,42 @@
                     <div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-tab">
                         <div class="d-flex align-items-center justify-content-between">
                             <h4 class="text-dark font-bold">Payment Processing</h4>
-                            <button class="btn btn-primary shadow-0 ">
-                                <i class="fa fa-file-invoice-dollar"></i>
-                                Process New Payment
+                            <button class="btn btn-primary shadow-0" data-mdb-toggle="modal"
+                                data-mdb-target="#createPaymentModal">
+                                <i class="fas fa-plus me-2"></i>Process New Payment
                             </button>
+
                         </div>
                         <div class="row mt-4">
+                            <!-- Total Payments Today -->
                             <div class="col-md-4 mt-2">
                                 <div class="card shadow-0 border p-3">
                                     <small class="text-secondary">Total Payments Today</small>
-                                    <h3 class="text-dark font-bold">$4,235.75</h3>
-                                    <small class="text-secondary">+15.2% from yesterday</small>
+                                    <h3 class="text-dark font-bold">${{ number_format($todayPayments, 2) }}</h3>
+                                    <small
+                                        class="text-secondary {{ $percentageChange >= 0 ? 'text-success' : 'text-danger' }}">
+                                        <i class="fas {{ $percentageChange >= 0 ? 'fa-arrow-up' : 'fa-arrow-down' }}"></i>
+                                        {{ abs($percentageChange) }}% from yesterday
+                                    </small>
                                 </div>
                             </div>
+
+                            <!-- Pending Payments -->
                             <div class="col-md-4 mt-2">
                                 <div class="card shadow-0 border p-3">
                                     <small class="text-secondary">Pending Payments</small>
-                                    <h3 class="text-dark font-bold">$875.50</h3>
-                                    <small class="text-secondary">1 transaction processing</small>
+                                    <h3 class="text-dark font-bold">${{ number_format($pendingPayments, 2) }}</h3>
+                                    <small class="text-secondary">
+                                        {{ $pendingCount }} transaction{{ $pendingCount != 1 ? 's' : '' }} processing
+                                    </small>
                                 </div>
                             </div>
+
+                            <!-- Recent Transactions -->
                             <div class="col-md-4 mt-2">
                                 <div class="card shadow-0 border p-3">
                                     <small class="text-secondary">Recent Transactions</small>
-                                    <h3 class="text-dark font-bold">14</h3>
+                                    <h3 class="text-dark font-bold">{{ $recentTransactions }}</h3>
                                     <small class="text-secondary">In the last 24 hours</small>
                                 </div>
                             </div>
@@ -175,7 +187,7 @@
                                 <div class="card shadow-0 border p-4">
                                     <h4 class="text-dark">Payment History</h4>
                                     <div class="table-responsive">
-                                        <table class="table ">
+                                        <table class="table w-100" id="PaymentTable">
                                             <thead class="bg-light">
                                                 <tr>
                                                     <th>ID</th>
@@ -188,27 +200,41 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr class="hover-primary">
-                                                    <td>INV-2023-001</td>
-                                                    <td>John Smith</td>
-                                                    <td>301</td>
-                                                    <td>$1,245.00</td>
-                                                    <td>2023-10-15</td>
-                                                    <td>
-                                                        <i class="fa-regular text-success fa-circle-check"></i>
-                                                        <span>Completed</span>
-                                                    </td>
-                                                    <td>
-                                                        <button class="btn btn-outline-secondary">
-                                                            View Details
-                                                        </button>
-
-                                                    </td>
-                                                </tr>
-
+                                                @foreach ($payments as $payment)
+                                                    <tr class="hover-primary">
+                                                        <td>{{ $payment->payment_number }}</td>
+                                                        <td>{{ $payment->guest->getFullName() }}</td>
+                                                        <td>${{ number_format($payment->amount, 2) }}</td>
+                                                        <td>{{ $payment->payment_date }}</td>
+                                                        <td>{{ $payment->payment_method }}</td>
+                                                        <td>
+                                                            @if ($payment->status === 'completed')
+                                                                <i class="fa-regular text-success fa-circle-check"></i>
+                                                                <span>Completed</span>
+                                                            @elseif($payment->status === 'pending')
+                                                                <i class="fa-regular text-warning fa-clock"></i>
+                                                                <span>Pending</span>
+                                                            @else
+                                                                <i class="fa-regular text-danger fa-circle-xmark"></i>
+                                                                <span>Failed</span>
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            <a href="{{ route('admin.payments.show', $payment->id) }}"
+                                                                class="btn btn-light border btn-sm">
+                                                                <i class="fa fa-eye"></i>
+                                                            </a>
+                                                            <button class="btn btn-light border btn-sm delete-payment"
+                                                                data-mdb-toggle="modal"
+                                                                data-mdb-target="#deletePaymentModal"
+                                                                data-id="{{ $payment->id }}">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
-
                                     </div>
                                 </div>
                             </div>
@@ -476,6 +502,8 @@
 
     <!-- Incluides Invoice Generation Modal -->
     @include('admin.pages.billing.partials.invoice_generation_modal')
+    @include('admin.pages.billing.partials.payment_add')
+    @include('admin.pages.billing.partials.payment_delete')
 @endsection
 
 @push('js')
@@ -816,5 +844,40 @@
         });
 
         new DataTable("#invoicesTable");
+        new DataTable("#PaymentTable");
+    </script>
+@endpush
+
+{{-- payment --}}
+
+@push('js')
+    <script>
+        $(document).ready(function() {
+            // Delete modal handler
+            $('.delete-payment').click(function() {
+                const paymentId = $(this).data('id');
+                const form = $('#deletePaymentForm');
+                form.attr('action', `/admin/payments/${paymentId}`);
+            });
+
+            // Guest-Invoice relationship
+            $('#guest_id').change(function() {
+                const guestId = $(this).val();
+                $('#invoice_id option').hide();
+                $('#invoice_id option[value=""]').show();
+                $('#invoice_id option[data-guest="' + guestId + '"]').show();
+                $('#invoice_id').val('');
+            });
+
+            // Auto-fill amount when invoice is selected
+            $('#invoice_id').change(function() {
+                const invoiceId = $(this).val();
+                if (invoiceId) {
+                    $.get(`/invoices/${invoiceId}/amount`, function(data) {
+                        $('#amount').val(data.amount);
+                    });
+                }
+            });
+        });
     </script>
 @endpush

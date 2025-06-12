@@ -60,7 +60,7 @@
             <i class="fas fa-bell-slash mx-3 notification-icon" id="notificationIcon"></i>
                 <span class="badge-notification">0</span>
             @endif
-            <div class="notification-content" id="notificationDropdown">
+            <div class="notification-content shadow-0 border" id="notificationDropdown">
                 <div class="notification-header d-flex justify-content-between align-items-center p-3">
                     <h6 class="mb-0 font-bold">Notifications</h6>
                     <form action="{{ route('admin.notifications.mark-all-read') }}" method="POST">
@@ -130,21 +130,18 @@
                         GU
                     @endauth
                 </button>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                    <li>
+                <ul class="dropdown-menu dropdown-menu-end p-3 shadow-0 border mt-2" aria-labelledby="profileDropdown">
+                    <li class="border-bottom border-secondary">
                         <a class="dropdown-item" href="{{ route('admin.profile.edit') }}">
                             <i class="fas fa-user me-2"></i> Profile
                         </a>
                     </li>
-                    <li>
+                    <li class="border-bottom border-secondary">
                         <a class="dropdown-item" href="">
                             <i class="fas fa-cog me-2"></i> Settings
                         </a>
                     </li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li>
+                    <li class="">
                         <form method="POST" action="{{ route('logout.admin') }}">
                             @csrf
                             <button type="submit" class="dropdown-item">

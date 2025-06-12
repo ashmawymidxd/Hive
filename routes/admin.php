@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\InventoryController;
 use App\Http\Controllers\Admin\HousekeepingItemController;
 use App\Http\Controllers\Admin\VendorController;
 use App\Http\Controllers\Admin\InvoiceController;
+use App\Http\Controllers\Admin\PaymentController;
 /*
 |--------------------------------------------------------------------------
 | admin Routes
@@ -127,6 +128,9 @@ Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function
     Route::get('invoices/{invoice}/download', [InvoiceController::class, 'download'])->name('invoices.download');
     Route::get('invoices/{invoice}/print', [InvoiceController::class, 'print'])->name('invoices.print');
     Route::post('invoices/{invoice}/mark-as-paid', [InvoiceController::class, 'markAsPaid'])->name('invoices.mark-as-paid');
+
+    // payment
+    Route::resource('payments', PaymentController::class)->except(['edit', 'update']);
 
 });
 

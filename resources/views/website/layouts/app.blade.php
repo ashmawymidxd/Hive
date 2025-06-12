@@ -38,13 +38,13 @@
         const scrolledToBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight;
 
         if (scrolledToBottom) {
-            navbar.classList.add('bg-main', 'shadow');
+            navbar.classList.add('bg-main','patterns-stardust', 'shadow');
             navbar.classList.remove('bg-transparent');
         } else if (window.scrollY > 50) {
-            navbar.classList.add('bg-main', 'shadow');
+            navbar.classList.add('bg-main','patterns-stardust', 'shadow');
             navbar.classList.remove('bg-transparent');
         } else {
-            navbar.classList.remove('bg-main', 'shadow');
+            navbar.classList.remove('bg-main','patterns-stardust', 'shadow');
             navbar.classList.add('bg-transparent');
         }
     });

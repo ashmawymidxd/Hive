@@ -9,6 +9,7 @@ use App\Models\Room;
 use Illuminate\Http\Request;
 use PDF;
 use App\Models\Admin;
+use App\Models\Payment;
 use App\Notifications\InvoiceNotification;
 use Illuminate\Support\Facades\Notification;
 
@@ -20,7 +21,42 @@ class InvoiceController extends Controller
         $guests = Guest::all();
         $rooms = Room::all();
         $invoices = Invoice::with(['guest', 'room'])->latest()->get();
-        return view('admin.pages.billing.index', compact('invoices', 'guests', 'rooms'));
+        // Get today's date
+        $today = now()->format('Y-m-d');
+        $yesterday = now()->subDay()->format('Y-m-d');
+
+        // Calculate metrics
+        $todayPayments = Payment::whereDate('payment_date', $today)
+                            ->where('status', 'completed')
+                            ->sum('amount');
+
+        $yesterdayPayments = Payment::whereDate('payment_date', $yesterday)
+                            ->where('status', 'completed')
+                            ->sum('amount');
+
+        $percentageChange = $yesterdayPayments > 0
+            ? round(($todayPayments - $yesterdayPayments) / $yesterdayPayments * 100, 1)
+            : 100;
+
+        $pendingPayments = Payment::where('status', 'pending')->sum('amount');
+        $pendingCount = Payment::where('status', 'pending')->count();
+
+        $recentTransactions = Payment::where('created_at', '>=', now()->subDay())->count();
+
+        $payments = Payment::with(['guest', 'invoice'])->get();
+
+
+        return view('admin.pages.billing.index',
+            compact('invoices',
+                'guests',
+                'rooms',
+                'payments',
+                'todayPayments',
+                'percentageChange',
+                'pendingPayments',
+                'pendingCount',
+                'recentTransactions'
+            ));
     }
 
     public function create()
@@ -51,7 +87,7 @@ class InvoiceController extends Controller
         ]);
 
         // Notify all admins
-        
+
         $admins = Admin::all();
         Notification::send($admins, new InvoiceNotification($invoice, 'created'));
 

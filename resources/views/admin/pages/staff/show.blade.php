@@ -8,8 +8,8 @@
     <style>
         .progress-circle {
             position: relative;
-            width: 70px;
-            height: 70px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             background: #0035d32a;
             margin: 0 auto 10px;
@@ -18,8 +18,8 @@
         .progress-circle:after {
             content: '';
             position: absolute;
-            width: 60px;
-            height: 60px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             background: white;
             top: 5px;
@@ -84,13 +84,13 @@
                             </div>
 
 
-                            <div class="border-top d-flex align-items-center justify-content-center mb-4 p-2">
-                                <div class="p-3 text-center">
-                                    <i class="fa solid fa-building"></i> <br>
+                            <div class="border-top d-flex align-items-center justify-content-center mb-4">
+                                <div class="p-3 text-center badge-warning w-100">
+                                    <i class="fa solid fa-building fa-2x"></i> <br>
                                     <small>{{ $staff->department->name }}</small>
                                 </div>
-                                <div class="p-3 border-start text-center">
-                                    <i class="fa fa-calendar"></i> <br>
+                                <div class="p-3 text-center badge-secondary w-100">
+                                    <i class="fa fa-calendar fa-2x"></i> <br>
                                     <small>{{ $staff->hire_date->format('M d, Y') }}</small>
                                 </div>
                             </div>

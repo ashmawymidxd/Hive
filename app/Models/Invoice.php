@@ -5,9 +5,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Invoice extends Model
 {
+    use HasFactory;
     protected $fillable = [
         'invoice_number',
         'guest_id',
@@ -34,5 +36,11 @@ class Invoice extends Model
     public function room(): BelongsTo
     {
         return $this->belongsTo(Room::class);
+    }
+
+        // app/Models/Invoice.php
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
     }
 }
