@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class Staff extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory,Notifiable;
 
     protected $fillable = [
         'first_name',
@@ -18,6 +19,7 @@ class Staff extends Authenticatable
         'role_id',
         'email',
         'phone',
+        'image_path',
         'status',
         'hire_date',
         'password',
@@ -27,7 +29,10 @@ class Staff extends Authenticatable
         'last_login_ip',
     ];
 
-    protected $hidden = ['password'];
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 
     protected $casts = [
         'hire_date' => 'date',
@@ -51,7 +56,7 @@ class Staff extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-     public function tasks()
+    public function tasks()
     {
         return $this->hasMany(Task::class);
     }

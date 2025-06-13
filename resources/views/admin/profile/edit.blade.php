@@ -57,8 +57,8 @@
                             </div>
                             <div class="">
                                 <div class="d-flex align-items-center gap-2">
-                                    <h3 class="font-bold text-dark">{{ $admin->name }}</h3>
-                                    <small class="badge bg-primary rounded-5">Administrator</small>
+                                    <h3 class="font-bold text-dark">{{ $admin->fullName }}</h3>
+                                    <small class="badge bg-primary rounded-5">{{ $admin->role->name }}</small>
                                 </div>
                                 <p class="text-secondary">{{ $admin->email }}</p>
                             </div>
@@ -67,7 +67,7 @@
                             <label for="name">Full Name</label>
                             <input type="text" name="name"
                                 class="form-control p-2 bg-light @error('name', 'profile') is-invalid @enderror"
-                                value="{{ old('name', $admin->name) }}">
+                                value="{{ old('name', $admin->fullName) }}">
                             @error('name', 'profile')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

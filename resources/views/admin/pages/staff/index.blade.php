@@ -370,6 +370,7 @@
         @include('admin.pages.staff.componets.add_password_modal')
     </section>
 @endsection
+
 {{-- roles --}}
 @push('js')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -633,6 +634,7 @@
         new DataTable('#employeesDir');
         new DataTable('#RolesTable');
     </script>
+
 @endpush
 {{-- staff --}}
 @push('js')

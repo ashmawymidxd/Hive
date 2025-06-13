@@ -36,8 +36,8 @@
                  @endif
              </div>
              <div>
-                 <div class="font-weight-bold text-white">{{ Auth::user('admin')->name }}</div>
-                 <small class="text-muted">Hotel Manger</small>
+                 <div class="font-weight-bold text-white">{{ Auth::user('admin')->fullName }}</div>
+                 <small class="text-muted">{{ Auth::user('admin')->role->name }}</small>
              </div>
          </a>
      </div>
