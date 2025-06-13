@@ -10,6 +10,7 @@ use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Hash;
 
 class StaffController extends Controller
 {
@@ -67,6 +68,21 @@ class StaffController extends Controller
 
         return redirect()->route('admin.staff.index')
             ->with('success', 'Staff member added successfully');
+    }
+
+    public function updatePassword(Request $request, $id)
+    {
+        $request->validate([
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $staff = Staff::findOrFail($id);
+        $staff->update([
+            'password' => Hash::make($request->password),
+            'password_changed_at' => now(),
+        ]);
+
+        return response()->json(['message' => 'Password updated successfully']);
     }
 
     /**

@@ -84,11 +84,10 @@
                               </div>
                           </div>
                       </div>
-
-                    <div class="mt-3">
+                      <div class="mt-3">
                           <button type="submit" class="btn btn-primary">Save Staff Member</button>
-                      <a href="{{ route('admin.staff.index') }}" class="btn btn-secondary">Cancel</a>
-                    </div>
+                          <a href="{{ route('admin.staff.index') }}" class="btn btn-secondary">Cancel</a>
+                      </div>
                   </form>
               </div>
               <div class="modal-footer">

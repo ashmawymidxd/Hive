@@ -90,6 +90,8 @@ Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function
 
     // Staff Management Routes
     Route::resource('staff',StaffController::class);
+    Route::post('/staff/{staff}/password', [StaffController::class, 'updatePassword'])
+    ->name('staff.update-password');
 
     // Roles management
     Route::get('staff/roles', [RoleController::class, 'roles'])->name('staff.roles');
@@ -107,12 +109,7 @@ Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function
     Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
 
     // inventory management
-    Route::get('/inventories_page',
-    function ()
-    {
-        return view('admin.pages.inventories.index');
-    }
-    )->name('inventories.page');
+    Route::get('/inventories_page',function () {return view('admin.pages.inventories.index');} )->name('inventories.page');
     Route::resource('inventories', InventoryController::class)->except(['create', 'edit']);
 
     // Housekeeping items management

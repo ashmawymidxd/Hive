@@ -34,31 +34,60 @@
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="permissions[]"
-                                        value="manage_shifts" id="perm_manage_shifts">
-                                    <label class="form-check-label" for="perm_manage_shifts">Manage Shifts</label>
+                                        value="manage_rooms" id="perm_manage_rooms">
+                                    <label class="form-check-label" for="perm_manage_rooms">Manage Rooms</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="permissions[]" value="booking"
-                                        id="booking">
-                                    <label class="form-check-label" for="booking">Manage booking</label>
+                                    <input class="form-check-input" type="checkbox" name="permissions[]"
+                                        value="manage_amenities" id="perm_manage_amenities">
+                                    <label class="form-check-label" for="perm_manage_amenities">Manage Amenities</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="permissions[]" value="guests"
-                                        id="guests">
-                                    <label class="form-check-label" for="guests">Manage guests</label>
+                                    <input class="form-check-input" type="checkbox" name="permissions[]"
+                                        value="manage_reservations" id="perm_manage_reservations">
+                                    <label class="form-check-label" for="perm_manage_reservations">Manage
+                                        Reservations</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="permissions[]" value="Billing"
-                                        id="Billing">
-                                    <label class="form-check-label" for="Billing">Manage Billing</label>
+                                    <input class="form-check-input" type="checkbox" name="permissions[]"
+                                        value="manage_guests" id="perm_manage_guests">
+                                    <label class="form-check-label" for="perm_manage_guests">Manage Guests</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="permissions[]" value="Billing"
-                                        id="Billing">
-                                    <label class="form-check-label" for="Billing">Manage Billing</label>
+                                    <input class="form-check-input" type="checkbox" name="permissions[]"
+                                        value="manage_inventories" id="perm_manage_inventories">
+                                    <label class="form-check-label" for="perm_manage_inventories">Manage
+                                        Inventories</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="permissions[]"
+                                        value="manage_housekeeping" id="perm_manage_housekeeping">
+                                    <label class="form-check-label" for="perm_manage_housekeeping">Manage
+                                        Housekeeping</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="permissions[]"
+                                        value="manage_vendors" id="perm_manage_vendors">
+                                    <label class="form-check-label" for="perm_manage_vendors">Manage Vendors</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="permissions[]"
+                                        value="manage_invoices" id="perm_manage_invoices">
+                                    <label class="form-check-label" for="perm_manage_invoices">Manage Invoices</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="permissions[]"
+                                        value="manage_payments" id="perm_manage_payments">
+                                    <label class="form-check-label" for="perm_manage_payments">Manage Payments</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="permissions[]"
+                                        value="manage_departments" id="perm_manage_departments">
+                                    <label class="form-check-label" for="perm_manage_departments">Manage
+                                        Departments</label>
+                                </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="permissions[]"
                                         value="manage_tasks" id="perm_manage_tasks">
@@ -66,28 +95,14 @@
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="permissions[]"
-                                        value="view_reports" id="perm_view_reports">
-                                    <label class="form-check-label" for="perm_view_reports">View Reports</label>
+                                        value="manage_feedback" id="perm_manage_feedback">
+                                    <label class="form-check-label" for="perm_manage_feedback">Manage Feedback</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="permissions[]"
-                                        value="rooms" id="rooms">
-                                    <label class="form-check-label" for="rooms">View rooms</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="permissions[]"
-                                        value="inventory" id="inventory">
-                                    <label class="form-check-label" for="inventory">View inventory</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="permissions[]"
-                                        value="Reports" id="Reports">
-                                    <label class="form-check-label" for="Reports">View Reports</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="permissions[]"
-                                        value="Settings" id="Settings">
-                                    <label class="form-check-label" for="Settings">View Settings</label>
+                                        value="manage_blacklist" id="perm_manage_blacklist">
+                                    <label class="form-check-label" for="perm_manage_blacklist">Manage
+                                        Blacklist</label>
                                 </div>
                             </div>
                         </div>

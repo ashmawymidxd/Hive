@@ -125,7 +125,7 @@
                                             <div>{{ $employee->phone }}</div>
                                         </td>
                                         <td class="text-center">
-                                            <div>
+                                            <div class="d-flex gap-2">
                                                 <!-- View Button -->
                                                 <a href="{{ route('admin.staff.show', $employee->id) }}"
                                                     class="btn btn-light border btn-sm" title="View Details"
@@ -154,6 +154,7 @@
                                                     title="Delete" data-toggle="tooltip">
                                                     <i class="fas fa-trash-alt"></i>
                                                 </button>
+
                                                 <!-- Task Assignment Button -->
                                                 <button class="btn btn-light border btn-sm assign-task-btn"
                                                     data-staff-id="{{ $employee->id }}"
@@ -161,6 +162,15 @@
                                                     title="Assign Task" data-toggle="tooltip">
                                                     <i class="fas fa-tasks"></i>
                                                 </button>
+
+                                                @if (!$employee->password)
+                                                    <button type="button" class="btn btn-sm btn-light border"
+                                                        data-mdb-toggle="modal" data-mdb-target="#passwordModal"
+                                                        data-staff-id="{{ $employee->id }}"
+                                                        data-staff-name="{{ $employee->first_name }} {{ $employee->last_name }}">
+                                                        <i class="fas fa-key"></i>
+                                                    </button>
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>
@@ -357,6 +367,7 @@
         @include('admin.pages.staff.componets.task_modal')
         @include('admin.pages.staff.componets.delete_task_modal')
         @include('admin.pages.staff.componets.update_task_modal')
+        @include('admin.pages.staff.componets.add_password_modal')
     </section>
 @endsection
 {{-- roles --}}
@@ -988,6 +999,44 @@
                             form.submit();
                         }
                     });
+                });
+            });
+        });
+    </script>
+@endpush
+{{-- add password --}}
+@push('js')
+    <script>
+        $(document).ready(function() {
+            // When modal opens
+            $('#passwordModal').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget);
+                var staffId = button.data('staff-id');
+                var staffName = button.data('staff-name');
+
+                var modal = $(this);
+                modal.find('#staffName').text(staffName);
+                modal.find('#staffId').val(staffId);
+                modal.find('#passwordForm').attr('action', '/admin/staff/' + staffId + '/password');
+            });
+
+            // Form submission
+            $('#passwordForm').submit(function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#passwordModal').modal('hide');
+                        toastr.success('Password updated successfully');
+                        // Reset form
+                        $('#passwordForm')[0].reset();
+                    },
+                    error: function(xhr) {
+                        toastr.error(xhr.responseJSON.message || 'Error updating password');
+                    }
                 });
             });
         });

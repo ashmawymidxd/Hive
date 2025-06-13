@@ -22,7 +22,6 @@ class AdminController extends Controller
 
     }
 
-
     public function destroy(Request $request)
     {
         Auth::guard('admin')->logout();

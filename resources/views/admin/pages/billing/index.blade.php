@@ -93,8 +93,8 @@
                                                         <td>{{ $invoice->guest->getFullNameAttribute() }}</td>
                                                         <td>{{ $invoice->room->room_number }}</td>
                                                         <td>${{ number_format($invoice->amount, 2) }}</td>
-                                                        <td>{{ $invoice->issue_date }}</td>
-                                                        <td>{{ $invoice->due_date }}</td>
+                                                        <td>{{ $invoice->issue_date->format('M d, Y') }}</td>
+                                                        <td>{{ $invoice->due_date->format('M d, Y') }}</td>
                                                         <td>
                                                             @if ($invoice->status == 'paid')
                                                                 <span class="badge bg-success">Paid</span>
@@ -205,7 +205,7 @@
                                                         <td>{{ $payment->payment_number }}</td>
                                                         <td>{{ $payment->guest->getFullName() }}</td>
                                                         <td>${{ number_format($payment->amount, 2) }}</td>
-                                                        <td>{{ $payment->payment_date }}</td>
+                                                        <td>{{ $payment->payment_date->format('M d, Y') }}</td>
                                                         <td>{{ $payment->payment_method }}</td>
                                                         <td>
                                                             @if ($payment->status === 'completed')

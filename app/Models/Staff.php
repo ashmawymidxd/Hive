@@ -5,8 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Staff extends Model
+class Staff extends Authenticatable
 {
     use HasFactory;
 
@@ -19,7 +20,15 @@ class Staff extends Model
         'phone',
         'status',
         'hire_date',
+        'password',
+        'remember_token',
+        'password_changed_at',
+        'last_login_at',
+        'last_login_ip',
     ];
+
+    protected $hidden = ['password'];
+
     protected $casts = [
         'hire_date' => 'date',
         'status' => 'string',
