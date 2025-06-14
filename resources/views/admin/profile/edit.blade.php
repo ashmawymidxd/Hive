@@ -64,11 +64,20 @@
                             </div>
                         </div>
                         <div class="mt-3">
-                            <label for="name">Full Name</label>
-                            <input type="text" name="name"
-                                class="form-control p-2 bg-light @error('name', 'profile') is-invalid @enderror"
-                                value="{{ old('name', $admin->fullName) }}">
-                            @error('name', 'profile')
+                            <label for="first_name">First Name</label>
+                            <input type="text" name="first_name"
+                                class="form-control p-2 bg-light @error('first_name', 'profile') is-invalid @enderror"
+                                value="{{ old('first_name', $admin->first_name) }}">
+                            @error('first_name', 'profile')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="mt-3">
+                            <label for="last_name">Last Name</label>
+                            <input type="text" name="last_name"
+                                class="form-control p-2 bg-light @error('last_name', 'profile') is-invalid @enderror"
+                                value="{{ old('last_name', $admin->last_name) }}">
+                            @error('last_name', 'profile')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>

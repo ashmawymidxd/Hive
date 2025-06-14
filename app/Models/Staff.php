@@ -37,6 +37,9 @@ class Staff extends Authenticatable
     protected $casts = [
         'hire_date' => 'date',
         'status' => 'string',
+        'password_changed_at' => 'datetime',
+        'last_login_at' => 'datetime',
+        'last_login_ip' => 'string',
     ];
 
     protected function fullName(): Attribute

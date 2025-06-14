@@ -32,13 +32,13 @@ use App\Http\Controllers\Admin\PaymentController;
 
 
 Route::get('/admin', [DashboardController::class, 'index'])
-->middleware(['auth:admin', 'verified'])->name('admin');
+    ->middleware(['auth:admin', 'verified', 'check.admin.status'])->name('admin');
 
-Route::get('/login-admin', function(){
+Route::get('/login-admin', function () {
     return view('auth.admin-login');
 })->middleware('guest')->name('login-admin');
 
-Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function () {
+Route::middleware(['auth:admin', 'check.admin.status'])->name('admin.')->prefix('admin')->group(function () {
 
     Route::resource('rooms', RoomController::class)->middleware('admin.permission:manage_rooms');
 
@@ -97,7 +97,7 @@ Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function
     Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy')->middleware('admin.permission:delete_task');
 
     // Inventory
-    Route::get('/inventories_page', fn () => view('admin.pages.inventories.index'))->name('inventories.page')->middleware('admin.permission:view_inventory');
+    Route::get('/inventories_page', fn() => view('admin.pages.inventories.index'))->name('inventories.page')->middleware('admin.permission:view_inventory');
     Route::resource('inventories', InventoryController::class)->except(['create', 'edit'])->middleware('admin.permission:manage_inventory');
 
     // Housekeeping
@@ -118,4 +118,4 @@ Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function
     Route::resource('payments', PaymentController::class)->except(['edit', 'update'])->middleware('admin.permission:manage_payments');
 });
 
-require __DIR__.'/auth_admin.php';
+require __DIR__ . '/auth_admin.php';

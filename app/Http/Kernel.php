@@ -36,13 +36,19 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\RecordLastLogin::class, // Custom middleware to record last login
         ],
 
         'api' => [
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-            \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
+            \Illuminate\Routing\Middleware\ThrottleRequests::class . ':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
+
+        'admin' => [ 
+            \App\Http\Middleware\CheckAdminStatus::class,
+        ],
+
     ];
 
     /**
@@ -65,5 +71,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'admin.permission' => \App\Http\Middleware\CheckAdminPermission::class,
+        'check.admin.status' => \App\Http\Middleware\CheckAdminStatus::class,
+        'record.last.login' => \App\Http\Middleware\RecordLastLogin::class,
     ];
 }

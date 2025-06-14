@@ -41,19 +41,42 @@ class AdminLoginRequest extends FormRequest
      *
      * @throws \Illuminate\Validation\ValidationException
      */
+
     public function authenticate()
     {
         $this->ensureIsNotRateLimited();
 
-        if (auth('admin')->attempt($this->only('email', 'password'), $this->filled('remember'))) {
-            RateLimiter::hit($this->throttleKey());
-
+        // Attempt login with 'admin' guard
+        if (!Auth::guard('admin')->attempt($this->only('email', 'password'), $this->boolean('remember'))) {
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
             ]);
         }
 
-        RateLimiter::clear($this->throttleKey());
+        // Get the logged-in admin
+        $admin = Auth::guard('admin')->user();
+
+        // Check if admin is not active
+        if ($admin->status !== 'active') {
+            Auth::guard('admin')->logout(); // Force logout
+            throw ValidationException::withMessages([
+                'email' => $this->getStatusErrorMessage($admin->status),
+            ]);
+        }
+
+    }
+
+    // Helper method to return the right error message
+    protected function getStatusErrorMessage($status)
+    {
+        switch ($status) {
+            case 'inactive':
+                return 'Your account is inactive. Please contact support.';
+            case 'terminated':
+                return 'Your account has been terminated.';
+            default:
+                return 'Account not authorized.';
+        }
     }
 
     /**
@@ -88,6 +111,6 @@ class AdminLoginRequest extends FormRequest
      */
     public function throttleKey()
     {
-        return Str::lower($this->input('email')).'|'.$this->ip();
+        return Str::lower($this->input('email')) . '|' . $this->ip();
     }
 }

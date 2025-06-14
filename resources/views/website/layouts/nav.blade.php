@@ -3,7 +3,8 @@
             to bottom,
             hsla(49, 96%, 10%, 0.5),
             hsla(49, 96%, 10%, 0.5)
-        ), url({{ asset('assets/website/img/hero.jpg') }})">
+        ), url({{ asset('assets/website/img/hero.jpg') }}) no-repeat center center ;
+        background-size: cover;">
 
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow-0" id="mainNavbar">
         <div class="container-fluid">

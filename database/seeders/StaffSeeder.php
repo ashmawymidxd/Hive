@@ -35,6 +35,7 @@ class StaffSeeder extends Seeder
             'department_id' => 1, // Assuming HR is department_id 1
             'role_id' => 1, // Assuming Admin is role_id 1
             'email' => Random::generate(10, 'a-z') . '@example.com',
+            'password' => Hash::make('admin1234'), // You should change this in production
             'phone' => '1234567890',
             'image_path' => 'profile.png',
             'status' => 'active',

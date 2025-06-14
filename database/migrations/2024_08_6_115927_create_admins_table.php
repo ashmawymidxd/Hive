@@ -23,8 +23,7 @@ class CreateAdminsTable extends Migration
             $table->string('phone')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
-            $table->timestamps();
-
+            
             // Additional security columns if needed
             $table->boolean('two_factor_enabled')->default(false);
             $table->string('two_factor_secret')->nullable();
@@ -32,10 +31,11 @@ class CreateAdminsTable extends Migration
             $table->timestamp('password_changed_at')->nullable();
             $table->ipAddress('last_login_ip')->nullable();
             $table->timestamp('last_login_at')->nullable();
-
+            
             // preferences
             $table->string('timezone')->default('UTC');
             $table->string('language')->default('en');
+            $table->timestamps();
         });
     }
 

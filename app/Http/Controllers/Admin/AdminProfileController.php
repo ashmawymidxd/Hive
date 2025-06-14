@@ -25,7 +25,8 @@ class AdminProfileController extends Controller
         $admin = Auth::guard('admin')->user();
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:admins,email,'.$admin->id,
             'phone' => 'nullable|string|max:20',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -62,7 +63,8 @@ class AdminProfileController extends Controller
             $admin->image_path = $imageName;
         }
 
-        $admin->name = $request->name;
+        $admin->first_name = $request->first_name;
+        $admin->last_name = $request->last_name;
         $admin->email = $request->email;
         $admin->phone = $request->phone;
         $admin->save();

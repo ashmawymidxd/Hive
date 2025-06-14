@@ -12,11 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('staff', function (Blueprint $table) {
-            $table->string('password')->nullable()->after('email');
-            $table->string('remember_token')->nullable()->after('password');
-            $table->timestamp('password_changed_at')->nullable()->after('updated_at');
-            $table->timestamp('last_login_at')->nullable()->after('password_changed_at');
-            $table->string('last_login_ip', 45)->nullable()->after('last_login_at');
+            // Additional security columns if needed
+            $table->boolean('two_factor_enabled')->default(false);
+            $table->string('two_factor_secret')->nullable();
+            $table->text('two_factor_recovery_codes')->nullable();
+
+            // preferences
+            $table->string('timezone')->default('UTC');
+            $table->string('language')->default('en');
         });
     }
 
@@ -26,7 +29,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('staff', function (Blueprint $table) {
-            //
+           
         });
     }
 };

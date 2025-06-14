@@ -170,6 +170,14 @@
                                                         data-staff-name="{{ $employee->first_name }} {{ $employee->last_name }}">
                                                         <i class="fas fa-key"></i>
                                                     </button>
+
+                                                @else
+                                                    <button type="button" class="btn btn-sm btn-light border"
+                                                        data-mdb-toggle="modal" data-mdb-target="#passwordModal"
+                                                        data-staff-id="{{ $employee->id }}"
+                                                        data-staff-name="{{ $employee->first_name }} {{ $employee->last_name }}">
+                                                        <i class="fas fa-cog"></i>
+                                                    </button>
                                                 @endif
                                             </div>
                                         </td>
