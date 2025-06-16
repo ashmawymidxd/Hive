@@ -95,7 +95,11 @@
                                             <i class="fas fa-city me-2 text-secondary"></i>City
                                         </label>
                                         <p class="form-control-plaintext ps-4">
-                                            {{ $guest->city ?? '<span class="text-muted fst-italic">Not provided</span>' }}
+                                           @if ($guest->city)
+                                                {{ $guest->city }}
+                                            @else
+                                                <span class="text-muted fst-italic">Not provided</span>
+                                            @endif
                                         </p>
                                     </div>
 
@@ -123,7 +127,7 @@
                                                 {{ $guest->reservations->count() }}
                                             </span>
                                             @if ($guest->reservations->count() > 0)
-                                                <a href="{{ route('reservations.index', ['guest_id' => $guest->id]) }}"
+                                                <a href="{{ route('admin.reservations.index', ['guest_id' => $guest->id]) }}"
                                                     class="ms-3 btn btn-sm btn-outline-primary">
                                                     View History <i class="fas fa-chevron-right ms-1"></i>
                                                 </a>

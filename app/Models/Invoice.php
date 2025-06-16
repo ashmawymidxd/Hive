@@ -21,11 +21,9 @@ class Invoice extends Model
         'notes'
     ];
 
-    // app/Models/Invoice.php
     protected $casts = [
         'issue_date' => 'date',
         'due_date' => 'date',
-        // ... other casts
     ];
 
     public function guest(): BelongsTo
@@ -38,7 +36,11 @@ class Invoice extends Model
         return $this->belongsTo(Room::class);
     }
 
-        // app/Models/Invoice.php
+    public function reservation()
+    {
+        return $this->belongsTo(Reservation::class);
+    }
+
     public function payments()
     {
         return $this->hasMany(Payment::class);

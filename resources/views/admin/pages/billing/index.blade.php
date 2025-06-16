@@ -45,11 +45,11 @@
                 <div class="tab-content mt-4">
                     <div class="tab-pane fade show active" id="invoice" role="tabpanel" aria-labelledby="invoice-tab">
                         <div class="d-flex align-items-center justify-content-between">
-                            <h4 class="text-dark font-bold">Invoices</h4>
-                            <button class="btn btn-primary shadow-0" id="generateInvoiceButton">
+                            <h4 class="text-dark font-bold">All Invoices</h4>
+                            {{-- <button class="btn btn-primary shadow-0" id="generateInvoiceButton">
                                 <i class="fa fa-add me-1"></i>
                                 <i class="fa fa-file-invoice-dollar"></i>
-                            </button>
+                            </button> --}}
                         </div>
                         <div class="row mt-4">
                             <div class="col-md-12">
@@ -541,65 +541,138 @@
 
 @push('js')
     <!-- Chart Script -->
-   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize chart
-    var options = {
-        chart: { type: 'bar', height: 350 },
-        series: [{ name: 'Amount ($)', data: [] }],
-        xaxis: { categories: [] },
-        colors: ['#9370DB'],
-        noData: { text: 'Loading data...' }
-    };
 
-    var chart = new ApexCharts(document.querySelector("#expenses-chart"), options);
-    chart.render();
-
-    // Fetch data with proper error handling
-    async function fetchChartData() {
-        try {
-            const response = await fetch("{{ route('admin.dashboard.chart-data') }}", {
-                headers: {
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const contentType = response.headers.get('content-type');
-            if (!contentType || !contentType.includes('application/json')) {
-                throw new TypeError("Response wasn't JSON");
-            }
-
-            const data = await response.json();
-            
-            chart.updateOptions({
-                xaxis: { categories: data.departments }
-            });
-            
-            chart.updateSeries([{
-                name: 'Amount ($)',
-                data: data.amounts
-            }]);
-
-        } catch (error) {
-            console.error('Error:', error);
-            chart.updateOptions({
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    {{-- expense chart --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize chart
+            var options = {
+                chart: {
+                    type: 'bar',
+                    height: 350
+                },
+                series: [{
+                    name: 'Amount ($)',
+                    data: []
+                }],
+                xaxis: {
+                    categories: []
+                },
+                colors: ['#9370DB'],
                 noData: {
-                    text: 'Error loading data. Please try again.'
+                    text: 'Loading data...'
                 }
-            });
-        }
-    }
+            };
 
-    // Initial load
-    fetchChartData();
-});
-</script>
+            var chart = new ApexCharts(document.querySelector("#expenses-chart"), options);
+            chart.render();
+
+            // Fetch data with proper error handling
+            async function fetchChartData() {
+                try {
+                    const response = await fetch("{{ route('admin.dashboard.chart-data') }}", {
+                        headers: {
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const contentType = response.headers.get('content-type');
+                    if (!contentType || !contentType.includes('application/json')) {
+                        throw new TypeError("Response wasn't JSON");
+                    }
+
+                    const data = await response.json();
+
+                    chart.updateOptions({
+                        xaxis: {
+                            categories: data.departments
+                        }
+                    });
+
+                    chart.updateSeries([{
+                        name: 'Amount ($)',
+                        data: data.amounts
+                    }]);
+
+                } catch (error) {
+                    console.error('Error:', error);
+                    chart.updateOptions({
+                        noData: {
+                            text: 'Error loading data. Please try again.'
+                        }
+                    });
+                }
+            }
+
+            // Initial load
+            fetchChartData();
+        });
+    </script>
+    <!-- daily chart -->
+    <script>
+        var dailyLineOptions = {
+            chart: {
+                type: 'line',
+                height: 350,
+                toolbar: {
+                    show: false
+                }
+            },
+            series: [{
+                name: 'Revenue',
+                data: [3000, 2500, 1800, 9900, 4200, 3900, 2300, 3300, 4000, 3100, 3300, 4200, 4300, 4300, 4900,
+                    6000, 6100, 5900, 6100, 5800, 6200, 5800, 6000, 7000, 7400, 7800, 7600, 7500, 7200
+                ]
+            }, {
+                name: 'Expenses',
+                data: [2500, 2000, 3000, 10000, 4700, 3800, 3800, 4000, 4100, 4200, 4400, 4600, 4700, 4800,
+                    2300, 3200, 3400, 3500, 3700, 3900, 4100, 3800, 3900, 3700, 4100, 4300, 4200, 4100, 4000
+                ]
+            }],
+            xaxis: {
+                categories: Array.from({
+                    length: 29
+                }, (_, i) => i + 1),
+                title: {
+                    text: 'Day of Month'
+                }
+            },
+            yaxis: {
+                title: {
+                    text: 'Amount ($)'
+                }
+            },
+            colors: ['#7B68EE', '#3CB371'],
+            stroke: {
+                curve: 'smooth',
+                width: 2
+            },
+            markers: {
+                size: 4
+            },
+            tooltip: {
+                shared: true,
+                intersect: false,
+                y: {
+                    formatter: function(val) {
+                        return `$${val}`;
+                    }
+                }
+            },
+            legend: {
+                position: 'bottom'
+            }
+        };
+
+        var dailyLineChart = new ApexCharts(document.querySelector("#daily-line-chart"), dailyLineOptions);
+        dailyLineChart.render();
+    </script>
     <!-- weekly chart -->
     <script>
         var weeklyBarOptions = {

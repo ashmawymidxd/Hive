@@ -56,6 +56,10 @@ class AdminLoginRequest extends FormRequest
         // Get the logged-in admin
         $admin = Auth::guard('admin')->user();
 
+        // last_login_at
+        $admin->last_login_at = now();
+        $admin->save();
+
         // Check if admin is not active
         if ($admin->status !== 'active') {
             Auth::guard('admin')->logout(); // Force logout

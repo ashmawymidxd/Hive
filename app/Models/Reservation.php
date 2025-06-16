@@ -8,7 +8,7 @@ use Illuminate\Notifications\Notifiable;
 
 class Reservation extends Model
 {
-    use HasFactory,Notifiable;
+    use HasFactory, Notifiable;
 
     protected $fillable = [
         'guest_id',
@@ -47,6 +47,11 @@ class Reservation extends Model
         return $this->belongsTo(Room::class);
     }
 
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
+    }
+
     public function checkIn()
     {
         $this->update([
@@ -54,7 +59,6 @@ class Reservation extends Model
             'actual_check_in' => now()
         ]);
 
-        // Update room status to occupied
         $this->room->update(['status' => 'occupied']);
     }
 
@@ -65,7 +69,6 @@ class Reservation extends Model
             'actual_check_out' => now()
         ]);
 
-        // Update room status to available (or maintenance if needed)
         $this->room->update(['status' => 'available']);
     }
 

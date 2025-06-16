@@ -112,7 +112,7 @@
     <section>
         <div class="row mt-4">
             <div class="col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="100">
-                <div class="card p-2 shadow-2 border">
+                <div class="card p-2 shadow-2 border-start border-success border-3">
                     <div class="d-flex flex-row align-items-center gap-3">
                         <span class="badge rounded-circle p-3 badge-success">
                             <i class="fa fa-bed"></i>
@@ -128,7 +128,7 @@
             </div>
 
             <div class="col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="200">
-                <div class="card p-2 shadow-2 border">
+                <div class="card p-2 shadow-2 border-start border-success border-3">
                     <div class="d-flex flex-row align-items-center gap-3">
                         <span class="badge rounded-circle p-3 badge-success">
                             <i class="fa fa-bed"></i>
@@ -144,7 +144,7 @@
             </div>
 
             <div class="col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="300">
-                <div class="card p-2 shadow-2 border">
+                <div class="card p-2 shadow-2 border-start border-primary border-3 ">
                     <div class="d-flex flex-row align-items-center gap-3">
                         <span class="badge rounded-circle p-3 badge-primary">
                             <i class="fa fa-bed"></i>
@@ -160,7 +160,7 @@
             </div>
 
             <div class="col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="400">
-                <div class="card p-2 shadow-2 border">
+                <div class="card p-2 shadow-2 border-start border-warning border-3">
                     <div class="d-flex flex-row align-items-center gap-3">
                         <span class="badge rounded-circle p-3 badge-warning">
                             <i class="fa fa-warning"></i>

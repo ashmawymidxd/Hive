@@ -51,9 +51,94 @@
            <input id="search-input" type="search" class="form-control border-0" placeholder="Search at any table..."
                aria-label="Search">
        </div>
-       <div class="d-flex align-items-center">
-           <!-- Notification Dropdown -->
-           <div class="notification-dropdown mx-2 position-relative">
+       <div class="d-flex align-items-center justify-content-end flex-grow-1">
+
+           {{-- settings dropdown --}}
+           <div class="dropdown settings-dropdown me-4">
+               <a class="list-group-item" href="#" id="settingsDropdown" data-mdb-toggle="dropdown"
+                   aria-expanded="false">
+                   <i class="fa-solid fa-gear"></i> Settings
+               </a>
+               <ul class="dropdown-menu dropdown-menu-end p-3 shadow-0 border mt-2" aria-labelledby="settingsDropdown"
+                   style="width: 300px;">
+                     <li class="border-bottom border-secondary">
+                          <a class="dropdown-item" href="">
+                            <i class="fas fa-cog me-2"></i> General Settings
+                          </a>
+                     </li>
+                     <li class="border-bottom border-secondary">
+                          <a class="dropdown-item" href="">
+                            <i class="fas fa-envelope me-2"></i> Email Settings
+                          </a>
+                     </li>
+                     <li class="">
+                          <a class="dropdown-item" href="">
+                            <i class="fas fa-credit-card me-2"></i> Payment Settings
+                          </a>
+                     </li>
+               </ul>
+           </div>
+
+           {{-- to do list --}}
+              <div class="dropdown todo-dropdown me-4">
+                <a class="list-group-item" href="#" id="todoDropdown" data-mdb-toggle="dropdown"
+                   aria-expanded="false">
+                   <i class="fa-solid fa-list-check"></i> 
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end p-3 shadow-0 border mt-2" aria-labelledby="todoDropdown"
+                   style="width: 300px;">
+                    <li class="border-bottom border-secondary">
+                        <a class="dropdown-item" href="">
+                            <i class="fas fa-plus me-2"></i> Add New Task
+                        </a>
+                    </li>
+                    <li class="border-bottom border-secondary">
+                        <a class="dropdown-item" href="">
+                            <i class="fas fa-tasks me-2"></i> View Tasks
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="">
+                            <i class="fas fa-check-circle me-2"></i> Completed Tasks
+                        </a>
+                    </li>
+                </ul>
+              </div>
+
+           <div class="dropdown timer-dropdown me-2">
+               <a class="list-group-item" href="#" id="timerDropdown" data-mdb-toggle="dropdown"
+                   aria-expanded="false">
+                   <i class="fa-solid fa-clock fa-spin fa-spin-reverse"></i>
+               </a>
+               <ul class="dropdown-menu dropdown-menu-end p-3 shadow-0 border mt-2" aria-labelledby="timerDropdown"
+                   style="width: 300px;">
+                   <li class="mt-2">
+                       <small class="dropdown-item-text text-muted">
+                           Last login:
+                           {{ auth('admin')->user()->last_login_at ? auth('admin')->user()->last_login_at : 'Never' }}
+                       </small>
+                   </li>
+                   <li class="border-bottom border-secondary">
+                       <a class="dropdown-item" href="">
+                           <i class="fas fa-play me-2"></i> Start Timer
+                       </a>
+                   </li>
+                   <li class="border-bottom border-secondary">
+                       <a class="dropdown-item" href="">
+                           <i class="fas fa-stop me-2"></i> Stop Timer
+                       </a>
+                   </li>
+                   <li>
+                       <a class="dropdown-item" href="">
+                           <i class="fas fa-redo me-2"></i> Reset Timer
+                       </a>
+                   </li>
+               </ul>
+           </div>
+
+
+
+           <div class="notification-dropdown position-relative me-2">
                @if (auth()->user()->unreadNotifications->count() > 0)
                    <i class="fas fa-bell mx-3 notification-icon" id="notificationIcon"></i>
                    <span class="badge-notification">{{ auth()->user()->unreadNotifications->count() }}</span>

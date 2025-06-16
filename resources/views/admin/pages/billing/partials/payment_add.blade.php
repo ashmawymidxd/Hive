@@ -25,7 +25,8 @@
                                 <option value="">Select Invoice</option>
                                 @foreach ($invoices as $invoice)
                                     <option value="{{ $invoice->id }}" data-guest="{{ $invoice->guest_id }}">
-                                        {{ $invoice->invoice_number }} - ${{ number_format($invoice->amount, 2) }}
+                                        {{ $invoice->invoice_number }} - ${{ number_format($invoice->amount, 2) }} - 
+                                        {{ $invoice->guest->getFullName() }}
                                     </option>
                                 @endforeach
                             </select>

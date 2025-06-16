@@ -24,6 +24,7 @@ class InvoiceController extends Controller
         $guests = Guest::all();
         $rooms = Room::all();
         $invoices = Invoice::with(['guest', 'room'])->latest()->get();
+
         // Get today's date
         $today = now()->format('Y-m-d');
         $yesterday = now()->subDay()->format('Y-m-d');
@@ -99,10 +100,9 @@ class InvoiceController extends Controller
             'status' => 'pending',
         ]);
 
-        // Notify all admins
-
-        $admins = Admin::all();
-        Notification::send($admins, new InvoiceNotification($invoice, 'created'));
+        // Notify current authenticated admin
+        $admin = auth('admin')->user();
+        $admin->notify(new InvoiceNotification($invoice, 'created'));
 
         // Notify the guest (email only)
         $invoice->guest->notify(new InvoiceNotification($invoice, 'created', true));

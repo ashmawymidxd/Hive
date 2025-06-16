@@ -7,6 +7,7 @@ use App\Models\Admin;
 use App\Models\Reservation;
 use App\Models\Guest;
 use App\Models\Room;
+use App\Models\Staff;
 use Illuminate\Http\Request;
 use App\Notifications\ReservationCreatedNotification;
 class ReservationController extends Controller
@@ -73,14 +74,12 @@ class ReservationController extends Controller
             $room->update(['status' => 'occupied']);
         }
 
-        // Notify admins about the new reservation
+        // Notify current authenticated admin about the new reservation
         $reservation->load('guest', 'room'); // Load related models for notification
-        $admins = Admin::all();
-        foreach ($admins as $admin) {
-            $admin->notify(new ReservationCreatedNotification($reservation));
-        }
+        $admin = auth('admin')->user();
+        $admin->notify(new ReservationCreatedNotification($reservation));
 
-        // Notift guest
+        // Notify guest
         $reservation->guest->notify(new ReservationCreatedNotification($reservation));
 
 

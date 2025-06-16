@@ -325,7 +325,7 @@
                 <div class="card shadow-0 p-4 border">
                     <h4 class="text-dark font-bold">Task Assignments</h4>
                     @foreach ($tasks as $task)
-                        <div class="task-item hover-primary d-flex align-items-center justify-content-between border p-3 rounded-3 mt-4"
+                        <div class="task-item hover-primary d-flex align-items-center justify-content-between border  p-3 rounded-3 mt-4"
                             data-task-id="{{ $task->id }}" data-task-name="{{ $task->name }}"
                             data-task-description="{{ $task->description }}" data-task-status="{{ $task->status }}"
                             data-task-priority="{{ $task->priority }}" data-task-due-date="{{ $task->due_date }}">

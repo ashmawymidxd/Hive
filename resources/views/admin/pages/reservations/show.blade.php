@@ -26,6 +26,26 @@
     <section>
         <div class="row">
             <div class="col-12">
+
+                {{-- display error messages with close btn --}}
+                @if ($errors->any())
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Error!</strong> Please check the form below for errors.
+                        <button type="button" class="btn-close" data-mdb-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li class="text-danger">{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                @endif
+                {{-- display success message with close btn --}}
+                @if (session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Success!</strong> {{ session('success') }}
+                        <button type="button" class="btn-close" data-mdb-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
                 <div class="card shadow-sm border">
                     <div class="card-header d-flex justify-content-between align-items-center bg-light">
                         <div>
@@ -245,13 +265,9 @@
                                 @endif
 
                                 @if ($reservation->isCheckedIn())
-                                    <form action="{{ route('admin.reservations.check-out', $reservation->id) }}"
-                                        method="POST" class="d-inline">
-                                        @csrf
-                                        <button type="submit" class="btn btn-warning shadow-sm">
-                                            <i class="fas fa-sign-out-alt me-1"></i> Check Out
-                                        </button>
-                                    </form>
+                                    <button type="submit" class="btn btn-warning shadow-sm" id="generateInvoiceButton">
+                                        <i class="fas fa-sign-out-alt me-1"></i> Check Out
+                                    </button>
                                 @endif
 
                                 @if ($reservation->status === 'confirmed' && $reservation->check_in->isPast())
@@ -301,6 +317,8 @@
             </div>
         </div>
     </section>
+
+    @include('admin.pages.reservations.partials.check_out')
 @endsection
 <!-- Confirmation Dialog Script -->
 @push('js')
@@ -329,6 +347,11 @@
                     });
                 });
             });
+        });
+    </script>
+    <script>
+        $("#generateInvoiceButton").click(function() {
+            $("#invoiceCheckOutModal").modal('show');
         });
     </script>
 @endpush
