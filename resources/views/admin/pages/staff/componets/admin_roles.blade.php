@@ -47,7 +47,7 @@
          }
      }
  </style>
- <div class="form-group">
+ <div class="form-group mt-3">
      <label>Permissions</label>
      <div class="row mt-3">
          @php
@@ -96,6 +96,9 @@
                  'print_invoice' => 'Print Invoice',
                  'mark_invoice_paid' => 'Mark Invoice as Paid',
                  'manage_payments' => 'Manage Payments',
+                 'manage_expenses' => 'Manage Expenses',
+                 'create_expense_category' => 'Create Expense Category',
+                 'delete_expense_category' => 'Delete Expense Category',
              ];
          @endphp
 

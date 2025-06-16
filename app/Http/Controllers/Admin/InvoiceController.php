@@ -12,6 +12,9 @@ use App\Models\Admin;
 use App\Models\Payment;
 use App\Notifications\InvoiceNotification;
 use Illuminate\Support\Facades\Notification;
+use App\Models\Expense;
+use App\Models\ExpenseCategory;
+use App\Models\Department;
 
 
 class InvoiceController extends Controller
@@ -27,12 +30,12 @@ class InvoiceController extends Controller
 
         // Calculate metrics
         $todayPayments = Payment::whereDate('payment_date', $today)
-                            ->where('status', 'completed')
-                            ->sum('amount');
+            ->where('status', 'completed')
+            ->sum('amount');
 
         $yesterdayPayments = Payment::whereDate('payment_date', $yesterday)
-                            ->where('status', 'completed')
-                            ->sum('amount');
+            ->where('status', 'completed')
+            ->sum('amount');
 
         $percentageChange = $yesterdayPayments > 0
             ? round(($todayPayments - $yesterdayPayments) / $yesterdayPayments * 100, 1)
@@ -45,9 +48,15 @@ class InvoiceController extends Controller
 
         $payments = Payment::with(['guest', 'invoice'])->get();
 
+        $expenses = Expense::with(['category', 'department'])->latest()->get();
+        $categories = ExpenseCategory::all();
+        $departments = Department::all();
 
-        return view('admin.pages.billing.index',
-            compact('invoices',
+
+        return view(
+            'admin.pages.billing.index',
+            compact(
+                'invoices',
                 'guests',
                 'rooms',
                 'payments',
@@ -55,8 +64,12 @@ class InvoiceController extends Controller
                 'percentageChange',
                 'pendingPayments',
                 'pendingCount',
-                'recentTransactions'
-            ));
+                'recentTransactions',
+                'expenses',
+                'categories',
+                'departments'
+            )
+        );
     }
 
     public function create()

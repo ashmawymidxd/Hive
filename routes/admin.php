@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\HousekeepingItemController;
 use App\Http\Controllers\Admin\VendorController;
 use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\PaymentController;
+use App\Http\Controllers\Admin\ExpenseController;
 /*
 |--------------------------------------------------------------------------
 | admin Routes
@@ -116,6 +117,16 @@ Route::middleware(['auth:admin', 'check.admin.status'])->name('admin.')->prefix(
 
     // Payments
     Route::resource('payments', PaymentController::class)->except(['edit', 'update'])->middleware('admin.permission:manage_payments');
+
+    // expenses
+    Route::resource('expenses', ExpenseController::class)->except(['index', 'create'])->middleware('admin.permission:manage_expenses');
+    // expenses.storeCategory
+    Route::post('expenses/categories', [ExpenseController::class, 'storeCategory'])->name('expenses.storeCategory')->middleware('admin.permission:create_expense_category');
+    // expenses.destroyCategory
+    Route::delete('expenses/categories/{category}', [ExpenseController::class, 'destroyCategory'])->name('expenses.destroyCategory')->middleware('admin.permission:delete_expense_category');
+
+    // getChartData
+    Route::get('dashboard/chart-data', [ExpenseController::class, 'getChartData'])->name('dashboard.chart-data');
 });
 
 require __DIR__ . '/auth_admin.php';

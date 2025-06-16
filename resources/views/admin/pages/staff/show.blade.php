@@ -72,149 +72,151 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="staff-details">
-                                    {{-- task counts --}}
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div
+                                                class="d-flex flex-column gap-3 justify-content-start align-items-start my-3">
+                                                <div class="d-flex align-items-center gap-2 text-muted">
+                                                    <i class="fas fa-shield-alt"></i>
+                                                    <h5 class="mb-0">Security Settings</h5>
+                                                </div>
 
-                                    <div class="d-flex flex-column gap-3 justify-content-start align-items-start my-3">
-                                        <!-- Basic Information Section -->
-                                        <div class="d-flex align-items-center gap-2 text-muted">
-                                            <i class="fas fa-id-card"></i>
-                                            <h5 class="mb-0">Basic Information</h5>
-                                        </div>
+                                                <div class="d-flex align-items-center gap-3 ps-4">
+                                                    <i class="fas fa-key text-primary"></i>
+                                                    <div>
+                                                        <strong>Two Factor Authentication:</strong>
+                                                        <span
+                                                            class="badge bg-{{ $staff->two_factor_enabled ? 'success' : 'secondary' }}">
+                                                            {{ $staff->two_factor_enabled ? 'Enabled' : 'Disabled' }}
+                                                        </span>
+                                                    </div>
+                                                </div>
 
-                                        <div class="d-flex align-items-center gap-3 ps-4">
-                                            <i class="fas fa-phone text-primary"></i>
-                                            <div>
-                                                <strong>Phone:</strong> {{ $staff->phone }}
+                                                <div class="d-flex align-items-center gap-3 ps-4">
+                                                    <i class="fas fa-user-secret text-primary"></i>
+                                                    <div>
+                                                        <strong>Two Factor Secret:</strong>
+                                                        <span class="text-monospace small">
+                                                            {{ $staff->two_factor_secret ? substr($staff->two_factor_secret, 0, 4) . '••••••••' : 'N/A' }}
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="d-flex align-items-center gap-3 ps-4">
+                                                    <i class="fas fa-key text-primary"></i>
+                                                    <div>
+                                                        <strong>Recovery Codes:</strong>
+                                                        <span
+                                                            class="{{ $staff->two_factor_recovery_codes ? 'text-success' : 'text-secondary' }}">
+                                                            {{ $staff->two_factor_recovery_codes ? 'Available' : 'N/A' }}
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="d-flex align-items-center gap-3 ps-4">
+                                                    <i class="fas fa-globe text-primary"></i>
+                                                    <div>
+                                                        <strong>Timezone:</strong>
+                                                        <span class="badge bg-info">
+                                                            {{ $staff->timezone }}
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="d-flex align-items-center gap-3 ps-4">
+                                                    <i class="fas fa-language text-primary"></i>
+                                                    <div>
+                                                        <strong>Language:</strong>
+                                                        <span class="badge bg-light text-dark">
+                                                            {{ $staff->language }}
+                                                        </span>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
+                                        <div class="col-md-6">
+                                            <div
+                                                class="d-flex flex-column gap-3 justify-content-start align-items-start my-3">
+                                                <!-- Basic Information Section -->
+                                                <div class="d-flex align-items-center gap-2 text-muted">
+                                                    <i class="fas fa-id-card"></i>
+                                                    <h5 class="mb-0">Basic Information</h5>
+                                                </div>
 
-                                        <div class="d-flex align-items-center gap-3 ps-4">
-                                            <i class="fas fa-lock text-primary"></i>
-                                            <div>
-                                                <strong>Password:</strong>
-                                                <span class="{{ $staff->password ? 'text-success' : 'text-secondary' }}">
-                                                    {{ $staff->password ? '••••••••' : 'N/A' }}
-                                                </span>
-                                            </div>
-                                        </div>
+                                                <div class="d-flex align-items-center gap-3 ps-4">
+                                                    <i class="fas fa-phone text-primary"></i>
+                                                    <div>
+                                                        <strong>Phone:</strong> {{ $staff->phone }}
+                                                    </div>
+                                                </div>
 
-                                        <div class="d-flex align-items-center gap-3 ps-4">
-                                            <i class="fas fa-clock text-primary"></i>
-                                            <div>
-                                                <strong>Last Login:</strong>
-                                                <span
-                                                    class="{{ $staff->last_login_at ? 'text-success' : 'text-secondary' }}">
-                                                    {{ $staff->last_login_at ? $staff->last_login_at->format('M d, Y H:i') : 'Never logged in' }}
-                                                </span>
-                                            </div>
-                                        </div>
+                                                <div class="d-flex align-items-center gap-3 ps-4">
+                                                    <i class="fas fa-lock text-primary"></i>
+                                                    <div>
+                                                        <strong>Password:</strong>
+                                                        <span
+                                                            class="{{ $staff->password ? 'text-success' : 'text-secondary' }}">
+                                                            {{ $staff->password ? '••••••••' : 'N/A' }}
+                                                        </span>
+                                                    </div>
+                                                </div>
 
-                                        <div class="d-flex align-items-center gap-3 ps-4">
-                                            <i class="fas fa-network-wired text-primary"></i>
-                                            <div>
-                                                <strong>Last Login IP:</strong>
-                                                <span
-                                                    class="{{ $staff->last_login_ip ? 'text-monospace' : 'text-secondary' }}">
-                                                    {{ $staff->last_login_ip ?? 'N/A' }}
-                                                </span>
+                                                <div class="d-flex align-items-center gap-3 ps-4">
+                                                    <i class="fas fa-clock text-primary"></i>
+                                                    <div>
+                                                        <strong>Last Login:</strong>
+                                                        <span
+                                                            class="{{ $staff->last_login_at ? 'text-success' : 'text-secondary' }}">
+                                                            {{ $staff->last_login_at ? $staff->last_login_at->format('M d, Y H:i') : 'Never logged in' }}
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="d-flex align-items-center gap-3 ps-4">
+                                                    <i class="fas fa-network-wired text-primary"></i>
+                                                    <div>
+                                                        <strong>Last Login IP:</strong>
+                                                        <span
+                                                            class="{{ $staff->last_login_ip ? 'text-monospace' : 'text-secondary' }}">
+                                                            {{ $staff->last_login_ip ?? 'N/A' }}
+                                                        </span>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!-- Security Section -->
-                                    <div class="d-flex flex-column gap-3 justify-content-start align-items-start my-3">
-                                        <div class="d-flex align-items-center gap-2 text-muted">
-                                            <i class="fas fa-shield-alt"></i>
-                                            <h5 class="mb-0">Security Settings</h5>
-                                        </div>
-
-                                        <div class="d-flex align-items-center gap-3 ps-4">
-                                            <i class="fas fa-key text-primary"></i>
-                                            <div>
-                                                <strong>Two Factor Authentication:</strong>
-                                                <span
-                                                    class="badge bg-{{ $staff->two_factor_enabled ? 'success' : 'secondary' }}">
-                                                    {{ $staff->two_factor_enabled ? 'Enabled' : 'Disabled' }}
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        <div class="d-flex align-items-center gap-3 ps-4">
-                                            <i class="fas fa-user-secret text-primary"></i>
-                                            <div>
-                                                <strong>Two Factor Secret:</strong>
-                                                <span class="text-monospace small">
-                                                    {{ $staff->two_factor_secret ? substr($staff->two_factor_secret, 0, 4) . '••••••••' : 'N/A' }}
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        <div class="d-flex align-items-center gap-3 ps-4">
-                                            <i class="fas fa-key text-primary"></i>
-                                            <div>
-                                                <strong>Recovery Codes:</strong>
-                                                <span
-                                                    class="{{ $staff->two_factor_recovery_codes ? 'text-success' : 'text-secondary' }}">
-                                                    {{ $staff->two_factor_recovery_codes ? 'Available' : 'N/A' }}
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        <div class="d-flex align-items-center gap-3 ps-4">
-                                            <i class="fas fa-globe text-primary"></i>
-                                            <div>
-                                                <strong>Timezone:</strong>
-                                                <span class="badge bg-info">
-                                                    {{ $staff->timezone }}
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        <div class="d-flex align-items-center gap-3 ps-4">
-                                            <i class="fas fa-language text-primary"></i>
-                                            <div>
-                                                <strong>Language:</strong>
-                                                <span class="badge bg-light text-dark">
-                                                    {{ $staff->language }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {{-- department and hire date --}}
-
-
                                 </div>
-
                             </div>
                             <div class="col-md-6">
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <div class="d-flex gap-3 justify-content-start align-items-center mb-3 ">
-                                        <i
-                                            class="fa fa-{{ $staff->status == 'active' ? 'check-circle text-success' : ($staff->status == 'on_leave' ? 'clock text-warning' : 'times-circle text-danger') }} fa-2x"></i>
-                                        <span
-                                            class="badge badge-{{ $staff->status == 'active' ? 'success' : ($staff->status == 'on_leave' ? 'warning' : 'danger') }}">
-                                            {{ ucfirst($staff->status) }}
-                                        </span>
-                                    </div>
-
-                                    <h5 class="font-bold mb-3">{{ $staff->role->name }}</h5>
-                                </div>
-                                  <div
+                                <div
                                     class="text-center mb-4 d-flex gap-3 align-items-center rounded-3 badge badge-info p-3  border-start border-3 border-info">
                                     <div
                                         class="staff-avatar border border-3 border-info rounded-circle d-flex justify-content-center align-items-center p-1">
                                         @if ($staff->image_path)
-                                            <img src="{{ asset('assets/admin/img/admin/' . $staff->image_path) }}" alt="Staff Avatar"
-                                                class="img-fluid rounded-circle object-fit-cover" style="width: 60px; height: 60px;">
+                                            <img src="{{ asset('assets/admin/img/admin/' . $staff->image_path) }}"
+                                                alt="Staff Avatar" class="img-fluid rounded-circle object-fit-cover"
+                                                style="width: 60px; height: 60px;">
                                         @else
-                                           <span class="fa fa-user-circle fa-3x"></span>
+                                            <span class="fa fa-user-circle fa-3x"></span>
                                         @endif
                                     </div>
-                                    <div class="d-flex flex-column align-items-start">
-                                        <h5 class="text-dark fw-bold">{{ $staff->first_name }} {{ $staff->last_name }}
-                                        </h5>
-                                        <p class="text-muted">{{ $staff->email }}</p>
+                                    <div class="d-flex align-items-center justify-content-between gap-3 w-100">
+                                        <div class="d-flex flex-column align-items-start">
+                                            <h5 class="text-dark fw-bold">{{ $staff->first_name }} {{ $staff->last_name }}
+                                            </h5>
+                                            <p class="text-muted">{{ $staff->email }}</p>
+                                        </div>
+                                        <div class="mt-3">
+                                            <p class="font-bold mb-3 fa-xl">{{ $staff->role->name }}</p>
+                                            <div class="d-flex gap-3 justify-content-start align-items-center mb-3 ">
+                                                <i
+                                                    class="fa fa-{{ $staff->status == 'active' ? 'check-circle text-success' : ($staff->status == 'on_leave' ? 'clock text-warning' : 'times-circle text-danger') }} fa-2x"></i>
+                                                <span
+                                                    class="badge badge-{{ $staff->status == 'active' ? 'success' : ($staff->status == 'on_leave' ? 'warning' : 'danger') }}">
+                                                    {{ ucfirst($staff->status) }}
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="border-top d-flex align-items-center justify-content-center mb-4">
@@ -227,7 +229,7 @@
                                         <small>{{ $staff->hire_date->format('M d, Y') }}</small>
                                     </div>
                                 </div>
-                              
+
                                 <div
                                     class="d-flex justify-content-around align-items-center justify-content-center mb-3 flex-wrap">
                                     <!-- Total Tasks Assigned -->

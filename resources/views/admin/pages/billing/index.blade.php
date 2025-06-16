@@ -243,8 +243,11 @@
                     <div class="tab-pane fade" id="expense" role="tabpanel" aria-labelledby="expense-tab">
                         <div class="d-flex align-items-center justify-content-between">
                             <h4 class="text-dark font-bold">Payment Processing</h4>
-                            <button class="btn btn-primary shadow-0 ">
-                                <i class="fa fa-file-invoice-dollar"></i>
+
+                            {{-- show btn modal --}}
+                            <button type="button" class="btn btn-primary shadow-0" data-mdb-toggle="modal"
+                                data-mdb-target="#addExpenseModal">
+                                <i class="fa fa-plus me-1"></i>
                                 Add New Expense
                             </button>
                         </div>
@@ -252,21 +255,32 @@
                             <div class="col-md-4 mt-2">
                                 <div class="card shadow-0 border p-3">
                                     <small class="text-secondary">Total Expenses (Monthly)</small>
-                                    <h3 class="text-dark font-bold">$24,750.25</h3>
+                                    <h3 class="text-dark font-bold">$ {{ \App\Models\Expense::sum('amount') }}</h3>
                                     <small class="text-secondary">-2.5% from last month</small>
                                 </div>
                             </div>
                             <div class="col-md-4 mt-2">
                                 <div class="card shadow-0 border p-3">
                                     <small class="text-secondary">Largest Category</small>
-                                    <h3 class="text-dark font-bold">F&B</h3>
-                                    <small class="text-secondary">$4,500 this month</small>
+                                    <h3 class="text-dark font-bold">
+                                        {{ \App\Models\Expense::select('category_id')->withCount('category')->orderBy('category_count', 'desc')->first()
+                                            ?->category?->name ?? 'N/A' }}
+                                    </h3>
+                                    <small class="text-secondary">$
+                                        {{ \App\Models\Expense::where(
+                                            'category_id',
+                                            \App\Models\Expense::select('category_id')->withCount('category')->orderBy('category_count', 'desc')->first()
+                                                ?->category?->id ?? 0,
+                                        )->sum('amount') }}
+                                        this month</small>
                                 </div>
                             </div>
                             <div class="col-md-4 mt-2">
                                 <div class="card shadow-0 border p-3">
                                     <small class="text-secondary">Total Departments</small>
-                                    <h3 class="text-dark font-bold">5</h3>
+                                    <h3 class="text-dark font-bold">
+                                        {{ \App\Models\Department::count() }}
+                                    </h3>
                                     <small class="text-secondary">Tracking expenses</small>
                                 </div>
                             </div>
@@ -282,45 +296,62 @@
                         <div class="row mt-4">
                             <div class="col-md-12">
                                 <div class="card shadow-0 border p-4">
-                                    <h4 class="text-dark">Recent Expenses</h4>
-                                    <div class="table-responsive">
-                                        <table class="table ">
-                                            <thead class="bg-light">
-                                                <tr>
-                                                    <th>ID</th>
-                                                    <th>Category</th>
-                                                    <th>Description</th>
-                                                    <th>Department</th>
-                                                    <th>Amount</th>
-                                                    <th>Date</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
+                                    <div class="d-flex align-items-center justify-content-between mb-3">
+                                        <h4 class="text-dark">Recent Expenses</h4>
+                                        <button class="btn btn-outline-primary" data-mdb-toggle="modal"
+                                            data-mdb-target="#manageCategoriesModal">
+                                            Manage Categories
+                                        </button>
+                                    </div>
+                                    <table class="table w-100" id="expensesTable">
+                                        <thead class="bg-light">
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Category</th>
+                                                <th>Description</th>
+                                                <th>Department</th>
+                                                <th>Amount</th>
+                                                <th>Date</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($expenses as $expense)
                                                 <tr class="hover-primary">
-                                                    <td>EXP-2023-001</td>
+                                                    <td>{{ $expense->expense_number }}</td>
                                                     <td>
                                                         <span class="border btn-rounded p-1">
-                                                            Supplies
+                                                            {{ $expense->category->name }}
                                                         </span>
                                                     </td>
-                                                    <td>Housekeeping supplies</td>
-                                                    <td>Housekeeping</td>
-                                                    <td>$450.00</td>
-                                                    <td>2023-10-15</td>
-
+                                                    <td>{{ $expense->description }}</td>
+                                                    <td>{{ $expense->department->name }}</td>
+                                                    <td>${{ number_format($expense->amount, 2) }}</td>
+                                                    <td>{{ $expense->date->format('Y-m-d') }}</td>
                                                     <td>
-                                                        <button class="btn btn-outline-secondary">
-                                                            View Details
-                                                        </button>
-
+                                                        <a href="{{ route('admin.expenses.show', $expense) }}"
+                                                            class="btn btn-light border btn-sm shadow-0">
+                                                            <i class="fa fa-eye"></i>
+                                                        </a>
+                                                        <a href="{{ route('admin.expenses.edit', $expense) }}"
+                                                            class="btn btn-light border btn-sm shadow-0">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </a>
+                                                        <form action="{{ route('admin.expenses.destroy', $expense) }}"
+                                                            method="POST" style="display: inline-block;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit"
+                                                                class="btn btn-light border btn-sm shadow-0 delete-expense"
+                                                                onclick="return confirm('Are you sure?')">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                        </form>
                                                     </td>
                                                 </tr>
-
-                                            </tbody>
-                                        </table>
-
-                                    </div>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -504,102 +535,71 @@
     @include('admin.pages.billing.partials.invoice_generation_modal')
     @include('admin.pages.billing.partials.payment_add')
     @include('admin.pages.billing.partials.payment_delete')
+    @include('admin.pages.billing.expenses.expenses_add_modal')
+    @include('admin.pages.billing.expenses.manage_categories_modal')
 @endsection
 
 @push('js')
     <!-- Chart Script -->
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <script>
-        var options = {
-            chart: {
-                type: 'bar',
-                height: 350
-            },
-            series: [{
+   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize chart
+    var options = {
+        chart: { type: 'bar', height: 350 },
+        series: [{ name: 'Amount ($)', data: [] }],
+        xaxis: { categories: [] },
+        colors: ['#9370DB'],
+        noData: { text: 'Loading data...' }
+    };
+
+    var chart = new ApexCharts(document.querySelector("#expenses-chart"), options);
+    chart.render();
+
+    // Fetch data with proper error handling
+    async function fetchChartData() {
+        try {
+            const response = await fetch("{{ route('admin.dashboard.chart-data') }}", {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                throw new TypeError("Response wasn't JSON");
+            }
+
+            const data = await response.json();
+            
+            chart.updateOptions({
+                xaxis: { categories: data.departments }
+            });
+            
+            chart.updateSeries([{
                 name: 'Amount ($)',
-                data: [3200, 4500, 2600, 1800, 1500]
-            }],
-            xaxis: {
-                categories: ['Admin', 'F&B', 'Housekeeping', 'Engineering', 'Front Office']
-            },
-            colors: ['#9370DB'], // Custom color like the image
-            plotOptions: {
-                bar: {
-                    columnWidth: '80%',
-                    distributed: true
-                }
-            },
-            tooltip: {
-                y: {
-                    formatter: function(val) {
-                        return "$" + val;
-                    }
-                }
-            }
-        };
+                data: data.amounts
+            }]);
 
-        var chart = new ApexCharts(document.querySelector("#expenses-chart"), options);
-        chart.render();
-    </script>
-    <!-- daily chart -->
-    <script>
-        var dailyLineOptions = {
-            chart: {
-                type: 'line',
-                height: 350,
-                toolbar: {
-                    show: false
+        } catch (error) {
+            console.error('Error:', error);
+            chart.updateOptions({
+                noData: {
+                    text: 'Error loading data. Please try again.'
                 }
-            },
-            series: [{
-                name: 'Revenue',
-                data: [3000, 2500, 1800, 9900, 4200, 3900, 2300, 3300, 4000, 3100, 3300, 4200, 4300, 4300, 4900,
-                    6000, 6100, 5900, 6100, 5800, 6200, 5800, 6000, 7000, 7400, 7800, 7600, 7500, 7200
-                ]
-            }, {
-                name: 'Expenses',
-                data: [2500, 2000, 3000, 10000, 4700, 3800, 3800, 4000, 4100, 4200, 4400, 4600, 4700, 4800,
-                    2300, 3200, 3400, 3500, 3700, 3900, 4100, 3800, 3900, 3700, 4100, 4300, 4200, 4100, 4000
-                ]
-            }],
-            xaxis: {
-                categories: Array.from({
-                    length: 29
-                }, (_, i) => i + 1),
-                title: {
-                    text: 'Day of Month'
-                }
-            },
-            yaxis: {
-                title: {
-                    text: 'Amount ($)'
-                }
-            },
-            colors: ['#7B68EE', '#3CB371'],
-            stroke: {
-                curve: 'smooth',
-                width: 2
-            },
-            markers: {
-                size: 4
-            },
-            tooltip: {
-                shared: true,
-                intersect: false,
-                y: {
-                    formatter: function(val) {
-                        return `$${val}`;
-                    }
-                }
-            },
-            legend: {
-                position: 'bottom'
-            }
-        };
+            });
+        }
+    }
 
-        var dailyLineChart = new ApexCharts(document.querySelector("#daily-line-chart"), dailyLineOptions);
-        dailyLineChart.render();
-    </script>
+    // Initial load
+    fetchChartData();
+});
+</script>
     <!-- weekly chart -->
     <script>
         var weeklyBarOptions = {
@@ -845,6 +845,7 @@
 
         new DataTable("#invoicesTable");
         new DataTable("#PaymentTable");
+        new DataTable("#expensesTable");
     </script>
 @endpush
 

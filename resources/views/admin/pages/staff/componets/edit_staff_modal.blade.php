@@ -1,6 +1,6 @@
 <!-- Edit Staff Modal -->
 <div class="modal fade" id="editStaffModal" tabindex="-1" role="dialog" aria-labelledby="editStaffModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-lg " role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editStaffModalLabel">Edit Staff Member</h5>
@@ -12,13 +12,13 @@
                 @method('PUT')
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6 mt-3">
                             <div class="form-group">
                                 <label for="edit_first_name" class="font-weight-bold">First Name</label>
                                 <input type="text" class="form-control" id="edit_first_name" name="first_name" required>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 mt-3">
                             <div class="form-group">
                                 <label for="edit_last_name" class="font-weight-bold">Last Name</label>
                                 <input type="text" class="form-control" id="edit_last_name" name="last_name" required>
@@ -26,7 +26,7 @@
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div class="row mt-3">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="edit_email" class="font-weight-bold">Email</label>
