@@ -21,7 +21,7 @@ class PaymentFactory extends Factory
             'invoice_id' => \App\Models\Invoice::inRandomOrder()->first()->id,
             'guest_id' => \App\Models\Guest::inRandomOrder()->first()->id,
             'amount' => $this->faker->randomFloat(2, 50, 2000),
-            'payment_date' => $this->faker->dateTimeBetween('-1 year', 'now'),
+            'payment_date' => $this->faker->dateTimeBetween('3 months ago', 'now'),
             'payment_method' => $this->faker->randomElement(['Credit Card', 'Bank Transfer', 'Cash', 'PayPal']),
             'status' => $this->faker->randomElement(['completed', 'pending', 'failed']),
             'notes' => $this->faker->optional()->sentence(),

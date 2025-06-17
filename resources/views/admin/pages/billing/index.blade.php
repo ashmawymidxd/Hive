@@ -5,6 +5,46 @@
 @endsection
 
 @push('css')
+    <style>
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+
+        .calendar-header {
+            font-weight: bold;
+            text-align: center;
+            padding: 5px;
+            background-color: #f8f9fa;
+        }
+
+        .calendar-day {
+            border: 1px solid #dee2e6;
+            padding: 5px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .calendar-day.empty {
+            background-color: #f8f9fa;
+            border: none;
+        }
+
+        .calendar-day.today {
+            background-color: #e7f5ff;
+            font-weight: bold;
+        }
+
+        .calendar-day.selected {
+            background-color: #d0ebff;
+            font-weight: bold;
+        }
+
+        .calendar-day:hover:not(.empty) {
+            background-color: #f1f3f5;
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -359,11 +399,13 @@
                     <div class="tab-pane fade" id="reports" role="tabpanel" aria-labelledby="reports-tab">
                         <div class="d-flex align-items-center justify-content-between">
                             <h4 class="font-bold text-dark">Financial Reports</h4>
-                            <div class="">
-                                <button class="btn btn-outline-secondary shadow-0"> <i class="fa fa-download"></i>
-                                    Export</button>
-                                <button class="btn btn-primary shadow-0"> <i class="fa fa-chart-line"></i> Generate
-                                    Report</button>
+                            <div class="mb-3">
+                                <button id="export-report-btn" class="btn btn-outline-secondary shadow-0">
+                                    <i class="fa fa-download"></i> Export
+                                </button>
+                                <button id="generate-report-btn" class="btn btn-primary shadow-0">
+                                    <i class="fa fa-chart-line"></i> Generate Report
+                                </button>
                             </div>
                         </div>
                         <div class="row mt-4">
@@ -404,12 +446,27 @@
                                     <div class="tab-pane fade" id="monthly" role="tabpanel"
                                         aria-labelledby="monthly-tab">
                                         <div id="monthly-chart" class="card shadow-0 p-3 border">
-                                            <h4 class="text-dark font-bold mb-4">Revenue vs Expenses</h4>
-                                            <div class="chart-container"
-                                                style="position: relative; height:400px; width:100%">
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                                <h4 class="text-dark">Monthly Revenue vs Expenses</h4>
+                                                <div class="input-group" style="width: 200px;">
+                                                    <select id="year-selector" class="form-select">
+                                                        @for ($year = date('Y'); $year >= 2020; $year--)
+                                                            <option value="{{ $year }}"
+                                                                {{ $year == date('Y') ? 'selected' : '' }}>
+                                                                {{ $year }}</option>
+                                                        @endfor
+                                                    </select>
+                                                    <button id="refresh-monthly-chart-btn"
+                                                        class="btn btn-primary shadow-0">
+                                                        <i class="fas fa-sync-alt"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div style="position: relative; height: 400px;">
                                                 <canvas id="revenueExpensesChart"></canvas>
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -418,13 +475,18 @@
                                     <div class="d-flex justify-content-between align-items-center mb-3">
                                         <h5 class="mb-0">Select Date</h5>
                                         <div>
-                                            <button class="btn btn-sm btn-outline-secondary prev-month"><i
-                                                    class="bi bi-chevron-left"></i></button>
-                                            <button class="btn btn-sm btn-outline-secondary next-month"><i
-                                                    class="bi bi-chevron-right"></i></button>
+                                            <button class="btn btn-sm btn-outline-secondary prev-month">
+                                                <i class="bi bi-chevron-left"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-secondary next-month">
+                                                <i class="bi bi-chevron-right"></i>
+                                            </button>
                                         </div>
                                     </div>
-                                    <div id="dynamic-calendar"></div>
+                                    <div id="dynamic-calendar" class="mb-3"></div>
+                                    <div id="report-results" class="mt-3">
+                                        <!-- Report results will be displayed here -->
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -432,21 +494,32 @@
                             <div class="col-md-4 mt-2">
                                 <div class="card shadow-0 border p-3">
                                     <small class="text-secondary">Total Expenses (Monthly)</small>
-                                    <h3 class="text-dark font-bold">$24,750.25</h3>
+                                    <h3 class="text-dark font-bold">$ {{ \App\Models\Expense::sum('amount') }}</h3>
                                     <small class="text-secondary">-2.5% from last month</small>
                                 </div>
                             </div>
                             <div class="col-md-4 mt-2">
                                 <div class="card shadow-0 border p-3">
                                     <small class="text-secondary">Largest Category</small>
-                                    <h3 class="text-dark font-bold">F&B</h3>
-                                    <small class="text-secondary">$4,500 this month</small>
+                                    <h3 class="text-dark font-bold">
+                                        {{ \App\Models\Expense::select('category_id')->withCount('category')->orderBy('category_count', 'desc')->first()
+                                            ?->category?->name ?? 'N/A' }}
+                                    </h3>
+                                    <small class="text-secondary">$
+                                        {{ \App\Models\Expense::where(
+                                            'category_id',
+                                            \App\Models\Expense::select('category_id')->withCount('category')->orderBy('category_count', 'desc')->first()
+                                                ?->category?->id ?? 0,
+                                        )->sum('amount') }}
+                                        this month</small>
                                 </div>
                             </div>
                             <div class="col-md-4 mt-2">
                                 <div class="card shadow-0 border p-3">
                                     <small class="text-secondary">Total Departments</small>
-                                    <h3 class="text-dark font-bold">5</h3>
+                                    <h3 class="text-dark font-bold">
+                                        {{ \App\Models\Department::count() }}
+                                    </h3>
                                     <small class="text-secondary">Tracking expenses</small>
                                 </div>
                             </div>
@@ -616,29 +689,36 @@
     </script>
     <!-- daily chart -->
     <script>
+        // Initialize chart with empty data
         var dailyLineOptions = {
             chart: {
                 type: 'line',
                 height: 350,
                 toolbar: {
-                    show: false
+                    show: true,
+                    tools: {
+                        download: true,
+                        selection: true,
+                        zoom: true,
+                        zoomin: true,
+                        zoomout: true,
+                        pan: true,
+                        reset: true
+                    }
+                },
+                animations: {
+                    enabled: true
                 }
             },
             series: [{
                 name: 'Revenue',
-                data: [3000, 2500, 1800, 9900, 4200, 3900, 2300, 3300, 4000, 3100, 3300, 4200, 4300, 4300, 4900,
-                    6000, 6100, 5900, 6100, 5800, 6200, 5800, 6000, 7000, 7400, 7800, 7600, 7500, 7200
-                ]
+                data: []
             }, {
                 name: 'Expenses',
-                data: [2500, 2000, 3000, 10000, 4700, 3800, 3800, 4000, 4100, 4200, 4400, 4600, 4700, 4800,
-                    2300, 3200, 3400, 3500, 3700, 3900, 4100, 3800, 3900, 3700, 4100, 4300, 4200, 4100, 4000
-                ]
+                data: []
             }],
             xaxis: {
-                categories: Array.from({
-                    length: 29
-                }, (_, i) => i + 1),
+                categories: [],
                 title: {
                     text: 'Day of Month'
                 }
@@ -646,6 +726,11 @@
             yaxis: {
                 title: {
                     text: 'Amount ($)'
+                },
+                labels: {
+                    formatter: function(value) {
+                        return '$' + value.toLocaleString();
+                    }
                 }
             },
             colors: ['#7B68EE', '#3CB371'],
@@ -661,49 +746,141 @@
                 intersect: false,
                 y: {
                     formatter: function(val) {
-                        return `$${val}`;
+                        return '$' + val.toLocaleString();
                     }
                 }
             },
             legend: {
                 position: 'bottom'
+            },
+            noData: {
+                text: 'Loading data...',
+                align: 'center',
+                verticalAlign: 'middle',
+                offsetX: 0,
+                offsetY: 0,
+                style: {
+                    color: undefined,
+                    fontSize: '14px',
+                    fontFamily: undefined
+                }
             }
         };
 
         var dailyLineChart = new ApexCharts(document.querySelector("#daily-line-chart"), dailyLineOptions);
         dailyLineChart.render();
+
+        // Function to fetch and update chart data
+        function fetchDailyComparisonData() {
+            $.ajax({
+                url: "{{ route('admin.charts.dailyComparison') }}",
+                type: 'GET',
+                dataType: 'json',
+                beforeSend: function() {
+                    // Show loading state
+                    dailyLineChart.updateOptions({
+                        series: [{
+                            data: []
+                        }, {
+                            data: []
+                        }],
+                        xaxis: {
+                            categories: []
+                        },
+                        noData: {
+                            text: 'Loading data...'
+                        }
+                    });
+                },
+                success: function(response) {
+                    // Update chart with new data
+                    dailyLineChart.updateOptions({
+                        series: [{
+                            name: 'Revenue',
+                            data: response.revenue
+                        }, {
+                            name: 'Expenses',
+                            data: response.expenses
+                        }],
+                        xaxis: {
+                            categories: response.days
+                        }
+                    });
+                },
+                error: function(xhr) {
+                    console.error('Error fetching chart data:', xhr.responseText);
+                    dailyLineChart.updateOptions({
+                        noData: {
+                            text: 'Error loading data'
+                        }
+                    });
+                }
+            });
+        }
+
+        // Fetch data when page loads
+        $(document).ready(function() {
+            fetchDailyComparisonData();
+
+            // Optional: Add refresh button
+            $('#refresh-chart-btn').on('click', function() {
+                fetchDailyComparisonData();
+            });
+        });
     </script>
     <!-- weekly chart -->
     <script>
+        // Initialize weekly bar chart with empty data
         var weeklyBarOptions = {
             chart: {
                 type: 'bar',
                 height: 350,
                 toolbar: {
-                    show: false
+                    show: true,
+                    tools: {
+                        download: true,
+                        selection: true,
+                        zoom: true,
+                        zoomin: true,
+                        zoomout: true,
+                        pan: true,
+                        reset: true
+                    }
+                },
+                animations: {
+                    enabled: true
                 }
             },
             series: [{
                 name: 'Revenue',
-                data: [28000, 32000, 37000, 44000]
+                data: []
             }, {
                 name: 'Expenses',
-                data: [17000, 16000, 20000, 25000]
+                data: []
             }],
             xaxis: {
-                categories: ['Week 1', 'Week 2', 'Week 3', 'Week 4']
+                categories: [],
+                title: {
+                    text: 'Weeks'
+                }
             },
             yaxis: {
                 title: {
                     text: 'Amount ($)'
+                },
+                labels: {
+                    formatter: function(value) {
+                        return '$' + value.toLocaleString();
+                    }
                 }
             },
             colors: ['#7B68EE', '#3CB371'],
             plotOptions: {
                 bar: {
                     horizontal: false,
-                    columnWidth: '60%',
-                    borderRadius: 0
+                    columnWidth: '70%',
+                    borderRadius: 0,
+                    endingShape: 'rounded'
                 }
             },
             dataLabels: {
@@ -715,49 +892,113 @@
             tooltip: {
                 y: {
                     formatter: function(val) {
-                        return `$${val}`;
+                        return '$' + val.toLocaleString();
                     }
+                }
+            },
+            noData: {
+                text: 'Loading data...',
+                align: 'center',
+                verticalAlign: 'middle',
+                offsetX: 0,
+                offsetY: 0,
+                style: {
+                    color: undefined,
+                    fontSize: '14px',
+                    fontFamily: undefined
                 }
             }
         };
 
         var weeklyBarChart = new ApexCharts(document.querySelector("#weekly-bar-chart"), weeklyBarOptions);
         weeklyBarChart.render();
+
+
+        // Remove the month selector HTML and update the fetch function
+        function fetchWeeklyComparisonData() {
+            $.ajax({
+                url: "{{ route('admin.charts.weeklyComparison') }}",
+                type: 'GET',
+                dataType: 'json',
+                beforeSend: function() {
+                    weeklyBarChart.updateOptions({
+                        noData: {
+                            text: 'Loading data...'
+                        }
+                    });
+                },
+                success: function(response) {
+                    weeklyBarChart.updateOptions({
+                        series: [{
+                            name: 'Revenue',
+                            data: response.revenue
+                        }, {
+                            name: 'Expenses',
+                            data: response.expenses
+                        }],
+                        xaxis: {
+                            categories: response.weeks
+                        },
+                        title: {
+                            text: 'Weekly Comparison - ' + response.time_period,
+                            align: 'center',
+                            style: {
+                                fontSize: '16px'
+                            }
+                        }
+                    });
+                },
+                error: function(xhr) {
+                    console.error('Error fetching weekly chart data:', xhr.responseText);
+                    weeklyBarChart.updateOptions({
+                        noData: {
+                            text: 'Error loading data'
+                        }
+                    });
+                }
+            });
+        }
+
+        // Update document ready - remove month selector event handlers
+        $(document).ready(function() {
+            fetchWeeklyComparisonData();
+
+            // Keep refresh button if you want
+            $('#refresh-weekly-chart-btn').on('click', function() {
+                fetchWeeklyComparisonData();
+            });
+        });
     </script>
     <!-- monthly chart -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Data from your screenshot
-            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            const revenue = [0, 110000, 100, 1000, 10000, 100000, 500000, 0, 0, 0, 0, 0]; // Only Feb data available
-            const expenses = [0, 75000, 1000, 10000, 100000, 500000, 0, 0, 0, 0, 20000,
-                0
-            ]; // Only Feb data available
+        // Initialize chart
+        let monthlyComparisonChart;
 
-            // Get the canvas element
+        function initializeMonthlyChart() {
             const ctx = document.getElementById('revenueExpensesChart').getContext('2d');
 
-            // Create the chart
-            const chart = new Chart(ctx, {
+            monthlyComparisonChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: months,
+                    labels: [],
                     datasets: [{
-                            label: 'Revenue',
-                            data: revenue,
-                            backgroundColor: 'rgba(54, 162, 235, 0.7)',
-                            borderColor: 'rgba(54, 162, 235, 1)',
-                            borderWidth: 1
-                        },
-                        {
-                            label: 'Expenses',
-                            data: expenses,
-                            backgroundColor: 'rgba(255, 99, 132, 0.7)',
-                            borderColor: 'rgba(255, 99, 132, 1)',
-                            borderWidth: 1
-                        }
-                    ]
+                        label: 'Revenue',
+                        data: [],
+                        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: false
+                    }, {
+                        label: 'Expenses',
+                        data: [],
+                        backgroundColor: 'rgba(255, 99, 132, 0.7)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: false
+                    }]
                 },
                 options: {
                     responsive: true,
@@ -779,14 +1020,63 @@
                                     return context.dataset.label + ': $' + context.raw.toLocaleString();
                                 }
                             }
+                        },
+                        legend: {
+                            position: 'bottom'
                         }
                     }
                 }
             });
+        }
 
-            // Update chart when tab is shown (in case it's not the default active tab)
-            document.getElementById('monthly-tab').addEventListener('shown.bs.tab', function() {
-                chart.update();
+        // Fetch monthly data
+        function fetchMonthlyComparisonData(year = null) {
+            $.ajax({
+                url: "{{ route('admin.charts.monthlyComparison') }}",
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    year: year
+                },
+                beforeSend: function() {
+                    if (!monthlyComparisonChart) {
+                        initializeMonthlyChart();
+                    }
+                },
+                success: function(response) {
+                    monthlyComparisonChart.data.labels = response.months;
+                    monthlyComparisonChart.data.datasets[0].data = response.revenue;
+                    monthlyComparisonChart.data.datasets[1].data = response.expenses;
+                    monthlyComparisonChart.options.plugins.title = {
+                        display: true,
+                        text: 'Monthly Comparison - ' + response.year,
+                        font: {
+                            size: 16
+                        }
+                    };
+                    monthlyComparisonChart.update();
+                },
+                error: function(xhr) {
+                    console.error('Error fetching monthly chart data:', xhr.responseText);
+                }
+            });
+        }
+
+        // Initialize and load data
+        $(document).ready(function() {
+            initializeMonthlyChart();
+            fetchMonthlyComparisonData();
+
+            // Refresh button click
+            $('#refresh-monthly-chart-btn').on('click', function() {
+                const year = $('#year-selector').val();
+                fetchMonthlyComparisonData(year);
+            });
+
+            // Year selector change
+            $('#year-selector').on('change', function() {
+                const year = $(this).val();
+                fetchMonthlyComparisonData(year);
             });
         });
     </script>
@@ -952,6 +1242,196 @@
                     });
                 }
             });
+        });
+    </script>
+@endpush
+
+@push('js')
+    <script>
+        $(document).ready(function() {
+            // Initialize variables
+            let currentDate = new Date();
+            let selectedDateRange = {
+                start: null,
+                end: null
+            };
+
+            // Initialize calendar
+            function initializeCalendar(date) {
+                const year = date.getFullYear();
+                const month = date.getMonth();
+
+                // Generate calendar HTML
+                const firstDay = new Date(year, month, 1);
+                const lastDay = new Date(year, month + 1, 0);
+                const daysInMonth = lastDay.getDate();
+
+                let calendarHTML = `
+                <div class="text-center mb-2">
+                    <strong>${date.toLocaleString('default', { month: 'long' })} ${year}</strong>
+                </div>
+                <div class="calendar-grid">
+                    <div class="calendar-header">Sun</div>
+                    <div class="calendar-header">Mon</div>
+                    <div class="calendar-header">Tue</div>
+                    <div class="calendar-header">Wed</div>
+                    <div class="calendar-header">Thu</div>
+                    <div class="calendar-header">Fri</div>
+                    <div class="calendar-header">Sat</div>
+            `;
+
+                // Add empty cells for days before the first day of month
+                for (let i = 0; i < firstDay.getDay(); i++) {
+                    calendarHTML += `<div class="calendar-day empty"></div>`;
+                }
+
+                // Add days of the month
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dayDate = new Date(year, month, day);
+                    const isSelected = selectedDateRange.start &&
+                        dayDate >= selectedDateRange.start &&
+                        dayDate <= selectedDateRange.end;
+                    const isToday = dayDate.toDateString() === new Date().toDateString();
+
+                    calendarHTML += `
+                    <div class="calendar-day 
+                        ${isSelected ? 'selected' : ''} 
+                        ${isToday ? 'today' : ''}" 
+                        data-date="${dayDate.toISOString().split('T')[0]}">
+                        ${day}
+                    </div>
+                `;
+                }
+
+                calendarHTML += `</div>`;
+                $('#dynamic-calendar').html(calendarHTML);
+
+                // Add click handlers for days
+                $('.calendar-day:not(.empty)').on('click', function() {
+                    const dateStr = $(this).data('date');
+                    const clickedDate = new Date(dateStr);
+
+                    if (!selectedDateRange.start || (selectedDateRange.start && selectedDateRange.end)) {
+                        // Start new selection
+                        selectedDateRange = {
+                            start: clickedDate,
+                            end: clickedDate
+                        };
+                    } else if (clickedDate < selectedDateRange.start) {
+                        // Extend selection backward
+                        selectedDateRange.end = selectedDateRange.start;
+                        selectedDateRange.start = clickedDate;
+                    } else {
+                        // Extend selection forward
+                        selectedDateRange.end = clickedDate;
+                    }
+
+                    // Update calendar display
+                    initializeCalendar(currentDate);
+                });
+            }
+
+            // Navigation buttons
+            $('.prev-month').on('click', function() {
+                currentDate.setMonth(currentDate.getMonth() - 1);
+                initializeCalendar(currentDate);
+            });
+
+            $('.next-month').on('click', function() {
+                currentDate.setMonth(currentDate.getMonth() + 1);
+                initializeCalendar(currentDate);
+            });
+
+            // Generate Report button
+            $('#generate-report-btn').on('click', function() {
+                if (!selectedDateRange.start || !selectedDateRange.end) {
+                    alert('Please select a date range first');
+                    return;
+                }
+
+                const startDate = selectedDateRange.start.toISOString().split('T')[0];
+                const endDate = selectedDateRange.end.toISOString().split('T')[0];
+
+                // Show loading state
+                $('#report-results').html(`
+                <div class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2">Generating report...</p>
+                </div>
+            `);
+
+                // AJAX request to generate report
+                $.ajax({
+                    url: "{{ route('admin.reports.generate') }}",
+                    type: 'POST',
+                    data: {
+                        start_date: startDate,
+                        end_date: endDate,
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        // Display report results
+                        $('#report-results').html(`
+                        <div class="report-summary">
+                            <small>Financial Report: ${response.start_date} to ${response.end_date}</small>
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <div class="card shadow-2 border-start border-danger border-2  p-3 mb-3">
+                                        <h6>Total Revenue</h6>
+                                        <h3 class="text-success">$${response.total_revenue.toLocaleString()}</h3>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card shadow-2 border-start border-danger border-2  p-3 mb-3">
+                                        <h6>Total Expenses</h6>
+                                        <h3 class="text-danger">$${response.total_expenses.toLocaleString()}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card shadow-2 border-start border-danger border-2  p-3 mb-3">
+                                <h6>Net Profit</h6>
+                                <h3 class="${response.net_profit >= 0 ? 'text-success' : 'text-danger'}">
+                                    $${response.net_profit.toLocaleString()}
+                                </h3>
+                            </div>
+                        </div>
+                        <div id="report-details" class="mt-3">
+                            <!-- Detailed report data would go here -->
+                        </div>
+                    `);
+                    },
+                    error: function(xhr) {
+                        $('#report-results').html(`
+                        <div class="alert alert-danger">
+                            Error generating report: ${xhr.responseJSON?.message || 'Unknown error'}
+                        </div>
+                    `);
+                    }
+                });
+            });
+
+            // Export Report button
+            $('#export-report-btn').on('click', function() {
+                if (!selectedDateRange.start || !selectedDateRange.end) {
+                    alert('Please select a date range first');
+                    return;
+                }
+
+                const startDate = selectedDateRange.start.toISOString().split('T')[0];
+                const endDate = selectedDateRange.end.toISOString().split('T')[0];
+
+                // Create export URL
+                const exportUrl = "{{ route('admin.reports.export') }}" +
+                    `?start_date=${startDate}&end_date=${endDate}&type=pdf`;
+
+                // Open in new tab (or you could use window.location.href)
+                window.open(exportUrl, '_blank');
+            });
+
+            // Initialize with current month
+            initializeCalendar(currentDate);
         });
     </script>
 @endpush

@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\VendorController;
 use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\ExpenseController;
+use App\Http\Controllers\Admin\BillingChartController;
 /*
 |--------------------------------------------------------------------------
 | admin Routes
@@ -127,6 +128,13 @@ Route::middleware(['auth:admin', 'check.admin.status'])->name('admin.')->prefix(
 
     // getChartData
     Route::get('dashboard/chart-data', [ExpenseController::class, 'getChartData'])->name('dashboard.chart-data');
+
+    // Billing Chart
+    Route::get('charts/daily-comparison', [BillingChartController::class, 'getDailyComparison'])->name('charts.dailyComparison');
+    Route::get('charts/weekly-comparison', [BillingChartController::class, 'getWeeklyComparison'])->name('charts.weeklyComparison');
+    Route::get('charts/monthly-comparison', [BillingChartController::class, 'getMonthlyComparison'])->name('charts.monthlyComparison');
+    Route::post('reports/generate', [BillingChartController::class, 'generateReport'])->name('reports.generate');
+    Route::get('reports/export', [BillingChartController::class, 'exportReport'])->name('reports.export');
 });
 
 require __DIR__ . '/auth_admin.php';

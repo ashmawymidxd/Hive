@@ -63,6 +63,9 @@ class RoleSeeder extends Seeder
                 'print_invoice',
                 'mark_invoice_paid',
                 'manage_payments',
+                'manage_expenses',
+                'create_expense_category',
+                'delete_expense_category',
             ])
         ]);
 

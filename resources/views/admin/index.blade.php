@@ -30,7 +30,7 @@
         <p class="text-secondary">Welcome back to Hotel Hive management system.</p>
         <div class="row mt-4">
             <div class="col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="100">
-                <div class="card p-3 shadow-2 border-start border-warning border-3">
+                <div class="card p-3 shadow-2 border-start border-info border-3">
                     <div class="d-flex align-items-center justify-content-between">
                         <p class="text-secondary">Available Rooms</p>
                         <button class="btn btn-secondary btn-lg btn-floating">
@@ -89,7 +89,7 @@
                 </div>
             </div>
             <div class="col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="300">
-                <div class="card p-3 shadow-2 border-start border-success border-3">
+                <div class="card p-3 shadow-2 border-start border-info border-3">
                     <div class="d-flex align-items-center justify-content-between">
                         <p class="text-secondary">Today's Revenue</p>
                         <button class="btn btn-secondary btn-lg btn-floating">
@@ -110,7 +110,7 @@
                 </div>
             </div>
             <div class="col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="400">
-                <div class="card p-3 shadow-2 border-start border-danger border-3">
+                <div class="card p-3 shadow-2 border-start border-info border-3">
                     @php
                         // Current occupancy
                         $totalRooms = App\Models\Room::count();
