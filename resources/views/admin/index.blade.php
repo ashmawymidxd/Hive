@@ -253,7 +253,7 @@ $yesterdayRate = App\Models\OccupancyRecord::where('record_date', today()->subDa
                             <button id="monthlyBtn" class="btn btn-secondary btn-sm">Monthly</button>
                         </div>
                     </div>
-                    <canvas class="p-3" id="occupancyChart" height="400" width="1000">
+                    <canvas class="p-3" id="occupancyChart" height="400" width="1200">
                     </canvas>
                 </div>
             </div>
@@ -518,11 +518,11 @@ $yesterdayRate = App\Models\OccupancyRecord::where('record_date', today()->subDa
                         datasets: [{
                             label: chartTitle,
                             data: data.data,
-                            backgroundColor: 'rgba(0, 86, 179, 0.7)',
-                            borderColor: 'rgba(0, 86, 179, 1)',
-                            borderWidth: 1
+                            backgroundColor: 'rgba(59, 130, 246, 1)',
+                            borderRadius: 7,
                         }]
                     },
+                   
                     options: {
                         responsive: true,
                         maintainAspectRatio: true, // This is important for fixed height

@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Notification;
 use App\Models\Expense;
 use App\Models\ExpenseCategory;
 use App\Models\Department;
+use App\Models\Tax;
 
 
 class InvoiceController extends Controller
@@ -53,6 +54,8 @@ class InvoiceController extends Controller
         $categories = ExpenseCategory::all();
         $departments = Department::all();
 
+        // tax 
+         $taxes = Tax::orderBy('date', 'desc')->get();
 
         return view(
             'admin.pages.billing.index',
@@ -68,7 +71,8 @@ class InvoiceController extends Controller
                 'recentTransactions',
                 'expenses',
                 'categories',
-                'departments'
+                'departments',
+                'taxes'
             )
         );
     }

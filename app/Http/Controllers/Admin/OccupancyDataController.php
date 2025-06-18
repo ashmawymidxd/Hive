@@ -62,7 +62,7 @@ class OccupancyDataController extends Controller
 
             default: // daily
                 // Get data for last 30 days
-                $startDate = $now->copy()->subDays(29);
+                $startDate = $now->copy()->subDays(7);
                 $endDate = $now->copy();
 
                 $records = OccupancyRecord::whereBetween('record_date', [$startDate, $endDate])

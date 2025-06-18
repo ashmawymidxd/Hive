@@ -21,6 +21,7 @@ use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\ExpenseController;
 use App\Http\Controllers\Admin\BillingChartController;
+use App\Http\Controllers\Admin\TaxController;
 /*
 |--------------------------------------------------------------------------
 | admin Routes
@@ -135,6 +136,9 @@ Route::middleware(['auth:admin', 'check.admin.status'])->name('admin.')->prefix(
     Route::get('charts/monthly-comparison', [BillingChartController::class, 'getMonthlyComparison'])->name('charts.monthlyComparison');
     Route::post('reports/generate', [BillingChartController::class, 'generateReport'])->name('reports.generate');
     Route::get('reports/export', [BillingChartController::class, 'exportReport'])->name('reports.export');
+
+    // Tax Management
+    Route::resource('taxes', TaxController::class)->except(['create', 'edit'])->middleware('admin.permission:manage_taxes');
 });
 
 require __DIR__ . '/auth_admin.php';

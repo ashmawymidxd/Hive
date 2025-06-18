@@ -44,6 +44,47 @@
         .calendar-day:hover:not(.empty) {
             background-color: #f1f3f5;
         }
+
+        .card {
+            transition: all 0.3s ease;
+            border-radius: 0.5rem;
+        }
+
+        .card:hover {
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Badge enhancements */
+        .badge.rounded-pill {
+            padding: 0.35em 0.65em;
+            font-weight: 500;
+        }
+
+        /* Hover effects for buttons */
+        .btn-outline-primary:hover {
+            background-color: rgba(13, 110, 253, 0.1);
+            border-color: #0d6efd;
+        }
+
+        .btn-outline-success:hover {
+            background-color: rgba(25, 135, 84, 0.1);
+            border-color: #198754;
+        }
+
+        .btn-outline-danger:hover {
+            background-color: rgba(220, 53, 69, 0.1);
+            border-color: #dc3545;
+        }
+
+        /* Icon enhancements */
+        .fas {
+            transition: transform 0.2s ease;
+        }
+
+        .btn:hover .fas {
+            transform: scale(1.1);
+        }
     </style>
 @endpush
 
@@ -108,6 +149,19 @@
                                         @if (session('error'))
                                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                                 {{ session('error') }}
+                                                <button type="button" class="btn-close" data-mdb-dismiss="alert"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                        @endif
+
+                                        {{-- errors messages closed alert --}}
+                                        @if ($errors->any())
+                                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                <ul class="mb-0">
+                                                    @foreach ($errors->all() as $error)
+                                                        <li>{{ $error }}</li>
+                                                    @endforeach
+                                                </ul>
                                                 <button type="button" class="btn-close" data-mdb-dismiss="alert"
                                                     aria-label="Close"></button>
                                             </div>
@@ -528,31 +582,46 @@
                     <div class="tab-pane fade" id="tax" role="tabpanel" aria-labelledby="tax-tab">
                         <div class="d-flex align-items-center justify-content-between">
                             <h4 class="text-dark font-bold">Tax Management</h4>
-                            <button class="btn btn-primary shadow-0 ">
-                                <i class="fa fa-file-invoice-dollar"></i>
-                                Prepare Tax Filing
+                            <button class="btn btn-primary shadow-0" data-mdb-toggle="modal" data-mdb-target="#createTaxModal">
+                                <i class="fas fa-plus"></i> Add Tax
                             </button>
                         </div>
+                        @php
+                            $totalFiledYTD = \App\Models\Tax::where('status', 'Filed')
+                                ->whereYear('date', now()->year)
+                                ->sum('amount');
+
+                            $pendingFilings = \App\Models\Tax::where('status', 'Pending')
+                                ->whereBetween('date', [now(), now()->addDays(45)])
+                                ->count();
+
+                            $nextFiling = \App\Models\Tax::where('date', '>=', now())->orderBy('date', 'asc')->first();
+                        @endphp
+
                         <div class="row mt-4">
                             <div class="col-md-4 mt-2">
                                 <div class="card shadow-0 border p-3">
                                     <small class="text-secondary">Total Tax Filed (YTD)</small>
-                                    <h3 class="text-dark font-bold">$124,750.25</h3>
+                                    <h3 class="text-dark font-bold">${{ number_format($totalFiledYTD, 2) }}</h3>
                                     <small class="text-secondary">Across all tax types</small>
                                 </div>
                             </div>
                             <div class="col-md-4 mt-2">
                                 <div class="card shadow-0 border p-3">
                                     <small class="text-secondary">Pending Filings</small>
-                                    <h3 class="text-dark font-bold">1</h3>
+                                    <h3 class="text-dark font-bold">{{ $pendingFilings }}</h3>
                                     <small class="text-secondary">Due within 45 days</small>
                                 </div>
                             </div>
                             <div class="col-md-4 mt-2">
                                 <div class="card shadow-0 border p-3">
                                     <small class="text-secondary">Next Filing Due</small>
-                                    <h3 class="text-dark font-bold">Dec 15, 2023</h3>
-                                    <small class="text-secondary">Property Tax filing</small>
+                                    <h3 class="text-dark font-bold">
+                                        {{ $nextFiling ? $nextFiling->date->format('M d, Y') : 'No upcoming filings' }}
+                                    </h3>
+                                    <small class="text-secondary">
+                                        {{ $nextFiling ? $nextFiling->type . ' filing' : 'All filings completed' }}
+                                    </small>
                                 </div>
                             </div>
                         </div>
@@ -561,7 +630,7 @@
                                 <div class="card shadow-0 border p-4">
                                     <h4 class="text-dark">Recent Tax Filings</h4>
                                     <div class="table-responsive">
-                                        <table class="table ">
+                                        <table class="table w-100" id="taxTable">
                                             <thead class="bg-light">
                                                 <tr>
                                                     <th>ID</th>
@@ -574,26 +643,46 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr class="hover-primary">
-                                                    <td>TAX-2023-001</td>
-                                                    <td>Sales</td>
-                                                    <td>Sales Tax</td>
-                                                    <td>$24,350.00</td>
-                                                    <td>2023-09-30</td>
-                                                    <td>
-                                                        <span>Filed</span>
-                                                    </td>
-                                                    <td>
-                                                        <button class="btn btn-outline-secondary">
-                                                            View Details
-                                                        </button>
-
-                                                    </td>
-                                                </tr>
-
+                                                @foreach ($taxes as $tax)
+                                                    <tr class="hover-primary">
+                                                        <td>{{ $tax->tax_id }}</td>
+                                                        <td>{{ $tax->description }}</td>
+                                                        <td>{{ $tax->type }}</td>
+                                                        <td>${{ number_format($tax->amount, 2) }}</td>
+                                                        <td>{{ $tax->date->format('Y-m-d') }}</td>
+                                                        <td>
+                                                            <span
+                                                                class="badge bg-{{ $tax->status == 'Filed'
+                                                                    ? 'info'
+                                                                    : ($tax->status == 'Paid'
+                                                                        ? 'success'
+                                                                        : ($tax->status == 'Overdue'
+                                                                            ? 'danger'
+                                                                            : 'warning')) }}">
+                                                                {{ $tax->status }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <button class="btn btn-light border btn-sm shadow-0 view-tax"
+                                                                data-id="{{ $tax->id }}"data-mdb-toggle="modal"
+                                                                data-mdb-target="#viewTaxModal">
+                                                                <i class="fas fa-eye"></i>
+                                                            </button>
+                                                            <button class="btn btn-light border btn-sm shadow-0 edit-tax"
+                                                                data-id="{{ $tax->id }}"data-mdb-toggle="modal"
+                                                                data-mdb-target="#editTaxModal">
+                                                                <i class="fas fa-edit"></i>
+                                                            </button>
+                                                            <button class="btn btn-light border btn-sm shadow-0 delete-tax"
+                                                                data-id="{{ $tax->id }}"data-mdb-toggle="modal"
+                                                                data-mdb-target="#deleteTaxModal">
+                                                                <i class="fas fa-trash"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
-
                                     </div>
                                 </div>
                             </div>
@@ -610,11 +699,16 @@
     @include('admin.pages.billing.partials.payment_delete')
     @include('admin.pages.billing.expenses.expenses_add_modal')
     @include('admin.pages.billing.expenses.manage_categories_modal')
+
+    {{-- tax modals --}}
+    @include('admin.pages.billing.partials.create_tax_modal')
+    @include('admin.pages.billing.partials.view_tax_modal')
+    @include('admin.pages.billing.partials.edit_tax_modal')
+    @include('admin.pages.billing.partials.delete_tax_modal')
 @endsection
 
 @push('js')
     <!-- Chart Script -->
-
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     {{-- expense chart --}}
     <script>
@@ -1209,6 +1303,7 @@
         new DataTable("#invoicesTable");
         new DataTable("#PaymentTable");
         new DataTable("#expensesTable");
+        new DataTable("#taxTable");
     </script>
 @endpush
 
@@ -1432,6 +1527,148 @@
 
             // Initialize with current month
             initializeCalendar(currentDate);
+        });
+    </script>
+@endpush
+
+@push('js')
+    <script>
+        $(document).ready(function() {
+            // View Tax Details
+            $('.view-tax').click(function() {
+                var taxId = $(this).data('id');
+                $.get('/admin/taxes/' + taxId, function(data) {
+                    var html = `
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="flex-shrink-0 bg-primary bg-opacity-10 p-3 rounded me-3">
+                                                <i class="fas fa-receipt text-primary fs-2"></i>
+                                            </div>
+                                            <div>
+                                                <h4 class="mb-0">${data.tax_id}</h4>
+                                                <span class="text-muted">Tax Record</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-4">
+                                    <div class="col-md-6">
+                                        <div class="card border-0 shadow-sm mb-3">
+                                            <div class="card-body">
+                                                <h6 class="card-title text-muted text-uppercase small">Details</h6>
+                                                <ul class="list-unstyled mb-0">
+                                                    <li class="mb-2">
+                                                        <i class="fas fa-align-left text-muted me-2"></i>
+                                                        <strong>Description:</strong> ${data.description}
+                                                    </li>
+                                                    <li class="mb-2">
+                                                        <i class="fas fa-tag text-muted me-2"></i>
+                                                        <strong>Type:</strong> ${data.type}
+                                                    </li>
+                                                    <li class="mb-2">
+                                                        <i class="fas fa-calendar-day text-muted me-2"></i>
+                                                        <strong>Date:</strong> ${data.date}
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <div class="card border-0 shadow-sm mb-3">
+                                            <div class="card-body">
+                                                <h6 class="card-title text-muted text-uppercase small">Financial</h6>
+                                                <ul class="list-unstyled mb-0">
+                                                    <li class="mb-2">
+                                                        <i class="fas fa-money-bill-wave text-muted me-2"></i>
+                                                        <strong>Amount:</strong> 
+                                                        <span class="fw-bold text-success">$${parseFloat(data.amount).toFixed(2)}</span>
+                                                    </li>
+                                                    <li class="mb-2">
+                                                        <i class="fas fa-info-circle text-muted me-2"></i>
+                                                        <strong>Status:</strong> 
+                                                        <span class="badge bg-${ 
+                                                            data.status == 'Filed' ? 'info' : 
+                                                            (data.status == 'Paid' ? 'success' : 
+                                                            (data.status == 'Overdue' ? 'danger' : 'warning'))
+                                                        } rounded-pill">
+                                                            <i class="fas ${
+                                                                data.status == 'Filed' ? 'fa-file-export' : 
+                                                                (data.status == 'Paid' ? 'fa-check-circle' : 
+                                                                (data.status == 'Overdue' ? 'fa-exclamation-triangle' : 'fa-clock'))
+                                                            } me-1"></i>
+                                                            ${data.status}
+                                                        </span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card border-0 shadow-sm">
+                                            <div class="card-body">
+                                                <h6 class="card-title text-muted text-uppercase small">System Info</h6>
+                                                <ul class="list-unstyled mb-0">
+                                                    <li class="mb-2">
+                                                        <i class="fas fa-calendar-plus text-muted me-2"></i>
+                                                        <strong>Created:</strong> 
+                                                        ${new Date(data.created_at).toLocaleString()}
+                                                    </li>
+                                                    ${data.updated_at ? `
+                                                                    <li class="mb-2">
+                                                                        <i class="fas fa-calendar-check text-muted me-2"></i>
+                                                                        <strong>Last Updated:</strong> 
+                                                                        ${new Date(data.updated_at).toLocaleString()}
+                                                                    </li>
+                                                                    ` : ''}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-3">
+                                    <div class="col-md-12">
+                                        <div class="alert alert-light d-flex align-items-center">
+                                            <i class="fas fa-info-circle me-2 text-primary"></i>
+                                            <small class="text-muted">This tax record was automatically generated by the system.</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                `;
+                    $('#taxDetails').html(html);
+                });
+            });
+
+            // Edit Tax
+            $('.edit-tax').click(function() {
+                var taxId = $(this).data('id');
+                $.get('/admin/taxes/' + taxId, function(data) {
+                    $('#editTaxForm').attr('action', '/admin/taxes/' + data.id);
+                    $('#edit_description').val(data.description);
+                    $('#edit_type').val(data.type);
+                    $('#edit_amount').val(data.amount);
+                    $('#edit_date').val(data.date);
+                    $('#edit_status').val(data.status);
+                });
+            });
+
+            // Delete Tax
+            $('.delete-tax').click(function() {
+                var taxId = $(this).data('id');
+                $.get('/admin/taxes/' + taxId, function(data) {
+                    $('#deleteTaxForm').attr('action', '/admin/taxes/' + data.id);
+                    $('#taxToDelete').html(
+                        `<strong>${data.tax_id}</strong> - ${data.description} (${data.type})`);
+                });
+            });
+
+
         });
     </script>
 @endpush

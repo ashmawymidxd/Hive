@@ -99,6 +99,7 @@
                  'manage_expenses' => 'Manage Expenses',
                  'create_expense_category' => 'Create Expense Category',
                  'delete_expense_category' => 'Delete Expense Category',
+                 'manage_taxes'=> 'Manage Taxes',
              ];
          @endphp
 
