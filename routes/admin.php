@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\ExpenseController;
 use App\Http\Controllers\Admin\BillingChartController;
 use App\Http\Controllers\Admin\TaxController;
+use App\Http\Controllers\Admin\TodoController;
 /*
 |--------------------------------------------------------------------------
 | admin Routes
@@ -139,6 +140,16 @@ Route::middleware(['auth:admin', 'check.admin.status'])->name('admin.')->prefix(
 
     // Tax Management
     Route::resource('taxes', TaxController::class)->except(['create', 'edit'])->middleware('admin.permission:manage_taxes');
+
+    // Todo List
+    Route::prefix('todo')->name('todo.')->group(function () {
+        Route::get('/', [TodoController::class, 'index'])->name('index');
+        Route::get('/completed', [TodoController::class, 'completed'])->name('completed');
+        Route::get('/create', [TodoController::class, 'create'])->name('create');
+        Route::post('/', [TodoController::class, 'store'])->name('store');
+        Route::patch('/{todo}/complete', [TodoController::class, 'complete'])->name('complete');
+        Route::delete('/{todo}', [TodoController::class, 'destroy'])->name('destroy');
+    });
 });
 
 require __DIR__ . '/auth_admin.php';

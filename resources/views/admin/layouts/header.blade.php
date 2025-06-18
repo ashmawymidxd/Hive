@@ -88,17 +88,17 @@
                 <ul class="dropdown-menu dropdown-menu-end p-3 shadow-0 border mt-2" aria-labelledby="todoDropdown"
                    style="width: 300px;">
                     <li class="border-bottom border-secondary">
-                        <a class="dropdown-item" href="">
+                        <a class="dropdown-item" href="{{ route('admin.todo.create') }}">
                             <i class="fas fa-plus me-2"></i> Add New Task
                         </a>
                     </li>
                     <li class="border-bottom border-secondary">
-                        <a class="dropdown-item" href="">
+                        <a class="dropdown-item" href="{{ route('admin.todo.index') }}">
                             <i class="fas fa-tasks me-2"></i> View Tasks
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="">
+                        <a class="dropdown-item" href="{{ route('admin.todo.completed') }}">
                             <i class="fas fa-check-circle me-2"></i> Completed Tasks
                         </a>
                     </li>
