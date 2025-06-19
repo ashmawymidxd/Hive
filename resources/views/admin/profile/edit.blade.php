@@ -13,8 +13,12 @@
         <p class="text-secondary">Manage your administrator account settings and preferences</p>
 
         @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show">
-                {{ session('success') }}
+            <div class="alert alert-success alert-dismissible fade show border-start border-success border-3 w-25">
+                <div class="d-flex align-items-center">
+                    <i class="fa fa-check-circle me-2 fa-2x"></i>
+                    <h3 class="alert-heading">Success!</h3>
+                </div>
+                <p class="mb-0">{{ session('success') }}</p>
                 <button type="button" class="btn-close" data-mdb-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
@@ -100,7 +104,7 @@
                             @enderror
                         </div>
                         <div class="mt-3">
-                            <button type="submit" class="btn btn-primary w-100 shadow-0 p-2">
+                            <button type="submit" class="btn btn-primary w-100 shadow-0 p-3">
                                 Save Profile Changes
                             </button>
                         </div>
@@ -150,7 +154,7 @@
                             @enderror
                         </div>
                         <div class="my-3">
-                            <button type="submit" class="btn btn-primary w-100 shadow-0 p-2">
+                            <button type="submit" class="btn btn-primary w-100 shadow-0 p-3">
                                 Update Password
                             </button>
                         </div>
@@ -214,7 +218,7 @@
                                 @enderror
                             </div>
                             <div class="mt-4 d-flex align-item-center justify-content-end">
-                                <button type="submit" class="btn btn-primary shadow-0 p-2">Save Preferences</button>
+                                <button type="submit" class="btn btn-primary shadow-0 p-3">Save Preferences</button>
                             </div>
                         </div>
                     </div>
