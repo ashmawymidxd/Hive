@@ -93,7 +93,7 @@
         <h3 class="font-bold text-dark">Billing & Accounting</h3>
         <p class="text-secondary">Manage hotel invoices, payments, expenses, and financial reporting</p>
         <div class="row mt-4">
-            <div class="col-md-12" data-aos="zoom-in" data-aos-duration="300" >
+            <div class="col-md-12" data-aos="zoom-in" data-aos-duration="300">
                 <ul class="nav nav-tabs border-bottom" id="financialTabs" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="invoice-tab" data-mdb-toggle="tab" data-mdb-target="#invoice"
@@ -139,7 +139,8 @@
                                     <div class="table-responsive">
                                         {{-- success messages closed alert --}}
                                         @if (session('success'))
-                                            <div class="alert alert-success alert-dismissible fade show border-start border-success border-4" role="alert">
+                                            <div class="alert alert-success alert-dismissible fade show border-start border-success border-4"
+                                                role="alert">
                                                 {{ session('success') }}
                                                 <button type="button" class="btn-close" data-mdb-dismiss="alert"
                                                     aria-label="Close"></button>
@@ -147,7 +148,8 @@
                                         @endif
                                         {{-- error messages closed alert --}}
                                         @if (session('error'))
-                                            <div class="alert alert-danger alert-dismissible fade show border-start border-danger border-4" role="alert">
+                                            <div class="alert alert-danger alert-dismissible fade show border-start border-danger border-4"
+                                                role="alert">
                                                 {{ session('error') }}
                                                 <button type="button" class="btn-close" data-mdb-dismiss="alert"
                                                     aria-label="Close"></button>
@@ -156,7 +158,8 @@
 
                                         {{-- errors messages closed alert --}}
                                         @if ($errors->any())
-                                            <div class="alert alert-danger alert-dismissible fade show border-start border-danger border-4" role="alert">
+                                            <div class="alert alert-danger alert-dismissible fade show border-start border-danger border-4"
+                                                role="alert">
                                                 <ul class="mb-0">
                                                     @foreach ($errors->all() as $error)
                                                         <li>{{ $error }}</li>
@@ -212,16 +215,14 @@
                                                                 <i class="fa fa-print"></i>
                                                             </a>
                                                             @if ($invoice->status == 'pending')
-                                                                <form
-                                                                    action="{{ route('admin.invoices.mark-as-paid', $invoice) }}"
-                                                                    method="POST" class="d-inline">
-                                                                    @csrf
-                                                                    <button type="submit"
-                                                                        class="btn btn-light border btn-sm shadow-0"
-                                                                        onclick="return confirm('Mark this invoice as paid?')">
-                                                                        <i class="fa fa-check"></i>
-                                                                    </button>
-                                                                </form>
+                                                                <button type="button"
+                                                                    class="btn btn-light border btn-sm shadow-0 pay-now-btn"
+                                                                    data-invoice-id="{{ $invoice->id }}"
+                                                                    data-guest-id="{{ $invoice->guest->id }}"
+                                                                    data-amount="{{ $invoice->amount }}"
+                                                                    onclick="openPaymentModal(this)">
+                                                                    <i class="fa fa-check"></i> Pay Now
+                                                                </button>
                                                             @endif
                                                         </td>
                                                     </tr>
@@ -582,7 +583,8 @@
                     <div class="tab-pane fade" id="tax" role="tabpanel" aria-labelledby="tax-tab">
                         <div class="d-flex align-items-center justify-content-between">
                             <h4 class="text-dark font-bold">Tax Management</h4>
-                            <button class="btn btn-primary shadow-0" data-mdb-toggle="modal" data-mdb-target="#createTaxModal">
+                            <button class="btn btn-primary shadow-0" data-mdb-toggle="modal"
+                                data-mdb-target="#createTaxModal">
                                 <i class="fas fa-plus"></i> Add Tax
                             </button>
                         </div>
@@ -705,6 +707,9 @@
     @include('admin.pages.billing.partials.view_tax_modal')
     @include('admin.pages.billing.partials.edit_tax_modal')
     @include('admin.pages.billing.partials.delete_tax_modal')
+    @include('admin.pages.billing.partials.pay_now_modal')
+
+
 @endsection
 
 @push('js')
@@ -1342,6 +1347,33 @@
         });
     </script>
 @endpush
+@push('js')
+    <script>
+        function openPaymentModal(button) {
+            // Get data from the button
+            const invoiceId = button.getAttribute('data-invoice-id');
+            const guestId = button.getAttribute('data-guest-id');
+            const amount = button.getAttribute('data-amount');
+
+            // Set values in the modal
+            document.getElementById('modal_invoice_id').value = invoiceId;
+            document.getElementById('modal_guest_id').value = guestId;
+            document.getElementById('modal_amount').value = amount;
+
+            // Show the modal
+            $('#paymentModal').modal('show');
+        }
+
+        // Handle form submission
+        document.getElementById('paymentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            if (confirm('Are you sure you want to process this payment?')) {
+                this.submit();
+            }
+        });
+    </script>
+@endpush
 
 @push('js')
     <script>
@@ -1622,12 +1654,12 @@
                                                 ${new Date(data.created_at).toLocaleString()}
                                             </li>
                                             ${data.updated_at ? `
-                                                            <li class="mb-2">
-                                                                <i class="fas fa-calendar-check text-muted me-2"></i>
-                                                                <strong>Last Updated:</strong> 
-                                                                ${new Date(data.updated_at).toLocaleString()}
-                                                            </li>
-                                                            ` : ''}
+                                                                            <li class="mb-2">
+                                                                                <i class="fas fa-calendar-check text-muted me-2"></i>
+                                                                                <strong>Last Updated:</strong> 
+                                                                                ${new Date(data.updated_at).toLocaleString()}
+                                                                            </li>
+                                                                            ` : ''}
                                         </ul>
                                     </div>
                                 </div>

@@ -44,7 +44,8 @@
                                 <input type="text" class="form-control" id="country" name="country">
                             </div>
                             <div class="col-12">
-                                <button type="submit" class="btn btn-primary">Save Guest</button>
+                                <button type="submit" class="btn btn-primary shadow-0">Save Guest</button>
+                                <button type="reset" class="btn btn-secondary shadow-0">Reset</button>
                             </div>
                         </div>
                     </form>

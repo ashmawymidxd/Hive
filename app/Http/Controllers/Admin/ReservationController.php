@@ -10,6 +10,8 @@ use App\Models\Room;
 use App\Models\Staff;
 use Illuminate\Http\Request;
 use App\Notifications\ReservationCreatedNotification;
+use App\Notifications\ReservationCreated;
+
 class ReservationController extends Controller
 {
     public function index()
@@ -25,7 +27,7 @@ class ReservationController extends Controller
         return view('admin.pages.reservations.create', compact('guests', 'rooms'));
     }
 
-   public function store(Request $request)
+    public function store(Request $request)
     {
         $validated = $request->validate([
             'guest_id' => 'required|exists:guests,id',
@@ -50,12 +52,12 @@ class ReservationController extends Controller
         // Check for overlapping reservations
         $overlappingReservation = Reservation::where('room_id', $request->room_id)
             ->where('status', '!=', 'cancelled')
-            ->where(function($query) use ($request) {
+            ->where(function ($query) use ($request) {
                 $query->whereBetween('check_in', [$request->check_in, $request->check_out])
                     ->orWhereBetween('check_out', [$request->check_in, $request->check_out])
-                    ->orWhere(function($q) use ($request) {
+                    ->orWhere(function ($q) use ($request) {
                         $q->where('check_in', '<', $request->check_in)
-                        ->where('check_out', '>', $request->check_out);
+                            ->where('check_out', '>', $request->check_out);
                     });
             })
             ->exists();
@@ -79,9 +81,10 @@ class ReservationController extends Controller
         $admin = auth('admin')->user();
         $admin->notify(new ReservationCreatedNotification($reservation));
 
-        // Notify guest
-        $reservation->guest->notify(new ReservationCreatedNotification($reservation));
-
+        // Get the guest associated with this reservation
+        $guest = Guest::find($reservation->guest_id);
+        // Send notification
+        $guest->notify(new ReservationCreated($reservation));
 
         // Redirect back with success message
         return redirect()->route('admin.reservations.index')
@@ -100,7 +103,7 @@ class ReservationController extends Controller
         return view('admin.pages.reservations.edit', compact('reservation', 'guests', 'rooms'));
     }
 
-   public function update(Request $request, Reservation $reservation)
+    public function update(Request $request, Reservation $reservation)
     {
         $validated = $request->validate([
             'guest_id' => 'required|exists:guests,id',
@@ -119,12 +122,12 @@ class ReservationController extends Controller
         $overlappingReservation = Reservation::where('room_id', $request->room_id)
             ->where('id', '!=', $reservation->id)
             ->where('status', '!=', 'cancelled')
-            ->where(function($query) use ($request) {
+            ->where(function ($query) use ($request) {
                 $query->whereBetween('check_in', [$request->check_in, $request->check_out])
                     ->orWhereBetween('check_out', [$request->check_in, $request->check_out])
-                    ->orWhere(function($q) use ($request) {
+                    ->orWhere(function ($q) use ($request) {
                         $q->where('check_in', '<', $request->check_in)
-                        ->where('check_out', '>', $request->check_out);
+                            ->where('check_out', '>', $request->check_out);
                     });
             })
             ->exists();
