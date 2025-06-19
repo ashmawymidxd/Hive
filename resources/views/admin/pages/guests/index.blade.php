@@ -33,9 +33,9 @@
                 <div class="tab-content mt-3" id="managementTabsContent">
                     <!-- Directory Tab -->
                     <div class="tab-pane fade show active" id="directory" role="tabpanel">
-                        {{-- success message alert cloce --}}
+                        {{-- success message alert close --}}
                         @if (session('success'))
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <div class="alert alert-success alert-dismissible fade show border-start border-success border-4" role="alert">
                                 {{ session('success') }}
                                 <button type="button" class="btn-close" data-mdb-dismiss="alert"
                                     aria-label="Close"></button>
@@ -43,7 +43,7 @@
                         @endif
                         {{-- Validate --}}
                         @if ($errors->any())
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <div class="alert alert-danger alert-dismissible fade show border-start border-danger border-4" role="alert">
                                 <ul class="mb-0">
                                     @foreach ($errors->all() as $error)
                                         <li>{{ $error }}</li>

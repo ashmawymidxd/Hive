@@ -9,7 +9,7 @@
         }
 
         .auth-header {
-           background: linear-gradient(135deg, #063309 0%, #0a570f 100%);
+            background: linear-gradient(135deg, #063309 0%, #0a570f 100%);
             color: white;
             padding: 2rem;
             text-align: center;
@@ -44,7 +44,7 @@
         }
 
         .btn-login {
-           background: linear-gradient(135deg, #063309 0%, #09520e 100%);
+            background: linear-gradient(135deg, #063309 0%, #09520e 100%);
             border: none;
             padding: 12px;
             font-weight: 600;
@@ -80,125 +80,130 @@
 @endsection
 
 @section('content')
-<div class="container-fluid bg-main patterns-stardust  d-flex align-items-center justify-content-center">
-    <div class="container">
-        <div class="row justify-content-center align-items-center min-vh-100 py-5">
-            <div class="col-md-8 col-lg-6 col-xl-5">
-                <div class="auth-card mb-5">
-                    <div class="auth-header">
-                        <h2 class="fw-bold mb-0">Create Account</h2>
-                        <p class="mb-0">Join us by creating your account</p>
-                    </div>
-
-                    <div class="auth-body">
-                        <div class="logo-circle border-end border-secondary p-2">
-                            <!-- Replace with your logo -->
-                            <img class="rounded-circle" src="{{ asset('assets/admin/img/logo/hive.png') }}" alt="Logo">
+    <div class="container-fluid bg-main patterns-stardust  d-flex align-items-center justify-content-center">
+        <div class="container">
+            <div class="row justify-content-center align-items-center min-vh-100 py-5">
+                <div class="col-md-8 col-lg-6 col-xl-5">
+                    <div class="auth-card mb-5">
+                        <div class="auth-header">
+                            <h2 class="fw-bold mb-0">Create Account</h2>
+                            <p class="mb-0">Join us by creating your account</p>
                         </div>
 
-                        <form method="POST" action="{{ route('register') }}">
-                            @csrf
+                        <div class="auth-body">
+                            <div class="logo-circle border-end border-secondary p-2">
+                                <!-- Replace with your logo -->
+                                <img class="rounded-circle" src="{{ asset('assets/admin/img/logo/hive.png') }}"
+                                    alt="Logo">
+                            </div>
 
-                            <div class="mb-4">
-                                <label for="name" class="form-label fw-semibold">Name</label>
-                                <div class="input-group">
-                                    <span class="input-group-text">
-                                        <i class="fas fa-user"></i>
-                                    </span>
-                                    <input id="name" type="text"
-                                        class="form-control form-control-lg @error('name') is-invalid @enderror"
-                                        name="name" value="{{ old('name') }}" required autocomplete="name" autofocus
-                                        placeholder="Enter your name">
+                            <form method="POST" action="{{ route('register') }}">
+                                @csrf
+
+                                <div class="mb-4">
+                                    <label for="name" class="form-label fw-semibold">Name</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-user"></i>
+                                        </span>
+                                        <input id="name" type="text"
+                                            class="form-control form-control-lg @error('name') is-invalid @enderror"
+                                            name="name" value="{{ old('name') }}" required autocomplete="name"
+                                            autofocus placeholder="Enter your name">
+                                    </div>
+                                    @error('name')
+                                        <span class="invalid-feedback d-block mt-1" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
-                                @error('name')
-                                    <span class="invalid-feedback d-block mt-1" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
 
-                            <div class="mb-4">
-                                <label for="email" class="form-label fw-semibold">Email Address</label>
-                                <div class="input-group">
-                                    <span class="input-group-text">
-                                        <i class="fas fa-envelope"></i>
-                                    </span>
-                                    <input id="email" type="email"
-                                        class="form-control form-control-lg @error('email') is-invalid @enderror"
-                                        name="email" value="{{ old('email') }}" required autocomplete="email"
-                                        placeholder="Enter your email">
+                                <div class="mb-4">
+                                    <label for="email" class="form-label fw-semibold">Email Address</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-envelope"></i>
+                                        </span>
+                                        <input id="email" type="email"
+                                            class="form-control form-control-lg @error('email') is-invalid @enderror"
+                                            name="email" value="{{ old('email') }}" required autocomplete="email"
+                                            placeholder="Enter your email">
+                                    </div>
+                                    @error('email')
+                                        <span class="invalid-feedback d-block mt-1" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
-                                @error('email')
-                                    <span class="invalid-feedback d-block mt-1" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
 
-                            <div class="mb-4">
-                                <label for="password" class="form-label fw-semibold">Password</label>
-                                <div class="input-group">
-                                    <span class="input-group-text">
-                                        <i class="fas fa-lock"></i>
-                                    </span>
-                                    <input id="password" type="password"
-                                        class="form-control form-control-lg @error('password') is-invalid @enderror"
-                                        name="password" required autocomplete="new-password"
-                                        placeholder="Enter your password">
+                                <div class="mb-4">
+                                    <label for="password" class="form-label fw-semibold">Password</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-lock"></i>
+                                        </span>
+                                        <input id="password" type="password"
+                                            class="form-control form-control-lg @error('password') is-invalid @enderror"
+                                            name="password" required autocomplete="new-password"
+                                            placeholder="Enter your password">
+                                    </div>
+                                    @error('password')
+                                        <span class="invalid-feedback d-block mt-1" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
-                                @error('password')
-                                    <span class="invalid-feedback d-block mt-1" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
 
-                            <div class="mb-4">
-                                <label for="password_confirmation" class="form-label fw-semibold">Confirm Password</label>
-                                <div class="input-group">
-                                    <span class="input-group-text">
-                                        <i class="fas fa-lock"></i>
-                                    </span>
-                                    <input id="password_confirmation" type="password" class="form-control form-control-lg"
-                                        name="password_confirmation" required autocomplete="new-password"
-                                        placeholder="Confirm your password">
+                                <div class="mb-4">
+                                    <label for="password_confirmation" class="form-label fw-semibold">Confirm
+                                        Password</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-lock"></i>
+                                        </span>
+                                        <input id="password_confirmation" type="password"
+                                            class="form-control form-control-lg" name="password_confirmation" required
+                                            autocomplete="new-password" placeholder="Confirm your password">
+                                    </div>
                                 </div>
+
+
+                                <div class="d-grid mb-3">
+                                    <button type="submit" class="btn btn-primary btn-login btn-lg">
+                                        <i class="fas fa-user-plus me-2"></i> Register
+                                    </button>
+                                </div>
+                            </form>
+                            <!-- OR Divider -->
+                            <div class="text-center my-3 d-flex align-items-center justify-content-center">
+                                <span class="border-bottom p-1 w-50"></span><span class="p-2">or</span> <span
+                                    class="border-bottom p-1 w-50"></span>
                             </div>
 
+                            <!-- Social Login Buttons -->
+                            <div class="d-flex gap-3">
+                                <a href="{{ route('auth.google') }}" class="form-control">
+                                    <img src="https://img.icons8.com/color/16/000000/google-logo.png" alt="Google Logo"
+                                        class="me-1">
+                                    <small class=""> Continue with Google</small>
+                                </a>
 
-                            <div class="d-grid mb-3">
-                                <button type="submit" class="btn btn-primary btn-login btn-lg">
-                                    <i class="fas fa-user-plus me-2"></i> Register
-                                </button>
+                                <a href="" class="form-control">
+                                    <img src="https://img.icons8.com/color/16/000000/facebook-new.png" alt="Facebook Logo"
+                                        class="me-1">
+                                    <small class=""> Continue with Facebook</small>
+                                </a>
                             </div>
-                        </form>
-                        <!-- OR Divider -->
-                        <div class="text-center my-3 d-flex align-items-center justify-content-center">
-                            <span class="border-bottom p-1 w-50"></span><span class="p-2">or</span> <span
-                                class="border-bottom p-1 w-50"></span>
-                        </div>
-
-                        <!-- Social Login Buttons -->
-                        <div class="d-flex  gap-3">
-                            <a href="{{ route('auth.google') }}"
-                                class="btn btn-outline-danger d-flex align-items-center justify-content-center gap-2">
-                                <i class="fab fa-google"></i> Continue with Google
-                            </a>
-
-                            <a href=""
-                                class="btn btn-outline-primary d-flex align-items-center justify-content-center gap-2">
-                                <i class="fab fa-facebook-f"></i> Continue with Facebook
-                            </a>
-                        </div>
-                        <div class="auth-footer">
-                            Already have an account?
-                            <a href="{{ route('login') }}" class="text-decoration-none fw-semibold text-warning">Login</a>
+                            <div class="auth-footer">
+                                Already have an account?
+                                <a href="{{ route('login') }}"
+                                    class="text-decoration-none fw-semibold text-warning">Login</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-</div>
+    </div>
 @endsection

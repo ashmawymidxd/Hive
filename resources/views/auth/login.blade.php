@@ -171,13 +171,17 @@
                             <!-- Social Login Buttons -->
                             <div class="d-flex gap-3">
                                 <a href="{{ route('auth.google') }}"
-                                    class="btn btn-outline-danger d-flex align-items-center justify-content-center gap-2">
-                                    <i class="fab fa-google"></i> Continue with Google
+                                    class="form-control">
+                                    <img src="https://img.icons8.com/color/16/000000/google-logo.png"
+                                        alt="Google Logo" class="me-1">
+                                    <small class=""> Continue with Google</small>
                                 </a>
 
                                 <a href=""
-                                    class="btn btn-outline-primary d-flex align-items-center justify-content-center gap-2">
-                                    <i class="fab fa-facebook-f"></i> Continue with Facebook
+                                    class="form-control">
+                                     <img src="https://img.icons8.com/color/16/000000/facebook-new.png"
+                                        alt="Facebook Logo" class="me-1">
+                                     <small class=""> Continue with Facebook</small>
                                 </a>
                             </div>
                             <!-- Register Link -->

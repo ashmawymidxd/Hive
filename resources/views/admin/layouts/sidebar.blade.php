@@ -1,5 +1,5 @@
  <nav class="sidebar" id="sidebar">
-     <div class="sidebar-header bg-navy border-b">
+     <div class="sidebar-header border-bottom border-info border-1">
          <div class="d-flex align-items-center gap-3">
              <span class="rounded-2 bg-info-tranc p-1">
                  <img draggable="false" class="rounded-2 shadow" src="{{ asset('assets/admin/img/logo/hive.png') }}"

@@ -93,7 +93,7 @@
         <h3 class="font-bold text-dark">Billing & Accounting</h3>
         <p class="text-secondary">Manage hotel invoices, payments, expenses, and financial reporting</p>
         <div class="row mt-4">
-            <div class="col-md-12">
+            <div class="col-md-12" data-aos="zoom-in" data-aos-duration="300" >
                 <ul class="nav nav-tabs border-bottom" id="financialTabs" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="invoice-tab" data-mdb-toggle="tab" data-mdb-target="#invoice"
@@ -139,7 +139,7 @@
                                     <div class="table-responsive">
                                         {{-- success messages closed alert --}}
                                         @if (session('success'))
-                                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            <div class="alert alert-success alert-dismissible fade show border-start border-success border-4" role="alert">
                                                 {{ session('success') }}
                                                 <button type="button" class="btn-close" data-mdb-dismiss="alert"
                                                     aria-label="Close"></button>
@@ -147,7 +147,7 @@
                                         @endif
                                         {{-- error messages closed alert --}}
                                         @if (session('error'))
-                                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                            <div class="alert alert-danger alert-dismissible fade show border-start border-danger border-4" role="alert">
                                                 {{ session('error') }}
                                                 <button type="button" class="btn-close" data-mdb-dismiss="alert"
                                                     aria-label="Close"></button>
@@ -156,7 +156,7 @@
 
                                         {{-- errors messages closed alert --}}
                                         @if ($errors->any())
-                                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                            <div class="alert alert-danger alert-dismissible fade show border-start border-danger border-4" role="alert">
                                                 <ul class="mb-0">
                                                     @foreach ($errors->all() as $error)
                                                         <li>{{ $error }}</li>
@@ -1304,6 +1304,8 @@
         new DataTable("#PaymentTable");
         new DataTable("#expensesTable");
         new DataTable("#taxTable");
+
+        AOS.init();
     </script>
 @endpush
 
@@ -1539,108 +1541,108 @@
                 var taxId = $(this).data('id');
                 $.get('/admin/taxes/' + taxId, function(data) {
                     var html = `
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="d-flex align-items-center mb-3">
-                                            <div class="flex-shrink-0 bg-primary bg-opacity-10 p-3 rounded me-3">
-                                                <i class="fas fa-receipt text-primary fs-2"></i>
-                                            </div>
-                                            <div>
-                                                <h4 class="mb-0">${data.tax_id}</h4>
-                                                <span class="text-muted">Tax Record</span>
-                                            </div>
-                                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="flex-shrink-0 bg-primary bg-opacity-10 p-3 rounded me-3">
+                                        <i class="fas fa-receipt text-primary fs-2"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="mb-0">${data.tax_id}</h4>
+                                        <span class="text-muted">Tax Record</span>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
 
-                                <div class="row mt-4">
-                                    <div class="col-md-6">
-                                        <div class="card border-0 shadow-sm mb-3">
-                                            <div class="card-body">
-                                                <h6 class="card-title text-muted text-uppercase small">Details</h6>
-                                                <ul class="list-unstyled mb-0">
-                                                    <li class="mb-2">
-                                                        <i class="fas fa-align-left text-muted me-2"></i>
-                                                        <strong>Description:</strong> ${data.description}
-                                                    </li>
-                                                    <li class="mb-2">
-                                                        <i class="fas fa-tag text-muted me-2"></i>
-                                                        <strong>Type:</strong> ${data.type}
-                                                    </li>
-                                                    <li class="mb-2">
-                                                        <i class="fas fa-calendar-day text-muted me-2"></i>
-                                                        <strong>Date:</strong> ${data.date}
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="col-md-6">
-                                        <div class="card border-0 shadow-sm mb-3">
-                                            <div class="card-body">
-                                                <h6 class="card-title text-muted text-uppercase small">Financial</h6>
-                                                <ul class="list-unstyled mb-0">
-                                                    <li class="mb-2">
-                                                        <i class="fas fa-money-bill-wave text-muted me-2"></i>
-                                                        <strong>Amount:</strong> 
-                                                        <span class="fw-bold text-success">$${parseFloat(data.amount).toFixed(2)}</span>
-                                                    </li>
-                                                    <li class="mb-2">
-                                                        <i class="fas fa-info-circle text-muted me-2"></i>
-                                                        <strong>Status:</strong> 
-                                                        <span class="badge bg-${ 
-                                                            data.status == 'Filed' ? 'info' : 
-                                                            (data.status == 'Paid' ? 'success' : 
-                                                            (data.status == 'Overdue' ? 'danger' : 'warning'))
-                                                        } rounded-pill">
-                                                            <i class="fas ${
-                                                                data.status == 'Filed' ? 'fa-file-export' : 
-                                                                (data.status == 'Paid' ? 'fa-check-circle' : 
-                                                                (data.status == 'Overdue' ? 'fa-exclamation-triangle' : 'fa-clock'))
-                                                            } me-1"></i>
-                                                            ${data.status}
-                                                        </span>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <div class="card border shadow-sm mb-3">
+                                    <div class="card-body">
+                                        <h6 class="card-title text-muted text-uppercase small">Details</h6>
+                                        <ul class="list-unstyled mb-0">
+                                            <li class="mb-2">
+                                                <i class="fas fa-align-left text-muted me-2"></i>
+                                                <strong>Description:</strong> ${data.description}
+                                            </li>
+                                            <li class="mb-2">
+                                                <i class="fas fa-tag text-muted me-2"></i>
+                                                <strong>Type:</strong> ${data.type}
+                                            </li>
+                                            <li class="mb-2">
+                                                <i class="fas fa-calendar-day text-muted me-2"></i>
+                                                <strong>Date:</strong> ${data.date}
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="card border shadow-sm mb-3">
+                                    <div class="card-body">
+                                        <h6 class="card-title text-muted text-uppercase small">Financial</h6>
+                                        <ul class="list-unstyled mb-0">
+                                            <li class="mb-2">
+                                                <i class="fas fa-money-bill-wave text-muted me-2"></i>
+                                                <strong>Amount:</strong> 
+                                                <span class="fw-bold text-success">$${parseFloat(data.amount).toFixed(2)}</span>
+                                            </li>
+                                            <li class="mb-2">
+                                                <i class="fas fa-info-circle text-muted me-2"></i>
+                                                <strong>Status:</strong> 
+                                                <span class="badge bg-${ 
+                                                    data.status == 'Filed' ? 'info' : 
+                                                    (data.status == 'Paid' ? 'success' : 
+                                                    (data.status == 'Overdue' ? 'danger' : 'warning'))
+                                                } rounded-pill">
+                                                    <i class="fas ${
+                                                        data.status == 'Filed' ? 'fa-file-export' : 
+                                                        (data.status == 'Paid' ? 'fa-check-circle' : 
+                                                        (data.status == 'Overdue' ? 'fa-exclamation-triangle' : 'fa-clock'))
+                                                    } me-1"></i>
+                                                    ${data.status}
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="card border-0 shadow-sm">
-                                            <div class="card-body">
-                                                <h6 class="card-title text-muted text-uppercase small">System Info</h6>
-                                                <ul class="list-unstyled mb-0">
-                                                    <li class="mb-2">
-                                                        <i class="fas fa-calendar-plus text-muted me-2"></i>
-                                                        <strong>Created:</strong> 
-                                                        ${new Date(data.created_at).toLocaleString()}
-                                                    </li>
-                                                    ${data.updated_at ? `
-                                                                    <li class="mb-2">
-                                                                        <i class="fas fa-calendar-check text-muted me-2"></i>
-                                                                        <strong>Last Updated:</strong> 
-                                                                        ${new Date(data.updated_at).toLocaleString()}
-                                                                    </li>
-                                                                    ` : ''}
-                                                </ul>
-                                            </div>
-                                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card border shadow-sm">
+                                    <div class="card-body">
+                                        <h6 class="card-title text-muted text-uppercase small">System Info</h6>
+                                        <ul class="list-unstyled mb-0">
+                                            <li class="mb-2">
+                                                <i class="fas fa-calendar-plus text-muted me-2"></i>
+                                                <strong>Created:</strong> 
+                                                ${new Date(data.created_at).toLocaleString()}
+                                            </li>
+                                            ${data.updated_at ? `
+                                                            <li class="mb-2">
+                                                                <i class="fas fa-calendar-check text-muted me-2"></i>
+                                                                <strong>Last Updated:</strong> 
+                                                                ${new Date(data.updated_at).toLocaleString()}
+                                                            </li>
+                                                            ` : ''}
+                                        </ul>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
 
-                                <div class="row mt-3">
-                                    <div class="col-md-12">
-                                        <div class="alert alert-light d-flex align-items-center">
-                                            <i class="fas fa-info-circle me-2 text-primary"></i>
-                                            <small class="text-muted">This tax record was automatically generated by the system.</small>
-                                        </div>
-                                    </div>
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <div class="alert alert-light d-flex align-items-center border-start border-primary border-3">
+                                    <i class="fas fa-info-circle me-2 text-primary"></i>
+                                    <small class="text-muted">This tax record was automatically generated by the system.</small>
                                 </div>
-                                `;
+                            </div>
+                        </div>
+                        `;
                     $('#taxDetails').html(html);
                 });
             });
