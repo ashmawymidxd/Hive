@@ -83,7 +83,7 @@
               <div class="dropdown todo-dropdown me-4">
                 <a class="list-group-item" href="#" id="todoDropdown" data-mdb-toggle="dropdown"
                    aria-expanded="false">
-                   <i class="fa-solid fa-list-check"></i> 
+                   <i class="fa-solid fa-list-check"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end p-3 shadow-0 border mt-2" aria-labelledby="todoDropdown"
                    style="width: 300px;">

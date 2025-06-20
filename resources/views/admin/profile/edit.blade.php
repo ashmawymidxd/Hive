@@ -13,7 +13,8 @@
         <p class="text-secondary">Manage your administrator account settings and preferences</p>
 
         @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show border-start border-success border-3 w-25">
+            <div class="alert alert-success alert-dismissible fade show border-start border-success border-3 w-25 m-3 z-50"
+                style="position: fixed;bottom:10px;right:10px;z-index:1000;" data-aos="flip-up" data-aos-delay="100">
                 <div class="d-flex align-items-center">
                     <i class="fa fa-check-circle me-2 fa-2x"></i>
                     <h3 class="alert-heading">Success!</h3>
@@ -153,11 +154,24 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="my-3">
+                        <div class="mt-5">
                             <button type="submit" class="btn btn-primary w-100 shadow-0 p-3">
                                 Update Password
                             </button>
                         </div>
+                    </div>
+                    <div class="card shadow-0 border p-3 mt-3">
+                        <small class="dropdown-item-text text-muted">
+                            Last login:
+                            {{ auth('admin')->user()->last_login_at ? auth('admin')->user()->last_login_at : 'Never' }}
+                        </small>
+                        <a class="dropdown-item mt-1" href="">
+                            <i class="fas fa-play me-2"></i> Start Timer
+                        </a>
+                        <a class="dropdown-item mt-1" href="">
+                            <i class="fas fa-stop me-2"></i> Stop Timer
+                        </a>
+
                     </div>
                 </form>
             </div>
@@ -224,6 +238,22 @@
                     </div>
                 </div>
             </form>
+        </div>
+        <div class="col-md-12">
+            <div class="card p-3 border shadow-sm mt-4" data-aos="fade-up" data-aos-duration="600">
+                <h6 class="mb-3">Your Current Permissions</h6>
+                <div class="d-flex flex-wrap gap-2">
+                    @foreach (json_decode(auth('admin')->user()->role->permissions ?? '[]') as $permission)
+                        <span class="badge badge-primary rounded-pill px-3 py-2">
+                            <i class="fas fa-check-circle me-1"></i> {{ $permission }}
+                        </span>
+                    @endforeach
+
+                    @if (empty(json_decode(auth('admin')->user()->role->permissions ?? '[]')))
+                        <div class="text-muted">No permissions assigned</div>
+                    @endif
+                </div>
+            </div>
         </div>
     </section>
 

@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\ExpenseController;
 use App\Http\Controllers\Admin\BillingChartController;
 use App\Http\Controllers\Admin\TaxController;
 use App\Http\Controllers\Admin\TodoController;
+use App\Http\Controllers\Admin\ReportController;
 /*
 |--------------------------------------------------------------------------
 | admin Routes
@@ -150,6 +151,12 @@ Route::middleware(['auth:admin', 'check.admin.status'])->name('admin.')->prefix(
         Route::patch('/{todo}/complete', [TodoController::class, 'complete'])->name('complete');
         Route::delete('/{todo}', [TodoController::class, 'destroy'])->name('destroy');
     });
+
+    // 404
+    Route::fallback(function () {return view('admin.errors.404');});
+
+    // reporting ang analysis
+    Route::get('/reports',[ReportController::class,'index'])->name('reports.index');
 });
 
 require __DIR__ . '/auth_admin.php';
