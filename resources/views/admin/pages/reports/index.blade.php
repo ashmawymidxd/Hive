@@ -68,22 +68,29 @@
                             <div class="col-md-6 col-lg-4 mb-4">
                                 <div class="card p-3 shadow-0 border shadow-1">
                                     <p class="text-secondary">Current Occupancy</p>
-                                    <h3 class="text-dark font-bold">85%</h3>
-                                    <small class="text-secondary">+8% from last month</small>
+                                    <h3 class="text-dark font-bold">
+                                        {{ $currentOccupancy ? $currentOccupancy->occupancy_rate . '%' : 'N/A' }}</h3>
+                                    <small
+                                        class="text-secondary {{ $occupancyChange >= 0 ? 'text-success' : 'text-danger' }}">
+                                        {{ $occupancyChange >= 0 ? '+' : '' }}{{ $occupancyChange }}% from last month
+                                    </small>
                                 </div>
                             </div>
                             <div class="col-md-6 col-lg-4 mb-4">
                                 <div class="card p-3 shadow-0 border shadow-1">
                                     <p class="text-secondary">Average Length of Stay</p>
-                                    <h3 class="text-dark font-bold">3.2 nights</h3>
-                                    <small class="text-secondary">+0.4 from last month</small>
+                                    <h3 class="text-dark font-bold">{{ $averageStay }} nights</h3>
+                                    <small
+                                        class="text-secondary {{ $averageStayChange >= 0 ? 'text-success' : 'text-danger' }}">
+                                        {{ $averageStayChange >= 0 ? '+' : '' }}{{ $averageStayChange }} from last month
+                                    </small>
                                 </div>
                             </div>
                             <div class="col-md-6 col-lg-4 mb-4">
                                 <div class="card p-3 shadow-0 border shadow-1">
                                     <p class="text-secondary">Highest Occupancy Day</p>
-                                    <h3 class="text-dark font-bold">Saturday</h3>
-                                    <small class="text-secondary">95% average occupancy</small>
+                                    <h3 class="text-dark font-bold">{{ $highestDay }}</h3>
+                                    <small class="text-secondary">{{ $highestDayRate }}% average occupancy</small>
                                 </div>
                             </div>
                         </div>
@@ -91,22 +98,46 @@
                     <div class="row mt-1">
                         <div class="col-md-12">
                             <div class="card shadow-0 p-3 border shadow-1">
-                                <h4 class="text-dark">Monthly Occupancy Trend</h4>
-                                <canvas id="occupancyChart" height="400"></canvas>
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h4 class="text-dark">Monthly Occupancy Trend</h4>
+                                    <div>
+                                        <select id="year-selector" class="form-select form-select-sm">
+                                            @for ($year = date('Y'); $year >= 2020; $year--)
+                                                <option value="{{ $year }}">{{ $year }}</option>
+                                            @endfor
+                                        </select>
+                                    </div>
+                                </div>
+                                <canvas id="monthlyOccupancyChart" height="400"></canvas>
                             </div>
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-md-6 mt-2">
                             <div class="card shadow-0 border p-3">
-                                <h4 class="text-dark">Occupancy by Day of Week</h4>
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h6 class="text-dark">Occupancy by Day of Week</h6>
+                                    <div class="d-flex align-items-center">
+                                        <button id="prev-week" class="btn btn-sm btn-outline-secondary me-2">
+                                            <i class="fas fa-chevron-left"></i>
+                                        </button>
+                                        <small id="daily-week-display"
+                                            data-current-week="{{ now()->startOfWeek()->format('Y-m-d') }}">
+                                            Week of {{ now()->startOfWeek()->format('M j') }} to
+                                            {{ now()->endOfWeek()->format('M j') }}
+                                        </small>
+                                        <button id="next-week" class="btn btn-sm btn-outline-secondary ms-2">
+                                            <i class="fas fa-chevron-right"></i>
+                                        </button>
+                                    </div>
+                                </div>
                                 <canvas id="dailyOccupancyChart" height="250"></canvas>
                             </div>
                         </div>
                         <div class="col-md-6 mt-2">
                             <div class="card shadow-0 border p-3">
-                                <h4 class="text-dark">Occupancy by Room Type</h4>
-                                <canvas id="roomTypeChart" height="250"></canvas>
+                                <small class="text-dark">Occupancy by Room Type</small>
+                                <canvas id="roomTypeChart" height="280"></canvas>
                             </div>
                         </div>
                     </div>
@@ -581,20 +612,21 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 @endpush
 
+
 @push('js')
+    {{-- Monthly Occupancy Charts --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const ctx = document.getElementById('occupancyChart').getContext('2d');
-            const occupancyChart = new Chart(ctx, {
+            const ctx = document.getElementById('monthlyOccupancyChart').getContext('2d');
+
+            // Initialize empty chart
+            const monthlyOccupancyChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov',
-                        'Dec'
-                    ],
+                    labels: [],
                     datasets: [{
                         label: 'Occupancy Rate (%)',
-                        data: [65, 59, 80, 81, 56, 55, 40, 50, 60, 70, 75,
-                        85], // Replace with your actual data
+                        data: [],
                         backgroundColor: 'rgba(54, 162, 235, 0.2)',
                         borderColor: 'rgba(54, 162, 235, 1)',
                         borderWidth: 2,
@@ -625,19 +657,51 @@
                     }
                 }
             });
+
+            // Function to fetch and update chart data
+            function fetchMonthlyOccupancyData(year = null) {
+                let url = '/admin/reports/monthly-occupancy';
+                if (year) {
+                    url += `?year=${year}`;
+                }
+
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        monthlyOccupancyChart.data.labels = data.labels;
+                        monthlyOccupancyChart.data.datasets[0].data = data.data;
+                        monthlyOccupancyChart.update();
+
+                        // Update year display if needed
+                        if (year) {
+                            document.getElementById('chart-year-display').textContent = data.year;
+                        }
+                    })
+                    .catch(error => console.error('Error fetching data:', error));
+            }
+
+            // Initial load
+            fetchMonthlyOccupancyData();
+
+            // Optional: Add year selector
+            document.getElementById('year-selector')?.addEventListener('change', function() {
+                fetchMonthlyOccupancyData(this.value);
+            });
         });
     </script>
 
+    {{-- daily Occupancy Charts --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize daily chart
             const dailyCtx = document.getElementById('dailyOccupancyChart').getContext('2d');
             const dailyOccupancyChart = new Chart(dailyCtx, {
                 type: 'bar',
                 data: {
-                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    labels: [],
                     datasets: [{
                         label: 'Occupancy Rate (%)',
-                        data: [65, 70, 75, 80, 85, 60, 50], // Replace with your actual data
+                        data: [],
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.7)',
                             'rgba(54, 162, 235, 0.7)',
@@ -663,7 +727,7 @@
                     responsive: true,
                     plugins: {
                         legend: {
-                            display: false // Hide legend as we only have one dataset
+                            display: false
                         },
                         tooltip: {
                             callbacks: {
@@ -690,9 +754,58 @@
                     }
                 }
             });
+
+            // Function to fetch and update daily chart data
+            function fetchDailyOccupancyData(startDate = null, endDate = null) {
+                let url = '/admin/reports/daily-occupancy';
+                const params = new URLSearchParams();
+
+                if (startDate) params.append('start_date', startDate);
+                if (endDate) params.append('end_date', endDate);
+
+                if (params.toString()) url += `?${params.toString()}`;
+
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        dailyOccupancyChart.data.labels = data.labels;
+                        dailyOccupancyChart.data.datasets[0].data = data.data;
+                        dailyOccupancyChart.update();
+
+                        // Update week display
+                        document.getElementById('daily-week-display').textContent =
+                            `Week of ${new Date(data.week_start).toLocaleDateString()} to ${new Date(data.week_end).toLocaleDateString()}`;
+                    })
+                    .catch(error => console.error('Error fetching daily data:', error));
+            }
+
+            // Initial load
+            fetchDailyOccupancyData();
+
+            // Optional: Add week navigation
+            document.getElementById('prev-week')?.addEventListener('click', function() {
+                const currentWeek = document.getElementById('daily-week-display').dataset.currentWeek;
+                const prevWeek = new Date(currentWeek);
+                prevWeek.setDate(prevWeek.getDate() - 7);
+                fetchDailyOccupancyData(
+                    prevWeek.toISOString().split('T')[0],
+                    new Date(prevWeek.getTime() + 6 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+                );
+            });
+
+            document.getElementById('next-week')?.addEventListener('click', function() {
+                const currentWeek = document.getElementById('daily-week-display').dataset.currentWeek;
+                const nextWeek = new Date(currentWeek);
+                nextWeek.setDate(nextWeek.getDate() + 7);
+                fetchDailyOccupancyData(
+                    nextWeek.toISOString().split('T')[0],
+                    new Date(nextWeek.getTime() + 6 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+                );
+            });
         });
     </script>
 
+    {{-- by room type --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const ctx = document.getElementById('roomTypeChart').getContext('2d');
@@ -850,7 +963,8 @@
                     datasets: [{
                         label: 'Revenue ($)',
                         data: [120000, 180000, 220000, 280000,
-                        320000], // Sample data including $280k for Executive
+                            320000
+                        ], // Sample data including $280k for Executive
                         backgroundColor: [
                             'rgba(54, 162, 235, 0.7)', // Standard - Blue
                             'rgba(75, 192, 192, 0.7)', // Deluxe - Teal
@@ -1133,7 +1247,8 @@
                     datasets: [{
                         label: 'Number of Guests',
                         data: [1200, 900, 800, 600, 500, 400, 350,
-                        300], // Sample data - replace with actual numbers
+                            300
+                        ], // Sample data - replace with actual numbers
                         backgroundColor: 'rgba(54, 162, 235, 1)',
                         borderColor: 'rgba(54, 162, 235, 1)',
                         borderWidth: 1,
@@ -1196,7 +1311,8 @@
                     labels: ['New Guests', 'Returning (Non-member)', 'Silver', 'Gold', 'Platinum'],
                     datasets: [{
                         data: [35, 20, 25, 15,
-                        5], // Includes estimated 20% for Returning (Non-member)
+                            5
+                        ], // Includes estimated 20% for Returning (Non-member)
                         backgroundColor: [
                             'rgba(54, 162, 235, 0.8)', // New Guests - Blue
                             'rgba(201, 203, 207, 0.8)', // Returning - Gray
@@ -1467,7 +1583,8 @@
                 type: 'bar',
                 data: {
                     labels: ['Room Revenue', 'F&B Revenue', 'Event Revenue', 'Spa Revenue',
-                        'Other Revenue'],
+                        'Other Revenue'
+                    ],
                     datasets: [{
                         label: 'Revenue ($)',
                         data: [145000, 65000, 40000, 25000, 15000], // Sample data matching scale

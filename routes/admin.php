@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\BillingChartController;
 use App\Http\Controllers\Admin\TaxController;
 use App\Http\Controllers\Admin\TodoController;
 use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\ReportsChartController;
 /*
 |--------------------------------------------------------------------------
 | admin Routes
@@ -157,6 +158,14 @@ Route::middleware(['auth:admin', 'check.admin.status'])->name('admin.')->prefix(
 
     // reporting ang analysis
     Route::get('/reports',[ReportController::class,'index'])->name('reports.index');
+
+    // report charts
+    Route::get('/reports/monthly-occupancy', [ReportsChartController::class, 'monthlyOccupancyData'])->name('reports.monthly-occupancy');
+    Route::get('/reports/daily-occupancy', [ReportsChartController::class, 'dailyOccupancyData'])->name('reports.daily-occupancy');
+    Route::get('/reports/room-type-occupancy', [ReportsChartController::class, 'roomTypeOccupancyData'])
+    ->name('reports.room-type-occupancy');
+
+
 });
 
 require __DIR__ . '/auth_admin.php';

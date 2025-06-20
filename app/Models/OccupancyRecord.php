@@ -15,8 +15,10 @@ class OccupancyRecord extends Model
         'occupied_rooms',
         'total_rooms'
     ];
-    
+
     protected $casts = [
         'record_date' => 'date'
     ];
+
+    
 }
