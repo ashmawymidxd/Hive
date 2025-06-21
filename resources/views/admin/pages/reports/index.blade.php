@@ -157,22 +157,29 @@
                             <div class="col-md-6 col-lg-4 mb-4">
                                 <div class="card p-3 shadow-0 border shadow-1">
                                     <p class="text-secondary">Total Revenue (YTD)</p>
-                                    <h3 class="text-dark font-bold">$1,840,000</h3>
-                                    <small class="text-secondary">+12% from last year</small>
+                                    <h3 class="text-dark font-bold">${{ number_format($ytdRevenue, 2) }}</h3>
+                                    <small class="text-{{ $revenueChange >= 0 ? 'success' : 'danger' }}">
+                                        {{ $revenueChange >= 0 ? '+' : '' }}{{ number_format($revenueChange, 1) }}% from
+                                        last year
+                                    </small>
                                 </div>
                             </div>
                             <div class="col-md-6 col-lg-4 mb-4">
                                 <div class="card p-3 shadow-0 border shadow-1">
                                     <p class="text-secondary">RevPAR</p>
-                                    <h3 class="text-dark font-bold">$145.50</h3>
-                                    <small class="text-secondary">+8.5% from last year</small>
+                                    <h3 class="text-dark font-bold">${{ number_format($revpar, 2) }}</h3>
+                                    <small class="text-{{ $revparChange >= 0 ? 'success' : 'danger' }}">
+                                        {{ $revparChange >= 0 ? '+' : '' }}{{ number_format($revparChange, 1) }}% from
+                                        last year
+                                    </small>
                                 </div>
                             </div>
                             <div class="col-md-6 col-lg-4 mb-4">
                                 <div class="card p-3 shadow-0 border shadow-1">
                                     <p class="text-secondary">Best Performing Month</p>
-                                    <h3 class="text-dark font-bold">July</h3>
-                                    <small class="text-secondary">$190,000 revenue</small>
+                                    <h3 class="text-dark font-bold">{{ $bestMonthName }}</h3>
+                                    <small class="text-secondary">${{ number_format($bestMonthRevenue, 2) }}
+                                        revenue</small>
                                 </div>
                             </div>
                         </div>
@@ -180,7 +187,20 @@
                     <div class="row mt-1">
                         <div class="col-md-12">
                             <div class="card shadow-0 p-3 border shadow-1">
-                                <h4 class="text-dark">Monthly Revenue Trend</h4>
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <h4 class="text-dark">Monthly Revenue Trend</h4>
+                                    <select id="chartYearSelect" class="form-select" style="width: 100px;">
+                                        @php
+                                            $currentYear = date('Y');
+                                            $years = range($currentYear - 5, $currentYear);
+                                        @endphp
+                                        @foreach ($years as $year)
+                                            <option value="{{ $year }}"
+                                                {{ $year == $currentYear ? 'selected' : '' }}>{{ $year }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                                 <canvas id="revenueChart" height="100"></canvas>
                             </div>
                         </div>
@@ -189,14 +209,14 @@
                         <div class="col-lg-6 col-md-12 mt-2">
                             <div class="card shadow-0 border p-3">
                                 <h4 class="text-dark">Revenue by Room Type</h4>
-                                <canvas id="revenueByRoomChart" height="150"></canvas>
+                                <canvas id="revenueByRoomChart" height="300px"></canvas>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-12 mt-2">
                             <div class="card shadow-0 border p-3">
-                                <h4 class="text-dark">Revenue Sources</h4>
-                                <div class="chart-container" style="position: relative; height:290px; width:100%">
-                                    <canvas id="revenueSourcesChart"></canvas>
+                                <h4 class="text-dark">Expense Sources</h4>
+                                <div class="chart-container">
+                                    <canvas id="expenseChart" height="300px"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -211,15 +231,85 @@
                                     <div class="col-lg-3 col-md-6 mt-2">
                                         <div class="card shad shadow-0 bg-light p-3 border">
                                             <small class="text-secondary">Average Daily Rate</small>
-                                            <h6 class="font-bold text text-dark">$189.75</h6>
-                                            <small class="text-secondary">+$12.50 from last year</small>
+                                            @php
+                                                use App\Models\Payment;
+                                                use Carbon\Carbon;
+
+                                                $currentYear = Carbon::now()->year;
+                                                $lastYear = $currentYear - 1;
+
+                                                // Calculate current year ADR
+                                                $currentYearRevenue = Payment::whereYear('payment_date', $currentYear)
+                                                    ->where('status', 'completed')
+                                                    ->sum('amount');
+                                                $currentYearBookings = Payment::whereYear('payment_date', $currentYear)
+                                                    ->where('status', 'completed')
+                                                    ->count();
+                                                $currentADR =
+                                                    $currentYearBookings > 0
+                                                        ? $currentYearRevenue / $currentYearBookings
+                                                        : 0;
+
+                                                // Calculate last year ADR for comparison
+                                                $lastYearRevenue = Payment::whereYear('payment_date', $lastYear)
+                                                    ->where('status', 'completed')
+                                                    ->sum('amount');
+                                                $lastYearBookings = Payment::whereYear('payment_date', $lastYear)
+                                                    ->where('status', 'completed')
+                                                    ->count();
+                                                $lastADR =
+                                                    $lastYearBookings > 0 ? $lastYearRevenue / $lastYearBookings : 0;
+
+                                                // Calculate difference
+                                                $adrDifference = $lastADR > 0 ? $currentADR - $lastADR : 0;
+                                            @endphp
+
+                                            <h6 class="font-bold text text-dark">${{ number_format($currentADR, 2) }}</h6>
+                                            <small class="text-{{ $adrDifference >= 0 ? 'success' : 'danger' }}">
+                                                {{ $adrDifference >= 0 ? '+' : '' }}${{ number_format(abs($adrDifference), 2) }}
+                                                from last year
+                                            </small>
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-md-6 mt-2">
                                         <div class="card shad shadow-0 bg-light p-3 border">
                                             <small class="text-secondary">Revenue per Available Room</small>
-                                            <h6 class="font-bold text text-dark">$145.50</h6>
-                                            <small class="text-secondary">+8.5% from last year</small>
+                                            @php
+                                                use App\Models\Room;
+
+                                                $currentYear = Carbon::now()->year;
+                                                $lastYear = $currentYear - 1;
+
+                                                // Get total room count (available rooms)
+                                                $totalRooms = Room::count();
+
+                                                // Calculate current year RevPAR
+                                                $currentYearRevenue = Payment::whereYear('payment_date', $currentYear)
+                                                    ->where('status', 'completed')
+                                                    ->sum('amount');
+                                                $currentRevPAR =
+                                                    $totalRooms > 0 ? $currentYearRevenue / ($totalRooms * 365) : 0;
+
+                                                // Calculate last year RevPAR for comparison
+                                                $lastYearRevenue = Payment::whereYear('payment_date', $lastYear)
+                                                    ->where('status', 'completed')
+                                                    ->sum('amount');
+                                                $lastRevPAR =
+                                                    $totalRooms > 0 ? $lastYearRevenue / ($totalRooms * 365) : 0;
+
+                                                // Calculate percentage change
+                                                $revparChange =
+                                                    $lastRevPAR > 0
+                                                        ? (($currentRevPAR - $lastRevPAR) / $lastRevPAR) * 100
+                                                        : 0;
+                                            @endphp
+
+                                            <h6 class="font-bold text text-dark">${{ number_format($currentRevPAR, 2) }}
+                                            </h6>
+                                            <small class="text-{{ $revparChange >= 0 ? 'success' : 'danger' }}">
+                                                {{ $revparChange >= 0 ? '+' : '' }}{{ number_format($revparChange, 1) }}%
+                                                from last year
+                                            </small>
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-md-6 mt-2">
@@ -877,225 +967,301 @@
         });
     </script>
 
+    {{-- Monthly revenue Chart --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const ctx = document.getElementById('revenueChart').getContext('2d');
-            const revenueChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov',
-                        'Dec'
-                    ],
-                    datasets: [{
-                        label: 'Revenue ($)',
-                        data: [120000, 135000, 150000, 165000, 180000, 175000, 190000, 185000,
-                            200000, 210000, 220000, 230000
-                        ], // Replace with your actual data
-                        backgroundColor: 'rgba(75, 192, 192, 0.1)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 3,
-                        tension: 0.3,
-                        fill: true,
-                        pointBackgroundColor: 'rgba(75, 192, 192, 1)',
-                        pointRadius: 4,
-                        pointHoverRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                            labels: {
-                                usePointStyle: true,
-                                padding: 20
-                            }
-                        },
-                        tooltip: {
-                            mode: 'index',
-                            intersect: false,
-                            callbacks: {
-                                label: function(context) {
-                                    return 'Revenue: $' + context.parsed.y.toLocaleString();
-                                }
-                            }
-                        }
+            let revenueChart;
+
+            // Function to fetch data and initialize/update chart
+            function fetchRevenueData(year = new Date().getFullYear()) {
+                fetch(`/admin/reports/revenue-data?year=${year}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        updateChart(data);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching revenue data:', error);
+                    });
+            }
+
+            // Function to update or initialize chart
+            function updateChart(chartData) {
+                const chartConfig = {
+                    type: 'line',
+                    data: {
+                        labels: chartData.labels,
+                        datasets: [{
+                            label: `Revenue ($) - ${chartData.year}`,
+                            data: chartData.data,
+                            backgroundColor: 'rgba(75, 192, 192, 0.1)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 3,
+                            tension: 0.3,
+                            fill: true,
+                            pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        }]
                     },
-                    scales: {
-                        y: {
-                            beginAtZero: false,
-                            ticks: {
-                                callback: function(value) {
-                                    return '$' + value.toLocaleString();
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                labels: {
+                                    usePointStyle: true,
+                                    padding: 20
                                 }
                             },
-                            title: {
-                                display: true,
-                                text: 'Revenue ($)'
-                            },
-                            grid: {
-                                drawBorder: false
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false,
+                                callbacks: {
+                                    label: function(context) {
+                                        return 'Revenue: $' + context.parsed.y.toLocaleString();
+                                    }
+                                }
                             }
                         },
-                        x: {
-                            grid: {
-                                display: false
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                ticks: {
+                                    callback: function(value) {
+                                        return '$' + value.toLocaleString();
+                                    }
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Revenue ($)'
+                                },
+                                grid: {
+                                    drawBorder: false
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                }
                             }
-                        }
-                    },
-                    elements: {
-                        line: {
-                            cubicInterpolationMode: 'monotone'
+                        },
+                        elements: {
+                            line: {
+                                cubicInterpolationMode: 'monotone'
+                            }
                         }
                     }
+                };
+
+                if (revenueChart) {
+                    revenueChart.data.labels = chartData.labels;
+                    revenueChart.data.datasets[0].data = chartData.data;
+                    revenueChart.data.datasets[0].label = `Revenue ($) - ${chartData.year}`;
+                    revenueChart.update();
+                } else {
+                    revenueChart = new Chart(ctx, chartConfig);
                 }
-            });
+            }
+
+            // Initial load
+            fetchRevenueData();
+
+            // Optional: Add year selector functionality
+            const yearSelect = document.getElementById('chartYearSelect');
+            if (yearSelect) {
+                yearSelect.addEventListener('change', function() {
+                    fetchRevenueData(this.value);
+                });
+            }
         });
     </script>
 
+    {{-- Revenue By Room Type --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const ctx = document.getElementById('revenueByRoomChart').getContext('2d');
-            const revenueByRoomChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Standard', 'Deluxe', 'Suite', 'Executive', 'Penthouse'],
-                    datasets: [{
-                        label: 'Revenue ($)',
-                        data: [120000, 180000, 220000, 280000,
-                            320000
-                        ], // Sample data including $280k for Executive
-                        backgroundColor: [
-                            'rgba(54, 162, 235, 0.7)', // Standard - Blue
-                            'rgba(75, 192, 192, 0.7)', // Deluxe - Teal
-                            'rgba(153, 102, 255, 0.7)', // Suite - Purple
-                            'rgba(255, 159, 64, 0.7)', // Executive - Orange
-                            'rgba(255, 99, 132, 0.7)' // Penthouse - Red
-                        ],
-                        borderColor: [
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)',
-                            'rgba(255, 99, 132, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return '$' + context.parsed.y.toLocaleString();
-                                }
-                            }
-                        }
+            const roomTypeCtx = document.getElementById('revenueByRoomChart').getContext('2d');
+            let revenueByRoomChart;
+
+            // Function to fetch and update room type revenue data
+            function fetchRevenueByRoomType(year = new Date().getFullYear()) {
+                fetch(`/admin/reports/revenue-by-room?year=${year}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        updateRoomTypeChart(data);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching room type revenue data:', error);
+                    });
+            }
+
+            // Function to update or initialize room type chart
+            function updateRoomTypeChart(chartData) {
+                const chartConfig = {
+                    type: 'bar',
+                    data: {
+                        labels: chartData.labels,
+                        datasets: [{
+                            label: `Revenue ($) - ${chartData.year}`,
+                            data: chartData.data,
+                            backgroundColor: chartData.backgroundColor,
+                            borderColor: chartData.borderColor,
+                            borderWidth: 1
+                        }]
                     },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: function(value) {
-                                    return '$' + (value / 1000) + 'k'; // Formats as $280k
-                                }
-                            },
-                            title: {
-                                display: true,
-                                text: 'Revenue ($)'
-                            },
-                            grid: {
-                                drawBorder: false
-                            }
-                        },
-                        x: {
-                            grid: {
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
                                 display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return '$' + context.parsed.y.toLocaleString();
+                                    }
+                                }
                             }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return '$' + (value / 1000) + 'k';
+                                    }
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Revenue ($)'
+                                },
+                                grid: {
+                                    drawBorder: false
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        },
+                        animation: {
+                            duration: 1000
                         }
-                    },
-                    animation: {
-                        duration: 1000
                     }
+                };
+
+                if (revenueByRoomChart) {
+                    revenueByRoomChart.data.labels = chartData.labels;
+                    revenueByRoomChart.data.datasets[0].data = chartData.data;
+                    revenueByRoomChart.data.datasets[0].label = `Revenue ($) - ${chartData.year}`;
+                    revenueByRoomChart.data.datasets[0].backgroundColor = chartData.backgroundColor;
+                    revenueByRoomChart.data.datasets[0].borderColor = chartData.borderColor;
+                    revenueByRoomChart.update();
+                } else {
+                    revenueByRoomChart = new Chart(roomTypeCtx, chartConfig);
                 }
-            });
+            }
+
+            // Initial load
+            fetchRevenueByRoomType();
+
+            // Connect to year selector if it exists
+            const yearSelect = document.getElementById('chartYearSelect');
+            if (yearSelect) {
+                yearSelect.addEventListener('change', function() {
+                    fetchRevenueByRoomType(this.value);
+                });
+            }
         });
     </script>
 
+    {{-- revenue Sources Chart --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const ctx = document.getElementById('revenueSourcesChart').getContext('2d');
-            const revenueSourcesChart = new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels: ['Room Sales', 'Food & Beverage', 'Events & Conferences', 'Spa & Wellness',
-                        'Other'
-                    ],
-                    datasets: [{
-                        data: [65, 20, 10, 3, 2],
-                        backgroundColor: [
-                            'rgba(54, 162, 235, 0.7)', // Room Sales - Blue
-                            'rgba(75, 192, 192, 0.7)', // Food & Beverage - Teal
-                            'rgba(255, 159, 64, 0.7)', // Events - Orange
-                            'rgba(153, 102, 255, 0.7)', // Spa - Purple
-                            'rgba(201, 203, 207, 0.7)' // Other - Gray
-                        ],
-                        borderColor: [
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(255, 159, 64, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(201, 203, 207, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'right',
-                            labels: {
-                                usePointStyle: true,
-                                padding: 20,
-                                font: {
-                                    size: 12
-                                }
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const label = context.label || '';
-                                    const value = context.raw || 0;
-                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                    const percentage = Math.round((value / total) * 100);
-                                    return `${label}: ${percentage}% ($${(value / 100 * total).toLocaleString()})`;
-                                }
-                            }
-                        },
-                        datalabels: {
-                            formatter: (value) => {
-                                return value + '%';
-                            },
-                            color: '#fff',
-                            font: {
-                                weight: 'bold'
-                            }
-                        }
+            const expenseCtx = document.getElementById('expenseChart').getContext('2d');
+            let expenseChart;
+
+            // Function to fetch and update expense data
+            function fetchExpenseByCategory(year = new Date().getFullYear()) {
+                fetch(`/admin/reports/expense-by-category?year=${year}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        updateExpenseChart(data);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching expense data:', error);
+                    });
+            }
+
+            // Function to update or initialize expense chart
+            function updateExpenseChart(chartData) {
+                const chartConfig = {
+                    type: 'pie',
+                    data: {
+                        labels: chartData.labels,
+                        datasets: [{
+                            data: chartData.data,
+                            backgroundColor: chartData.backgroundColor,
+                            borderColor: chartData.borderColor,
+                            borderWidth: 1
+                        }]
                     },
-                    cutout: '0%', // Makes it a donut chart (set to 0 for regular pie)
-                    animation: {
-                        animateScale: true,
-                        animateRotate: true
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                                labels: {
+                                    usePointStyle: true,
+                                    padding: 20,
+                                    font: {
+                                        size: 12
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const label = context.label || '';
+                                        const value = context.raw || 0;
+                                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                        const percentage = Math.round((value / total) * 100);
+                                        return `${label}: ${percentage}% ($${value.toLocaleString()})`;
+                                    }
+                                }
+                            }
+                        },
+                        cutout: '50%', // Makes it a donut chart
+                        animation: {
+                            animateScale: true,
+                            animateRotate: true
+                        }
                     }
+                };
+
+                if (expenseChart) {
+                    expenseChart.data.labels = chartData.labels;
+                    expenseChart.data.datasets[0].data = chartData.data;
+                    expenseChart.data.datasets[0].backgroundColor = chartData.backgroundColor;
+                    expenseChart.data.datasets[0].borderColor = chartData.borderColor;
+                    expenseChart.update();
+                } else {
+                    expenseChart = new Chart(expenseCtx, chartConfig);
                 }
-            });
+            }
+
+            // Initial load
+            fetchExpenseByCategory();
+
+            // Connect to year selector if it exists
+            const yearSelect = document.getElementById('chartYearSelect');
+            if (yearSelect) {
+                yearSelect.addEventListener('change', function() {
+                    fetchExpenseByCategory(this.value);
+                });
+            }
         });
     </script>
 

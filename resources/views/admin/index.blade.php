@@ -244,7 +244,7 @@ $yesterdayRate = App\Models\OccupancyRecord::where('record_date', today()->subDa
             </div>
 
             <div class="col-md-12 col-lg-8 mt-1" data-aos="fade-up" data-aos-delay="600">
-                <div class="card shadow-2 p-3" style="height: 380px">
+                <div class="card shadow-2 p-3 " style="height: 380px">
                     <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
                         <h5 class="font-bold">Occupancy Rate</h5>
                         <div class="d-flex justify-content-end mb-3">
@@ -253,7 +253,7 @@ $yesterdayRate = App\Models\OccupancyRecord::where('record_date', today()->subDa
                             <button id="monthlyBtn" class="btn btn-secondary btn-sm">Monthly</button>
                         </div>
                     </div>
-                    <canvas class="p-3" id="occupancyChart" height="400" width="1200">
+                    <canvas class="p-3 w-100" id="occupancyChart" height="400">
                     </canvas>
                 </div>
             </div>
@@ -522,7 +522,7 @@ $yesterdayRate = App\Models\OccupancyRecord::where('record_date', today()->subDa
                             borderRadius: 7,
                         }]
                     },
-                   
+
                     options: {
                         responsive: true,
                         maintainAspectRatio: true, // This is important for fixed height

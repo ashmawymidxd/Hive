@@ -159,13 +159,15 @@ Route::middleware(['auth:admin', 'check.admin.status'])->name('admin.')->prefix(
     // reporting ang analysis
     Route::get('/reports',[ReportController::class,'index'])->name('reports.index');
 
-    // report charts
+    // Occupancy report
     Route::get('/reports/monthly-occupancy', [ReportsChartController::class, 'monthlyOccupancyData'])->name('reports.monthly-occupancy');
     Route::get('/reports/daily-occupancy', [ReportsChartController::class, 'dailyOccupancyData'])->name('reports.daily-occupancy');
-    Route::get('/reports/room-type-occupancy', [ReportsChartController::class, 'roomTypeOccupancyData'])
-    ->name('reports.room-type-occupancy');
+    Route::get('/reports/room-type-occupancy', [ReportsChartController::class, 'roomTypeOccupancyData'])->name('reports.room-type-occupancy');
 
-
+    // Revenue Reports
+    Route::get('/reports/revenue-data', [ReportsChartController::class, 'getRevenueData'])->name('reports.revenue-data');
+    Route::get('/reports/revenue-by-room', [ReportsChartController::class, 'getRevenueByRoomType'])->name('reports.revenue-by-room');
+    Route::get('/reports/expense-by-category', [ReportsChartController::class, 'getExpenseByCategory'])->name('reports.expense-by-category');
 });
 
 require __DIR__ . '/auth_admin.php';
