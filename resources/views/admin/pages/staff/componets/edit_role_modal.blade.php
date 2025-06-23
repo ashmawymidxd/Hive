@@ -23,7 +23,7 @@
                             <option value="staff">Staff</option>
                         </select>
                     </div>
-                    @include('admin.pages.staff.componets.admin_roles')
+                    @include('admin.pages.staff.componets.roles_permissions')
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>

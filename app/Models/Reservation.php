@@ -81,4 +81,9 @@ class Reservation extends Model
     {
         return $this->status === 'checked_out';
     }
+
+    public function guests()
+    {
+        return $this->hasMany(Guest::class);
+    }
 }

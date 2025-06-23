@@ -172,6 +172,7 @@ Route::middleware(['auth:admin', 'check.admin.status'])->name('admin.')->prefix(
     // Second Chart
     Route::get('/reports/age-distribution', [ReportsChartController::class, 'getAgeDistribution'])->name('reports.age-distribution');
     Route::get('/reports/purpose-stay', [ReportsChartController::class, 'getPurposeStayDistribution'])->name('reports.purpose-stay');
+    Route::get('/reports/guest-origin', [ReportsChartController::class, 'getGuestOriginData'])->name('reports.guest-origin');
 });
 
 require __DIR__ . '/auth_admin.php';

@@ -23,6 +23,7 @@ class GuestFactory extends Factory
             'country' => $this->faker->optional(0.7)->country(), // 70% chance of having a country
             'age' => $this->faker->optional(0.1)->numberBetween(18, 99), // 10% chance of having an age
             'purpose_of_stay' => $this->faker->optional(0.7)->word(), // 70% chance of having a purpose of stay
+            'is_loyalty_member' => $this->faker->boolean(30), // 30% chance of being a loyalty member
         ];
     }
 }

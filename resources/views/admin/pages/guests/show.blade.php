@@ -69,6 +69,25 @@
                                             @endif
                                         </p>    
                                     </div>
+                                    {{-- age --}}
+                                    <div class="mb-3">
+                                        <label class="form-label small text-muted d-flex align-items-center">
+                                            <i class="fas fa-birthday-cake me-2 text-secondary"></i>Age
+                                        </label>
+                                        <p class="form-control-plaintext ps-4">
+                                            {{ $guest->age ?? 'Not provided' }}
+                                        </p>
+                                    </div>
+                                    {{-- purpose_of_stay --}}
+                                    <div class="mb-3">
+                                        <label class="form-label small text-muted d-flex align-items-center">
+                                            <i class="fas fa-briefcase me-2 text-secondary"></i>Purpose of Stay
+                                        </label>
+                                        <p class="form-control-plaintext ps-4">
+                                            {{ $guest->purpose_of_stay ?? 'Not provided' }}
+                                        </p>
+                                    </div>
+                                  
                                 </div>
                             </div>
 
@@ -132,6 +151,15 @@
                                                     View History <i class="fas fa-chevron-right ms-1"></i>
                                                 </a>
                                             @endif
+                                        </p>
+                                    </div>
+                                      {{-- is_loyalty_member --}}
+                                    <div class="mb-3">
+                                        <label class="form-label small text-muted d-flex align-items-center">
+                                            <i class="fas fa-star me-2 text-secondary"></i>Loyalty Member
+                                        </label>
+                                        <p class="form-control-plaintext ps-4">
+                                            {{ $guest->is_loyalty_member ? 'Yes' : 'No' }}
                                         </p>
                                     </div>
                                 </div>

@@ -51,6 +51,14 @@
                                 <label for="purpose_of_stay" class="form-label">purpose of stay</label>
                                 <input type="text" class="form-control" id="purpose_of_stay" name="purpose_of_stay">
                             </div>
+                            {{-- is_loyalty_member --}}
+                            <div class="col-md-6 mb-3">
+                                <label for="is_loyalty_member" class="form-label">Loyalty Member</label>
+                                <select class="form-select" id="is_loyalty_member" name="is_loyalty_member">
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
+                                </select>
+                            </div>
                             <div class="col-12">
                                 <button type="submit" class="btn btn-primary shadow-0">Save Guest</button>
                                 <button type="reset" class="btn btn-secondary shadow-0">Reset</button>

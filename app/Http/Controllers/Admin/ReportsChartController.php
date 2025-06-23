@@ -248,4 +248,22 @@ class ReportsChartController extends Controller
 
         return response()->json($data);
     }
+
+    public function getGuestOriginData()
+    {
+        // Get top 8 countries with most guests
+        $countries = Guest::select('country')
+            ->selectRaw('COUNT(*) as count')
+            ->groupBy('country')
+            ->orderByDesc('count')
+            ->limit(8)
+            ->get();
+
+        $data = [
+            'labels' => $countries->pluck('country')->toArray(),
+            'values' => $countries->pluck('count')->toArray()
+        ];
+
+        return response()->json($data);
+    }
 }

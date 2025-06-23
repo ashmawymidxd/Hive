@@ -384,37 +384,87 @@
                                     <h4 class="text-dark">Key Demographics</h4>
                                     <div
                                         class="border-bottom p-2 hover-primary d-flex align-item-center justify-content-between">
-                                        <span class="font-bold text-dark">Metric </span>
-                                        <span class="font-bold text-dark">Value </span>
+                                        <span class="font-bold text-dark">Metric</span>
+                                        <span class="font-bold text-dark">Value</span>
                                     </div>
+
+                                    <!-- Average Age -->
                                     <div
                                         class="border-bottom p-2 hover-primary d-flex align-item-center justify-content-between">
                                         <span class="text-dark">Average Age</span>
-                                        <span class="text-dark">38.5 years</span>
+                                        <span class="text-dark">{{ number_format(App\Models\Guest::avg('age'), 1) }}
+                                            years</span>
                                     </div>
+
+                                    <!-- Percentage of Business Travelers -->
+                                    @php
+                                        $totalGuests = App\Models\Guest::count();
+                                        $businessTravelers = App\Models\Guest::where(
+                                            'purpose_of_stay',
+                                            'business',
+                                        )->count();
+                                        $businessPercentage =
+                                            $totalGuests > 0 ? ($businessTravelers / $totalGuests) * 100 : 0;
+                                    @endphp
                                     <div
                                         class="border-bottom p-2 hover-primary d-flex align-item-center justify-content-between">
-                                        <span class="text-dark"> Percentage of Business Travelers</span>
-                                        <span class="text-dark"> 45%</span>
+                                        <span class="text-dark">Percentage of Business Travelers</span>
+                                        <span class="text-dark">{{ number_format($businessPercentage, 0) }}%</span>
                                     </div>
+
+                                    <!-- Percentage of International Guests -->
+                                    @php
+                                        $domesticCountry = 'United States'; // Change this to your domestic country
+                                        $domesticGuests = App\Models\Guest::where('country', $domesticCountry)->count();
+                                        $internationalPercentage =
+                                            $totalGuests > 0
+                                                ? (($totalGuests - $domesticGuests) / $totalGuests) * 100
+                                                : 0;
+                                    @endphp
                                     <div
                                         class="border-bottom p-2 hover-primary d-flex align-item-center justify-content-between">
-                                        <span class="text-dark">Percentage of International Guests </span>
-                                        <span class="text-dark"> 32%</span>
+                                        <span class="text-dark">Percentage of International Guests</span>
+                                        <span class="text-dark">{{ number_format($internationalPercentage, 0) }}%</span>
                                     </div>
+
+                                    <!-- Percentage in Loyalty Program -->
+                                    @php
+                                        // Using subquery to count guests with more than 1 reservation
+                                        $loyaltyMembers = App\Models\Guest::whereHas('reservations', function ($query) {
+                                            $query->selectRaw('count(*) > 1');
+                                        })->count();
+                                        $loyaltyPercentage =
+                                            $totalGuests > 0 ? ($loyaltyMembers / $totalGuests) * 100 : 0;
+                                    @endphp
                                     <div
                                         class="border-bottom p-2 hover-primary d-flex align-item-center justify-content-between">
-                                        <span class="text-dark"> Percentage in Loyalty Program</span>
-                                        <span class="text-dark">45% </span>
+                                        <span class="text-dark">Percentage in Loyalty Program</span>
+                                        <span class="text-dark">{{ number_format($loyaltyPercentage, 0) }}%</span>
                                     </div>
+
+                                    <!-- Average Group Size -->
+                                    @php
+                                        // Alternative approach - counting reservations per guest and averaging
+                                        $averageGroupSize = App\Models\Guest::withCount('reservations')
+                                            ->get()
+                                            ->avg('reservations_count');
+                                    @endphp
                                     <div
                                         class="border-bottom p-2 hover-primary d-flex align-item-center justify-content-between">
-                                        <span class="text-dark"> Average Group Size</span>
-                                        <span class="text-dark">2.3 persons</span>
+                                        <span class="text-dark">Average Group Size</span>
+                                        <span class="text-dark">{{ number_format($averageGroupSize, 1) }} persons</span>
                                     </div>
-                                    <div class=" p-2 hover-primary d-flex align-item-center justify-content-between">
-                                        <span class="text-dark"> Average Length of Stay </span>
-                                        <span class="text-dark">3.2 nights</span>
+
+                                    <!-- Average Length of Stay -->
+                                    @php
+                                        $averageStay =
+                                            App\Models\Reservation::selectRaw(
+                                                'AVG(DATEDIFF(check_out, check_in)) as avg_stay',
+                                            )->first()->avg_stay ?? 0;
+                                    @endphp
+                                    <div class="p-2 hover-primary d-flex align-item-center justify-content-between">
+                                        <span class="text-dark">Average Length of Stay</span>
+                                        <span class="text-dark">{{ number_format($averageStay, 1) }} nights</span>
                                     </div>
                                 </div>
                             </div>
@@ -1414,6 +1464,102 @@
                 }
             });
         });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchGuestOriginData();
+        });
+
+        function fetchGuestOriginData() {
+            fetch('/admin/reports/guest-origin')
+                .then(response => response.json())
+                .then(data => {
+                    renderGuestOriginChart(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching guest origin data:', error);
+                    // Fallback to empty data if request fails
+                    renderGuestOriginChart({
+                        labels: [],
+                        values: []
+                    });
+                });
+        }
+
+        function renderGuestOriginChart(chartData) {
+            const ctx = document.getElementById('guestOriginChart').getContext('2d');
+            const guestOriginChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: chartData.labels,
+                    datasets: [{
+                        label: 'Number of Guests',
+                        data: chartData.values,
+                        backgroundColor: 'rgba(54, 162, 235, 1)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.parsed.x} guests`;
+                                }
+                            }
+                        },
+                        // Show message if no data available
+                        emptyData: {
+                            text: 'No guest origin data available',
+                            color: '#999',
+                            fontStyle: 'italic',
+                            display: function() {
+                                return chartData.labels.length === 0;
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: {
+                                // Dynamic step size based on max value
+                                stepSize: function(context) {
+                                    const max = Math.max(...chartData.values);
+                                    return max > 1000 ? 200 : (max > 500 ? 100 : 50);
+                                },
+                                callback: function(value) {
+                                    return value;
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Number of Guests'
+                            },
+                            grid: {
+                                drawBorder: false
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 1000
+                    }
+                }
+            });
+        }
     </script>
 
     <script>

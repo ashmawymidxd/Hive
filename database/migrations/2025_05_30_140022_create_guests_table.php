@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('country')->nullable();
             $table->string('age')->nullable();
             $table->string('purpose_of_stay')->nullable();
+            $table->boolean('is_loyalty_member')->default(false);
             $table->timestamps();
         });
     }

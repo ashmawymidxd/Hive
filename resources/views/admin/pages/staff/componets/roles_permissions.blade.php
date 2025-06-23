@@ -1,52 +1,4 @@
- <style>
-     .permissions-container {
-         display: flex;
-         flex-wrap: wrap;
-         gap: 1rem;
-         margin-bottom: 1.5rem;
-     }
 
-     .permission-item {
-         flex: 1 1 calc(50% - 1rem);
-         min-width: 250px;
-         padding: 0.75rem;
-         border-radius: 4px;
-         transition: all 0.2s;
-         border: 1px solid #eee;
-     }
-
-     .permission-item:hover {
-         background-color: #f8f9fa;
-         border-color: #dee2e6;
-     }
-
-     .permission-label {
-         display: block;
-         font-weight: 500;
-         margin-bottom: 0.25rem;
-     }
-
-     .permission-description {
-         display: block;
-         font-weight: normal;
-         opacity: 0.8;
-     }
-
-     .form-check-input.permission-checkbox {
-         margin-top: 0.25rem;
-     }
-
-     /* For better touch targets on mobile */
-     @media (max-width: 768px) {
-         .permission-item {
-             flex: 1 1 100%;
-         }
-
-         .form-check-label {
-             padding-left: 1.5rem;
-         }
-     }
- </style>
  <div class="form-group mt-3">
      <label>Permissions</label>
      <div class="row mt-3">
@@ -104,9 +56,9 @@
              ];
          @endphp
 
-         <div class="permissions-container">
+         <div class="row">
              @foreach ($permissions as $key => $label)
-                 <div class="permission-item">
+                 <div class="col-md-6 mb-3">
                      <div class="form-check">
                          <input class="form-check-input permission-checkbox" type="checkbox" name="permissions[]"
                              value="{{ $key }}" id="perm_{{ $key }}"

@@ -63,7 +63,8 @@
                                         <th>Email</th>
                                         <th>Phone</th>
                                         <th>Age</th>
-                                        <th>purpose_of_stay</th>
+                                        <th>Purpose Of Stay</th>
+                                        <th>Country</th>
                                         <th>Reservations</th>
                                         <th>Actions</th>
                                     </tr>
@@ -77,6 +78,7 @@
                                             <td>{{ $guest->phone }}</td>
                                             <td>{{ $guest->age }}</td>
                                             <td>{{ $guest->purpose_of_stay }}</td>
+                                            <td>{{ $guest->country }}</td>
                                             <td>{{ $guest->reservations_count ?? $guest->reservations()->count() }}</td>
                                             <td>
                                                 <a href="{{ route('admin.guests.show', $guest->id) }}"

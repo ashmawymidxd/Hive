@@ -20,7 +20,8 @@ class Guest extends Model
         'city',
         'country',
         'age',
-        'purpose_of_stay'
+        'purpose_of_stay',
+        'is_loyalty_member'
     ];
 
     public function reservations()
