@@ -44,6 +44,14 @@
                                 <label for="country" class="form-label">Country</label>
                                 <input type="text" class="form-control" id="country" name="country" value="{{ $guest->country }}">
                             </div>
+                              <div class="col-md-6 mb-3">
+                                <label for="age" class="form-label">Age</label>
+                                <input type="text" class="form-control" id="age" name="age">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="purpose_of_stay" class="form-label">purpose of stay</label>
+                                <input type="text" class="form-control" id="purpose_of_stay" name="purpose_of_stay">
+                            </div>
                             <div class="col-12">
                                 <button type="submit" class="btn btn-primary">Update Guest</button>
                             </div>

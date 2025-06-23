@@ -46,7 +46,9 @@ class GuestController extends Controller
             'phone' => 'required|string|max:20',
             'address' => 'nullable|string|max:255',
             'city' => 'nullable|string|max:50',
-            'country' => 'nullable|string|max:50'
+            'country' => 'nullable|string|max:50',
+            'age' => 'nullable|string|max:50',
+            'purpose_of_stay' => 'nullable|string|max:50'
         ]);
 
         Guest::create($validated);
@@ -79,7 +81,9 @@ class GuestController extends Controller
             'phone' => 'required|string|max:20',
             'address' => 'nullable|string|max:255',
             'city' => 'nullable|string|max:50',
-            'country' => 'nullable|string|max:50'
+            'country' => 'nullable|string|max:50',
+            'age' => 'nullable|string|max:50',
+            'purpose_of_stay' => 'nullable|string|max:50'
         ]);
 
         $guest->update($validated);

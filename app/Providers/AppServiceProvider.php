@@ -5,7 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Models\Reservation;
 use App\Observers\ReservationObserver;
-
+use Illuminate\Support\Facades\Blade;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -19,8 +19,13 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-   public function boot()
+    public function boot()
     {
         Reservation::observe(ReservationObserver::class);
+
+        Blade::if('hasPermission', function ($permission) {
+            // Your permission check logic here
+            return auth()->check() && auth()->user()->can($permission);
+        });
     }
 }

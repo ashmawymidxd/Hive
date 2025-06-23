@@ -18,7 +18,9 @@ class Guest extends Model
         'phone',
         'address',
         'city',
-        'country'
+        'country',
+        'age',
+        'purpose_of_stay'
     ];
 
     public function reservations()

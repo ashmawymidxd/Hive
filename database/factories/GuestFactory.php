@@ -21,6 +21,8 @@ class GuestFactory extends Factory
             'address' => $this->faker->optional(0.8)->address(), // 80% chance of having an address
             'city' => $this->faker->optional(0.7)->city(), // 70% chance of having a city
             'country' => $this->faker->optional(0.7)->country(), // 70% chance of having a country
+            'age' => $this->faker->optional(0.1)->numberBetween(18, 99), // 10% chance of having an age
+            'purpose_of_stay' => $this->faker->optional(0.7)->word(), // 70% chance of having a purpose of stay
         ];
     }
 }

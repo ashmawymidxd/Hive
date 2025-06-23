@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Payment;
 use App\Models\Expense;
 use Carbon\Carbon;
+use App\Models\Guest;
 
 class ReportsChartController extends Controller
 {
@@ -112,7 +113,7 @@ class ReportsChartController extends Controller
 
     public function getRevenueByRoomType(Request $request)
     {
-    $year = $request->input('year', Carbon::now()->year);
+        $year = $request->input('year', Carbon::now()->year);
 
         $revenueByRoomType = Payment::with(['invoice.room'])
             ->selectRaw('rooms.type as room_type, SUM(payments.amount) as total_revenue')
@@ -144,14 +145,14 @@ class ReportsChartController extends Controller
             'labels' => $labels,
             'data' => $data,
             'backgroundColor' => array_slice($backgroundColors, 0, count($labels)),
-            'borderColor' => array_map(function($color) {
+            'borderColor' => array_map(function ($color) {
                 return str_replace('0.7', '1', $color);
             }, array_slice($backgroundColors, 0, count($labels))),
             'year' => $year
         ]);
     }
 
-   public function getExpenseByCategory(Request $request)
+    public function getExpenseByCategory(Request $request)
     {
         $year = $request->input('year', Carbon::now()->year);
 
@@ -193,10 +194,58 @@ class ReportsChartController extends Controller
             'labels' => $labels,
             'data' => $data,
             'backgroundColor' => array_slice($backgroundColors, 0, count($labels)),
-            'borderColor' => array_map(function($color) {
+            'borderColor' => array_map(function ($color) {
                 return str_replace('0.7', '1', $color);
             }, array_slice($backgroundColors, 0, count($labels))),
             'year' => $year
         ]);
+    }
+
+    public function getAgeDistribution()
+    {
+        $ageGroups = [
+            '18-24' => [18, 24],
+            '25-34' => [25, 34],
+            '35-44' => [35, 44],
+            '45-54' => [45, 54],
+            '55-64' => [55, 64],
+            '65+' => [65, 150] // Assuming no one is over 150 :)
+        ];
+
+        $data = [];
+        $totalGuests = Guest::count();
+
+        foreach ($ageGroups as $label => $range) {
+            $count = Guest::whereBetween('age', $range)->count();
+            $percentage = $totalGuests > 0 ? round(($count / $totalGuests) * 100, 2) : 0;
+
+            $data['labels'][] = $label;
+            $data['values'][] = $percentage;
+        }
+
+        return response()->json($data);
+    }
+
+    public function getPurposeStayDistribution()
+    {
+        $purposes = [
+            'Business',
+            'Leisure',
+            'Events',
+            'Other'
+        ];
+
+        $data = [];
+        $totalGuests = Guest::count();
+
+        foreach ($purposes as $purpose) {
+            $count = Guest::where('purpose_of_stay', $purpose)->count();
+            $percentage = $totalGuests > 0 ? round(($count / $totalGuests) * 100, 2) : 0;
+
+            $data['labels'][] = $purpose;
+            $data['values'][] = $percentage;
+        }
+
+        return response()->json($data);
     }
 }

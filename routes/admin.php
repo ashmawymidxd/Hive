@@ -157,7 +157,7 @@ Route::middleware(['auth:admin', 'check.admin.status'])->name('admin.')->prefix(
     Route::fallback(function () {return view('admin.errors.404');});
 
     // reporting ang analysis
-    Route::get('/reports',[ReportController::class,'index'])->name('reports.index');
+    Route::get('/reports',[ReportController::class,'index'])->name('reports.index')->middleware('admin.permission:view_reports');
 
     // Occupancy report
     Route::get('/reports/monthly-occupancy', [ReportsChartController::class, 'monthlyOccupancyData'])->name('reports.monthly-occupancy');
@@ -168,6 +168,10 @@ Route::middleware(['auth:admin', 'check.admin.status'])->name('admin.')->prefix(
     Route::get('/reports/revenue-data', [ReportsChartController::class, 'getRevenueData'])->name('reports.revenue-data');
     Route::get('/reports/revenue-by-room', [ReportsChartController::class, 'getRevenueByRoomType'])->name('reports.revenue-by-room');
     Route::get('/reports/expense-by-category', [ReportsChartController::class, 'getExpenseByCategory'])->name('reports.expense-by-category');
+
+    // Second Chart
+    Route::get('/reports/age-distribution', [ReportsChartController::class, 'getAgeDistribution'])->name('reports.age-distribution');
+    Route::get('/reports/purpose-stay', [ReportsChartController::class, 'getPurposeStayDistribution'])->name('reports.purpose-stay');
 });
 
 require __DIR__ . '/auth_admin.php';

@@ -201,7 +201,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <canvas id="revenueChart" height="100"></canvas>
+                                <canvas id="revenueChart" height="300"></canvas>
                             </div>
                         </div>
                     </div>
@@ -1264,16 +1264,31 @@
             }
         });
     </script>
-
+    {{-- Age Distribution Chart --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            fetchAgeDistributionData();
+        });
+
+        function fetchAgeDistributionData() {
+            fetch('/admin/reports/age-distribution')
+                .then(response => response.json())
+                .then(data => {
+                    renderAgeDistributionChart(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching age distribution data:', error);
+                });
+        }
+
+        function renderAgeDistributionChart(chartData) {
             const ctx = document.getElementById('ageDistributionChart').getContext('2d');
             const ageDistributionChart = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['18-24', '25-34', '35-44', '45-54', '55-64', '65+'],
+                    labels: chartData.labels,
                     datasets: [{
-                        data: [10, 25, 30, 20, 10, 5],
+                        data: chartData.values,
                         backgroundColor: [
                             'rgba(54, 162, 235, 0.8)', // 18-24
                             'rgba(75, 192, 192, 0.8)', // 25-34
@@ -1325,9 +1340,9 @@
                     }
                 }
             });
-        });
+        }
     </script>
-
+    {{-- Purpose of Stay Chart --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const ctx = document.getElementById('purposeOfStayChart').getContext('2d');
@@ -1403,69 +1418,90 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const ctx = document.getElementById('guestOriginChart').getContext('2d');
-            const guestOriginChart = new Chart(ctx, {
-                type: 'bar',
+            fetchPurposeStayData();
+        });
+
+        function fetchPurposeStayData() {
+            fetch('/admin/reports/purpose-stay')
+                .then(response => response.json())
+                .then(data => {
+                    renderPurposeStayChart(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching purpose of stay data:', error);
+                });
+        }
+
+        function renderPurposeStayChart(chartData) {
+            const ctx = document.getElementById('purposeOfStayChart').getContext('2d');
+            const purposeOfStayChart = new Chart(ctx, {
+                type: 'doughnut',
                 data: {
-                    labels: ['United States', 'Canada', 'United Kingdom', 'Germany', 'France', 'Japan',
-                        'Australia', 'China'
-                    ],
+                    labels: chartData.labels,
                     datasets: [{
-                        label: 'Number of Guests',
-                        data: [1200, 900, 800, 600, 500, 400, 350,
-                            300
-                        ], // Sample data - replace with actual numbers
-                        backgroundColor: 'rgba(54, 162, 235, 1)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 1,
-                        borderRadius: 4 // Rounded bar corners
+                        data: chartData.values,
+                        backgroundColor: [
+                            'rgba(54, 162, 235, 0.8)', // Business - Blue
+                            'rgba(75, 192, 192, 0.8)', // Leisure - Teal
+                            'rgba(255, 159, 64, 0.8)', // Events - Orange
+                            'rgba(201, 203, 207, 0.8)' // Other - Gray
+                        ],
+                        borderColor: '#fff',
+                        borderWidth: 2,
+                        hoverOffset: 10
                     }]
                 },
                 options: {
-                    indexAxis: 'y', // Makes chart horizontal
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
                         legend: {
-                            display: false
+                            position: 'right',
+                            labels: {
+                                boxWidth: 12,
+                                padding: 15,
+                                font: {
+                                    size: 12
+                                },
+                                generateLabels: function(chart) {
+                                    const data = chart.data;
+                                    return data.labels.map((label, i) => ({
+                                        text: `${label} (${data.datasets[0].data[i]}%)`,
+                                        fillStyle: data.datasets[0].backgroundColor[i],
+                                        strokeStyle: data.datasets[0].borderColor,
+                                        lineWidth: data.datasets[0].borderWidth,
+                                        hidden: false,
+                                        index: i
+                                    }));
+                                }
+                            }
                         },
                         tooltip: {
                             callbacks: {
                                 label: function(context) {
-                                    return `${context.parsed.x} guests`;
+                                    return `${context.label}: ${context.raw}%`;
                                 }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            beginAtZero: true,
-                            ticks: {
-                                stepSize: 300,
-                                callback: function(value) {
-                                    return value;
-                                }
-                            },
-                            title: {
-                                display: true,
-                                text: 'Number of Guests'
-                            },
-                            grid: {
-                                drawBorder: false
                             }
                         },
-                        y: {
-                            grid: {
-                                display: false
+                        datalabels: {
+                            color: '#fff',
+                            font: {
+                                weight: 'bold',
+                                size: 12
+                            },
+                            formatter: (value) => {
+                                return value > 5 ? value + '%' : '';
                             }
                         }
                     },
+                    cutout: '0%',
                     animation: {
-                        duration: 1000
+                        animateScale: true,
+                        animateRotate: true
                     }
                 }
             });
-        });
+        }
     </script>
 
     <script>

@@ -139,7 +139,7 @@
 
 /* Sidebar styles */
 .sidebar {
-    background: linear-gradient(135deg, #140236, #090557);
+    background-color: #001f3f;
     color: white;
     height: 100vh;
     width: 250px;
