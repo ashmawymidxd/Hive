@@ -1,11 +1,9 @@
  <nav class="sidebar" id="sidebar">
-     <div class="sidebar-header border-bottom border-info border-1">
-         <div class="d-flex align-items-center gap-3">
-             <span class="rounded-2 bg-info-tranc p-1">
-                 <img draggable="false" class="rounded-2 shadow" src="{{ asset('assets/admin/img/logo/hive.png') }}"
-                     width="30px" alt="" srcset="">
-             </span>
-             <h4 class="font-bold p-1 ">Hotel Hive</h4>
+     <div class="sidebar-header border-bottom border-info border-1 ">
+         <div class="d-flex align-items-center gap-3  text-navy w-100 rounded-3">
+             <img draggable="false" class="rounded-2 shadow" src="{{ asset('assets/admin/img/logo/hive.png') }}"
+                 width="30px" alt="" srcset="">
+             <span class="font-bold p-1 fs-3">Hotel Hive</span>
          </div>
          <button class="btn btn-sm btn-outline-light d-md-none" id="closeSidebar">
              <i class="fas fa-times"></i>
@@ -20,12 +18,12 @@
          <a href="{{ route('admin.inventories.page') }}"><i class="fas fa-box"></i> Inventory</a>
          <a href="{{ route('admin.invoices.index') }}"><i class="fas fa-file-invoice-dollar"></i> Billing</a>
          <a href="{{ route('admin.reports.index') }}"><i class="fas fa-chart-line"></i> Reports</a>
-         <a href="./pages/settings.html"><i class="fas fa-cog"></i> Settings</a>
+         <a href="{{ route('admin.settings.index') }}"><i class="fas fa-cog"></i> Settings</a>
      </div>
 
      <!-- Admin Profile Section -->
-     <div class="admin-profile">
-         <a href="{{ route('admin.profile.edit') }}" class="admin-info">
+     <div class="admin-profile rounded-2 px-3">
+         <a href="{{ route('admin.profile.edit') }}" class="admin-info bg-info-tranc text-navy w-100 p-2 rounded-2 border-start border-info border-2">
              <div class="admin-avatar">
                  @if (auth()->user('admin')->image_path)
                      <img class="rounded-circle"

@@ -36,7 +36,7 @@
                         <i class="fas fa-users me-2"></i>Guest Demographics
                     </button>
                 </li>
-                <li class="nav-item" role="presentation">
+                {{-- <li class="nav-item" role="presentation">
                     <button class="nav-link" id="performance-tab" data-mdb-toggle="tab" data-mdb-target="#performance"
                         type="button" role="tab" aria-controls="performance" aria-selected="false">
                         <i class="fas fa-chart-bar me-2"></i>Performance Metrics
@@ -47,7 +47,7 @@
                         role="tab" aria-controls="custom" aria-selected="false">
                         <i class="fas fa-file-alt me-2"></i>Custom Reports
                     </button>
-                </li>
+                </li> --}}
             </ul>
 
             <div class="tab-content py-3" id="reportTabsContent">
@@ -201,7 +201,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <canvas id="revenueChart" height="300"></canvas>
+                                <canvas id="revenueChart" class="w-100" height="400px"></canvas>
                             </div>
                         </div>
                     </div>

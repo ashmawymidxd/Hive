@@ -25,6 +25,7 @@ use App\Http\Controllers\Admin\TaxController;
 use App\Http\Controllers\Admin\TodoController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ReportsChartController;
+use App\Http\Controllers\Admin\SettingController;
 /*
 |--------------------------------------------------------------------------
 | admin Routes
@@ -173,6 +174,10 @@ Route::middleware(['auth:admin', 'check.admin.status'])->name('admin.')->prefix(
     Route::get('/reports/age-distribution', [ReportsChartController::class, 'getAgeDistribution'])->name('reports.age-distribution');
     Route::get('/reports/purpose-stay', [ReportsChartController::class, 'getPurposeStayDistribution'])->name('reports.purpose-stay');
     Route::get('/reports/guest-origin', [ReportsChartController::class, 'getGuestOriginData'])->name('reports.guest-origin');
+
+    // settings
+    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::post('/settings', [SettingController::class, 'store'])->name('settings.store');
 });
 
 require __DIR__ . '/auth_admin.php';
