@@ -57,15 +57,18 @@ class SettingController extends Controller
 
         $settings = HotelSetting::firstOrNew(['id' => 1]);
 
-        // Handle file upload at public/assets/admin/images/hotel_logo using public_path
-        if ($request->hasFile('hotel_logo')) {
-            //    Dletete the old logo if it exists
-            if ($settings->logo_path) {
-                $oldLogoPath = public_path($settings->logo_path);
-                if (file_exists($oldLogoPath)) {
-                    unlink($oldLogoPath);
-                }
+        // Handle file upload
+
+        // Delete the old logo if is set remove_logo
+        if ($request->has('remove_logo') && $settings->logo_path) {
+            if (file_exists(public_path($settings->logo_path))) {
+                unlink(public_path($settings->logo_path));
             }
+            $settings->logo_path = null; // Clear the logo path
+        }
+        // If a new logo is uploaded, save it
+        if ($request->hasFile('hotel_logo')) {
+            
             $file = $request->file('hotel_logo');
             $path = 'assets/admin/images/hotel_logo/' . time() . '_' . $file->getClientOriginalName();
             $file->move(public_path('assets/admin/images/hotel_logo'), $path);

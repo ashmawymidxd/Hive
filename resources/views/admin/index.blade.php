@@ -27,7 +27,7 @@
 @section('content')
     <section>
         <h3 class="font-bold text-dark">Dashboard</h3>
-        <p class="text-secondary">Welcome back to Hotel Hive management system.</p>
+        <p class="text-secondary">Welcome back to {{ app('settings')->hotel_name }} management system.</p>
         <div class="row mt-4">
             <div class="col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="100">
                 <div class="card p-3 shadow-2 ">

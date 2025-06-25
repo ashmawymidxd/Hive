@@ -32,7 +32,7 @@
         <div class="content" data-aos="fade-up" data-aos-duration="400">
             <div class="card border shadow-0 error-page">
                 <div class="text-center">
-                    <img src="{{ asset('assets/admin/img/logo/hive.png') }}" alt="" width="200" data-aos="zoom-in" data-aos-duration="600">
+                    <img src="{{ asset(app('settings')->logo_path) }}" alt="" width="200" data-aos="zoom-in" data-aos-duration="600">
                 </div>
                 <h2 class="headline text-danger">403</h2>
 

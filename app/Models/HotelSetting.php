@@ -37,4 +37,12 @@ class HotelSetting extends Model
         'service_charge_rate',
         'logo_path'
     ];
+
+    protected $casts = [
+        'property_amenities' => 'array',
+        'hotel_policies' => 'array',
+        'vat_tax_rate' => 'decimal:2',
+        'occupancy_tax_rate' => 'decimal:2',
+        'service_charge_rate' => 'decimal:2',
+    ];
 }

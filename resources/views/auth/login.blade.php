@@ -92,7 +92,7 @@
 
                         <div class="auth-body">
                             <div class="logo-circle p-1 border-end border-secondary">
-                                <img class="rounded-circle" src="{{ asset('assets/admin/img/logo/hive.png') }}"
+                                <img class="rounded-circle" src="{{ asset(app('settings')->logo_path) }}"
                                     alt="Logo">
                             </div>
 

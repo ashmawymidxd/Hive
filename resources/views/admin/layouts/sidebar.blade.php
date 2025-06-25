@@ -3,7 +3,7 @@
          <div class="d-flex align-items-center gap-3  text-navy w-100 rounded-3">
              <img draggable="false" class="rounded-2 shadow" src="{{ asset('assets/admin/img/logo/hive.png') }}"
                  width="30px" alt="" srcset="">
-             <span class="font-bold p-1 fs-3">Hotel Hive</span>
+             <span class="font-bold p-1 fs-3">{{ app('settings')->hotel_name }}</span>
          </div>
          <button class="btn btn-sm btn-outline-light d-md-none" id="closeSidebar">
              <i class="fas fa-times"></i>

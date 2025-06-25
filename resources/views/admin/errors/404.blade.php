@@ -39,7 +39,7 @@
 
         <div class="content card border shadow-0" data-aos="fade-up">
             <div class="error-page">
-                <img src="{{ asset('assets/admin/img/logo/hive.png') }}" alt="" width="200" data-aos="zoom-in" data-aos-duration="600">
+                <img src="{{ asset(app('settings')->logo_path) }}" alt="" width="200" data-aos="zoom-in" data-aos-duration="600">
                 <h2 class="headline text-warning">404</h2>
 
                 <div class="error-content">

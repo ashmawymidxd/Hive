@@ -443,34 +443,40 @@
                     </div>
                     <div class="row mt-4">
                         <div class="col-12">
+                            assets/admin/images/hotel_logo/default.png
                             <div class="card shadow-0 border p-3">
-                                <h4 class="text-dark">Hotel Logo</h4>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        @if ($settings && $settings->logo_path)
+                                            <div class="current-logo mb-4">
+                                                <img src="{{ asset($settings->logo_path) }}" alt="Hotel Logo"
+                                                    class="img-thumbnail w-100 object-fit-cover" style="max-height: 150px;">
+                                                <div class="form-check mt-2">
+                                                    <input type="checkbox" class="form-check-input" id="remove_logo"
+                                                        name="remove_logo">
+                                                    <small class="form-check-label text-danger" for="remove_logo">Remove
+                                                        current
+                                                        logo</small>
+                                                </div>
+                                            </div>
+                                        @else
+                                        @endif
+                                    </div>
 
-                                @if ($settings && $settings->logo_path)
-                                    <div class="current-logo mb-4">
-                                        <h6>Current Logo:</h6>
-                                        <img src="{{ Storage::url($settings->logo_path) }}" alt="Hotel Logo"
-                                            class="img-thumbnail" style="max-height: 150px;">
-                                        <div class="form-check mt-2">
-                                            <input type="checkbox" class="form-check-input" id="remove_logo"
-                                                name="remove_logo">
-                                            <label class="form-check-label text-danger" for="remove_logo">Remove current
-                                                logo</label>
+                                    <div class="col-md-10">
+                                        <div class="upload-container">
+                                            <label for="hotel_logo" class="file-upload-label">
+                                                <i class="fas fa-cloud-upload-alt"></i>
+                                                <h5>Upload Hotel Icon</h5>
+                                                <p>Drag & drop logo here or click to browse</p>
+                                                <small class="text-muted">Supports JPG, PNG up to 5MB</small>
+                                            </label>
+                                            <input type="file" id="hotel_logo" name="hotel_logo" accept="image/*"
+                                                class="d-none">
                                         </div>
                                     </div>
-                                @endif
 
-                                <div class="upload-container">
-                                    <label for="hotel_logo" class="file-upload-label">
-                                        <i class="fas fa-cloud-upload-alt"></i>
-                                        <h5>Upload Hotel Icon</h5>
-                                        <p>Drag & drop logo here or click to browse</p>
-                                        <small class="text-muted">Supports JPG, PNG up to 5MB</small>
-                                    </label>
-                                    <input type="file" id="hotel_logo" name="hotel_logo" accept="image/*"
-                                        class="d-none">
                                 </div>
-
                                 @error('hotel_logo')
                                     <div class="alert alert-danger mt-2">{{ $message }}</div>
                                 @enderror
@@ -1488,41 +1494,43 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Address autocomplete
-            const addressInput = document.getElementById('address_line_1');
-            const autocomplete = new google.maps.places.Autocomplete(addressInput, {
-                types: ['address'],
-                componentRestrictions: {
-                    country: document.getElementById('country').value
-                }
-            });
+                    // Address autocomplete
+                    const addressInput = document.getElementById('
+                        ');
+                        const autocomplete = new google.maps.places.Autocomplete(addressInput, {
+                            types: ['address'],
+                            componentRestrictions: {
+                                country: document.getElementById('country').value
+                            }
+                        });
 
-            autocomplete.addListener('place_changed', function() {
-                const place = autocomplete.getPlace();
-                if (!place.geometry) return;
+                        autocomplete.addListener('place_changed', function() {
+                            const place = autocomplete.getPlace();
+                            if (!place.geometry) return;
 
-                // Fill in address components
-                const components = {};
-                place.address_components.forEach(component => {
-                    const type = component.types[0];
-                    components[type] = component.long_name;
-                });
+                            // Fill in address components
+                            const components = {};
+                            place.address_components.forEach(component => {
+                                const type = component.types[0];
+                                components[type] = component.long_name;
+                            });
 
-                document.getElementById('city').value = components.locality || '';
-                document.getElementById('state_province').value = components.administrative_area_level_1 ||
-                    '';
-                document.getElementById('zip_postal_code').value = components.postal_code || '';
-                document.getElementById('country').value = components.country || '';
-                document.getElementById('latitude').value = place.geometry.location.lat();
-                document.getElementById('longitude').value = place.geometry.location.lng();
-            });
+                            document.getElementById('city').value = components.locality || '';
+                            document.getElementById('state_province').value = components
+                                .administrative_area_level_1 ||
+                                '';
+                            document.getElementById('zip_postal_code').value = components.postal_code || '';
+                            document.getElementById('country').value = components.country || '';
+                            document.getElementById('latitude').value = place.geometry.location.lat();
+                            document.getElementById('longitude').value = place.geometry.location.lng();
+                        });
 
-            // Update autocomplete country restriction when country changes
-            document.getElementById('country').addEventListener('change', function() {
-                autocomplete.setComponentRestrictions({
-                    country: this.value
-                });
-            });
-        });
+                        // Update autocomplete country restriction when country changes
+                        document.getElementById('country').addEventListener('change', function() {
+                            autocomplete.setComponentRestrictions({
+                                country: this.value
+                            });
+                        });
+                    });
     </script>
 @endpush

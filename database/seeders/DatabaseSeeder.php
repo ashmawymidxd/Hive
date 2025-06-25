@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             PaymentSeeder::class,
             ExpenseCategorySeeder::class,
             ExpenseSeeder::class,
+            HotelSettingSeeder::class,
             // Other seeders...
         ]);
     }

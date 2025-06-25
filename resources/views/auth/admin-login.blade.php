@@ -105,7 +105,7 @@
 
                     <div class="p-4 p-lg-5">
                         <div class="logo-circle border-end border-secondary p-2">
-                            <img class="rounded-circle" src="{{ asset('assets/admin/img/logo/hive.png') }}" alt="Admin Logo">
+                            <img class="rounded-circle" src="{{ asset(app('settings')->logo_path) }}" alt="Admin Logo">
                         </div>
 
                         <form method="POST" action="{{ route('login.admin') }}">
