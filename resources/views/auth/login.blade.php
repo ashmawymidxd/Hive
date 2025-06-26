@@ -169,23 +169,23 @@
                             </div>
 
                             <!-- Social Login Buttons -->
-                            <div class="d-flex gap-3">
+                            <div class="d-flex flex-column gap-3">
                                 <a href="{{ route('auth.google') }}"
-                                    class="form-control">
+                                    class="form-control text-center bg-light">
                                     <img src="https://img.icons8.com/color/16/000000/google-logo.png"
                                         alt="Google Logo" class="me-1">
                                     <small class=""> Continue with Google</small>
                                 </a>
 
                                 <a href=""
-                                    class="form-control">
+                                    class="form-control text-center bg-light">
                                      <img src="https://img.icons8.com/color/16/000000/facebook-new.png"
                                         alt="Facebook Logo" class="me-1">
                                      <small class=""> Continue with Facebook</small>
                                 </a>
                             </div>
                             <!-- Register Link -->
-                            <div class="auth-footer">
+                            <div class="auth-footer mt-0">
                                 Don't have an account?
                                 <a href="{{ route('register') }}" class="text-decoration-none fw-semibold text-warning">Sign
                                     Up</a>

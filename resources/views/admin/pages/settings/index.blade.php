@@ -443,14 +443,14 @@
                     </div>
                     <div class="row mt-4">
                         <div class="col-12">
-                            assets/admin/images/hotel_logo/default.png
                             <div class="card shadow-0 border p-3">
                                 <div class="row">
                                     <div class="col-md-2">
                                         @if ($settings && $settings->logo_path)
                                             <div class="current-logo mb-4">
                                                 <img src="{{ asset($settings->logo_path) }}" alt="Hotel Logo"
-                                                    class="img-thumbnail w-100 object-fit-cover" style="max-height: 150px;">
+                                                    class="img-thumbnail w-100 object-fit-cover"
+                                                    style="max-height: 150px;">
                                                 <div class="form-check mt-2">
                                                     <input type="checkbox" class="form-check-input" id="remove_logo"
                                                         name="remove_logo">
@@ -487,188 +487,121 @@
             </div>
 
             <div class="tab-pane fade" id="room-types" role="tabpanel" aria-labelledby="room-types-tab">
-                <div class="d-flex align-items-center justify-content-between">
-                    <h4 class="text-dark font-bold">Room Types & Pricing</h4>
-                    <button class="btn btn-primary shadow-0">Add New Room Type</button>
-                </div>
+                <h4 class="text-dark font-bold">Pricing</h4>
                 <div class="row mt-4">
                     <div class="col-md-12">
-                        <div class="card shadow-0 border p-3">
-                            <h4 class="text-dark">Room Types</h4>
-                            <div class="table-responsive">
-                                <table class="table ">
-                                    <thead class="bg-light">
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Base Rate</th>
-                                            <th>Occupancy</th>
-                                            <th>Inventory</th>
-                                            <th>Status</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="hover-primary">
-                                            <td>
-                                                <strong>Standard Room</strong> <br>
-                                                <small>Comfortable room with essential amenities</small>
-                                            </td>
-                                            <td>$120</td>
-                                            <td>2</td>
-                                            <td>50</td>
-                                            <td><span class="badge bg-success">Active</span></td>
-                                            <td>
-                                                <button class="btn btn-primary  shadow-0">view</button>
-                                                <button class="btn btn-secondary  shadow-0">Edit</button>
-                                            </td>
-                                        </tr>
-                                        <tr class="hover-primary">
-                                            <td>
-                                                <strong>Standard Room</strong> <br>
-                                                <small>Comfortable room with essential amenities</small>
-                                            </td>
-                                            <td>$120</td>
-                                            <td>2</td>
-                                            <td>50</td>
-                                            <td><span class="badge bg-success">Active</span></td>
-                                            <td>
-                                                <button class="btn btn-primary  shadow-0">view</button>
-                                                <button class="btn btn-secondary  shadow-0">Edit</button>
-                                            </td>
-                                        </tr>
-                                        <tr class="hover-primary">
-                                            <td>
-                                                <strong>Standard Room</strong> <br>
-                                                <small>Comfortable room with essential amenities</small>
-                                            </td>
-                                            <td>$120</td>
-                                            <td>2</td>
-                                            <td>50</td>
-                                            <td><span class="badge bg-success">Active</span></td>
-                                            <td>
-                                                <button class="btn btn-primary  shadow-0">view</button>
-                                                <button class="btn btn-secondary  shadow-0">Edit</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-
+                        <div class="card shadow-0 border">
+                            <div class="card-header">
+                                <h4 class="mb-0">Current Pricing Rules</h4>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mt-4">
-                    <div class="col-md-12">
-                        <div class="card shadow-0 border p-3">
-                            <h4 class="text-dark">Edit Room Type</h4>
-                            <div class="row mt-3">
-                                <div class="col-md-6">
-                                    <label for="">Room Type Name</label>
-                                    <input type="text" name="" id=""
-                                        class="p-2 bg-light form-control">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="setting-item p-3 border rounded mb-3">
+                                            <h6 class="text-muted">Weekend Rate Adjustment</h6>
+                                            <p class="h5">{{ $Pricingsettings['weekend_rate'] ?? 'Not set' }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="setting-item p-3 border rounded mb-3">
+                                            <h6 class="text-muted">Extended Stay Discount</h6>
+                                            <p class="h5">
+                                                {{ $Pricingsettings['extended_stay_discount'] ?? 'Not set' }}%</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="setting-item p-3 border rounded mb-3">
+                                            <h6 class="text-muted">Group Booking Discount</h6>
+                                            <p class="h5">
+                                                {{ $Pricingsettings['group_booking_discount'] ?? 'Not set' }}%</p>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <label for="">Base Rate ($)</label>
-                                    <input type="text" name="" id=""
-                                        class="p-2 bg-light form-control">
-                                </div>
-                            </div>
-                            <div class="row mt-3">
-                                <div class="col-md-12">
-                                    <label for="">Description</label>
-                                    <textarea name="" class="form-control bg-light" id=""></textarea>
-                                </div>
-                            </div>
-                            <div class="row mt-3">
-                                <div class="col-md-4 mt-1">
-                                    <label for="">Max Occupancy</label>
-                                    <input type="text" name="" id=""
-                                        class="p-2 bg-light form-control">
-                                </div>
-                                <div class="col-md-4 mt-1">
-                                    <label for="">Room Size</label>
-                                    <input type="number" name="" id=""
-                                        class="p-2 bg-light form-control">
-                                </div>
-                                <div class="col-md-4 mt-1">
-                                    <label for="">Inventory</label>
-                                    <input type="number" name="" id=""
-                                        class="p-2 bg-light form-control">
-                                </div>
-                            </div>
-                            <div class="row mt-3">
-                                <div class="col-md-6">
-                                    <label for="">Bed Configuration</label>
-                                    <input type="text" name="" id=""
-                                        class="p-2 bg-light form-control">
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="">Status</label>
-                                    <input type="text" name="" id=""
-                                        class="p-2 bg-light form-control">
-                                </div>
-                            </div>
-                            <div class="row mt-3">
-                                <div class="col-md-12">
-                                    <label for="">Room Amenities</label>
-                                    <textarea name="" class="form-control bg-light" id=""></textarea>
-                                </div>
-                            </div>
-                            <div class="row mt-3">
-                                <div class="d-flex align-items-center justify-content-end gap-4">
-                                    <button class="btn btn-outline-secondary shadow-0" type="button">Cancel</button>
-                                    <button class="btn btn-primary shadow-0" type="submit">Save Changes</button>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="setting-item p-3 border rounded mb-3">
+                                            <h6 class="text-muted">Early Bird Discount</h6>
+                                            <p class="h5">{{ $Pricingsettings['early_bird_discount'] ?? 'Not set' }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="setting-item p-3 border rounded mb-3">
+                                            <h6 class="text-muted">Loyalty Program Discount</h6>
+                                            <p class="h5">
+                                                {{ $Pricingsettings['loyalty_program_discount'] ?? 'Not set' }}%
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="setting-item p-3 border rounded mb-3">
+                                            <h6 class="text-muted">Last Minute Surcharge</h6>
+                                            <p class="h5">
+                                                {{ $Pricingsettings['last_minute_surcharge'] ?? 'Not set' }}%</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row mt-4">
-                    <div class="col-md-12">
-                        <div class="card shadow-0 border p-3">
-                            <h4 class="text-dark">Pricing Rules</h4>
-                            <div class="row mt-3">
-                                <div class="col-md-4 mt-1">
-                                    <label for="">Weekend Rate Adjustment</label>
-                                    <input type="text" name="" id=""
-                                        class="p-2 bg-light form-control">
+                    <form action="{{ route('admin.settings.pricing-rules.update') }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <div class="col-md-12">
+                            <div class="card shadow-0 border p-3">
+                                <h4 class="text-dark">Pricing Rules</h4>
+                                <div class="row mt-3">
+                                    <div class="col-md-4 mt-1">
+                                        <label for="weekend_rate">Weekend Rate Adjustment</label>
+                                        <input type="text" name="weekend_rate" id="weekend_rate"
+                                            value="{{ old('weekend_rate', $settings['weekend_rate'] ?? '') }}"
+                                            class="p-2 bg-light form-control">
+                                    </div>
+                                    <div class="col-md-4 mt-1">
+                                        <label for="extended_stay_discount">Extended Stay Discount</label>
+                                        <input type="number" name="extended_stay_discount" id="extended_stay_discount"
+                                            value="{{ old('extended_stay_discount', $settings['extended_stay_discount'] ?? '') }}"
+                                            class="p-2 bg-light form-control">
+                                    </div>
+                                    <div class="col-md-4 mt-1">
+                                        <label for="group_booking_discount">Group Booking Discount</label>
+                                        <input type="number" name="group_booking_discount" id="group_booking_discount"
+                                            value="{{ old('group_booking_discount', $settings['group_booking_discount'] ?? '') }}"
+                                            class="p-2 bg-light form-control">
+                                    </div>
                                 </div>
-                                <div class="col-md-4 mt-1">
-                                    <label for="">Extended Stay Discount</label>
-                                    <input type="number" name="" id=""
-                                        class="p-2 bg-light form-control">
+                                <div class="row mt-3">
+                                    <div class="col-md-4 mt-1">
+                                        <label for="early_bird_discount">Early Bird Discount</label>
+                                        <input type="text" name="early_bird_discount" id="early_bird_discount"
+                                            value="{{ old('early_bird_discount', $settings['early_bird_discount'] ?? '') }}"
+                                            class="p-2 bg-light form-control">
+                                    </div>
+                                    <div class="col-md-4 mt-1">
+                                        <label for="loyalty_program_discount">Loyalty Program Discount</label>
+                                        <input type="number" name="loyalty_program_discount"
+                                            id="loyalty_program_discount"
+                                            value="{{ old('loyalty_program_discount', $settings['loyalty_program_discount'] ?? '') }}"
+                                            class="p-2 bg-light form-control">
+                                    </div>
+                                    <div class="col-md-4 mt-1">
+                                        <label for="last_minute_surcharge">Last Minute Surcharge</label>
+                                        <input type="number" name="last_minute_surcharge" id="last_minute_surcharge"
+                                            value="{{ old('last_minute_surcharge', $settings['last_minute_surcharge'] ?? '') }}"
+                                            class="p-2 bg-light form-control">
+                                    </div>
                                 </div>
-                                <div class="col-md-4 mt-1">
-                                    <label for="">Group Booking Discount</label>
-                                    <input type="number" name="" id=""
-                                        class="p-2 bg-light form-control">
-                                </div>
-                            </div>
-                            <div class="row mt-3">
-                                <div class="col-md-4 mt-1">
-                                    <label for="">Early Bird Discount</label>
-                                    <input type="text" name="" id=""
-                                        class="p-2 bg-light form-control">
-                                </div>
-                                <div class="col-md-4 mt-1">
-                                    <label for="">Loyalty Program Discount</label>
-                                    <input type="number" name="" id=""
-                                        class="p-2 bg-light form-control">
-                                </div>
-                                <div class="col-md-4 mt-1">
-                                    <label for="">Last Minute Surcharge</label>
-                                    <input type="number" name="" id=""
-                                        class="p-2 bg-light form-control">
-                                </div>
-                            </div>
-                            <div class="row mt-3">
-                                <div class="d-flex align-items-center justify-content-end gap-4">
-                                    <button class="btn btn-primary shadow-0" type="submit">Update Pricing
-                                        Rules</button>
+                                <div class="row mt-3">
+                                    <div class="d-flex align-items-center justify-content-end gap-4">
+                                        <button class="btn btn-primary shadow-0" type="submit">Update Pricing
+                                            Rules</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
 
@@ -676,8 +609,11 @@
                 <div class="d-flex align-items-center justify-content-between">
                     <h4 class="text-dark font-bold">Season Rates & Promotions</h4>
                     <div class="d-flex align-items-center gap-3">
-                        <button class="btn btn-outline-secondary shadow-0">Add Season</button>
-                        <button class="btn btn-primary shadow-0">Add Promotion</button>
+                        <button class="btn btn-light border shadow-0" data-mdb-toggle="modal"
+                            data-mdb-target="#addSeasonalRatePeriodModal">
+                            <i class="fa fa-plus"></i> Add Season
+                        </button>
+                        <button class="btn btn-primary shadow-0" id="AddPromotionBtn">Add Promotion</button>
                     </div>
                 </div>
                 <div class="row mt-4">
@@ -685,7 +621,7 @@
                         <div class="card shadow-0 border p-3">
                             <h4 class="text-dark">Seasonal Rate Periods</h4>
                             <div class="table-responsive">
-                                <table class="table ">
+                                <table class="table w-100" id="SeasonalRatePeriodsTable">
                                     <thead class="bg-light">
                                         <tr>
                                             <th>Season</th>
@@ -696,36 +632,39 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="hover-primary">
-                                            <td>Regular Season</td>
-                                            <td>2023-01-01 to 2023-04-30</td>
-                                            <td>Base Rate</td>
-                                            <td><span class="badge bg-success">Active</span></td>
-                                            <td>
-                                                <button class="btn btn-secondary  shadow-0">Edit</button>
-                                            </td>
-                                        </tr>
-                                        <tr class="hover-primary">
-                                            <td>Regular Season</td>
-                                            <td>2023-01-01 to 2023-04-30</td>
-                                            <td>Base Rate</td>
-                                            <td><span class="badge bg-success">Active</span></td>
-                                            <td>
-                                                <button class="btn btn-secondary  shadow-0">Edit</button>
-                                            </td>
-                                        </tr>
-                                        <tr class="hover-primary">
-                                            <td>Regular Season</td>
-                                            <td>2023-01-01 to 2023-04-30</td>
-                                            <td>Base Rate</td>
-                                            <td><span class="badge bg-success">Active</span></td>
-                                            <td>
-                                                <button class="btn btn-secondary  shadow-0">Edit</button>
-                                            </td>
-                                        </tr>
+                                        @foreach ($periods as $period)
+                                            <tr class="hover-primary" data-id="{{ $period->id }}">
+                                                <td>{{ $period->name }}</td>
+                                                <td>{{ $period->start_date->format('Y-m-d') }} to
+                                                    {{ $period->end_date->format('Y-m-d') }}</td>
+                                                <td>
+                                                    @if ($period->rate_adjustment_type === 'base_rate')
+                                                        Base Rate
+                                                    @else
+                                                        {{ $period->rate_adjustment_type === 'percentage' ? $period->rate_adjustment_value . '%' : '$' . $period->rate_adjustment_value }}
+                                                        {{ $period->rate_adjustment_value >= 0 ? 'Increase' : 'Decrease' }}
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        class="badge bg-{{ $period->is_active ? 'success' : 'danger' }}">
+                                                        {{ $period->is_active ? 'Active' : 'Inactive' }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-light border btn-sm shadow-0 edit-btn-period"
+                                                        data-id="{{ $period->id }}">
+                                                        <i class="fa fa-edit"></i>
+                                                    </button>
+                                                    <button class="btn btn-light border btn-sm shadow-0 delete-period"
+                                                        data-id="{{ $period->id }}">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
-
                             </div>
                         </div>
                     </div>
@@ -735,7 +674,7 @@
                         <div class="card shadow-0 border p-3">
                             <h4 class="text-dark">Current Promotions</h4>
                             <div class="table-responsive">
-                                <table class="table">
+                                <table class="table w-100" id="PromotionsTables">
                                     <thead class="bg-light">
                                         <tr>
                                             <th>Name</th>
@@ -748,102 +687,40 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="hover-primary">
-                                            <td>Early Summer Special</td>
-                                            <td>15%</td>
-                                            <td>2023-05-01 to 2023-05-31</td>
-                                            <td>All</td>
-                                            <td><span class="badge bg-secondary">SUMMER15</span></td>
-                                            <td><span class="badge bg-success">Active</span></td>
-                                            <td>
-                                                <button class="btn btn-secondary border  shadow-0">Edit</button>
-                                                <button class="btn btn-secondary border  shadow-0">Delete</button>
-                                            </td>
-                                        </tr>
+                                        @foreach ($promotions as $promotion)
+                                            <tr class="hover-primary">
+                                                <td>{{ $promotion->name }}</td>
+                                                <td>{{ $promotion->discount }}%</td>
+                                                <td>{{ $promotion->start_date->format('Y-m-d') }} to
+                                                    {{ $promotion->end_date->format('Y-m-d') }}</td>
+                                                <td>{{ implode(', ', $promotion->room_types) }}</td>
+                                                <td><span class="badge bg-secondary">{{ $promotion->promo_code }}</span>
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        class="badge bg-{{ $promotion->status === 'active' ? 'success' : 'danger' }}">
+                                                        {{ ucfirst($promotion->status) }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <a href="{{ route('admin.promotions.edit', $promotion->id) }}"
+                                                        class="btn btn-light border shadow-0 btn-sm">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                    <form action="{{ route('admin.promotions.destroy', $promotion->id) }}"
+                                                        method="POST" style="display: inline-block;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-light border shadow-0 btn-sm"
+                                                            onclick="return confirm('Are you sure?')">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-4">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card shadow-0 border p-3">
-                                <h4 class="text-dark">Create New Promotion</h4>
-                                <div class="row mt-3">
-                                    <div class="col-md-6">
-                                        <label for="">Promotion Name</label>
-                                        <input type="text" name="" id=""
-                                            class="form-control p-2 bg-light">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="">Discount Amount</label>
-                                        <input type="text" name="" id=""
-                                            class="form-control p-2 bg-light">
-                                    </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-lg-6 col-md-12">
-                                        <label for="">Promotion Period</label>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label>Start Date</label>
-                                                <div id="startDateCalendar" class="visible-calendar"></div>
-                                                <input type="hidden" id="startDate" name="startDate">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label>End Date</label>
-                                                <div id="endDateCalendar" class="visible-calendar"></div>
-                                                <input type="hidden" id="endDate" name="endDate">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 col-md-12">
-                                        <label for="">Applicable Room Types</label>
-                                        <div class="mt-2">
-                                            <form>
-                                                <label><input type="checkbox" name="room_types[]" value="All Room Types">
-                                                    All Room Types</label><br>
-                                                <label><input type="checkbox" name="room_types[]" value="Standard Room">
-                                                    Standard Room</label><br>
-                                                <label><input type="checkbox" name="room_types[]" value="Deluxe Room">
-                                                    Deluxe Room</label><br>
-                                                <label><input type="checkbox" name="room_types[]" value="Suite">
-                                                    Suite</label><br>
-                                                <label><input type="checkbox" name="room_types[]"
-                                                        value="Executive Suite"> Executive Suite</label><br>
-                                                <label><input type="checkbox" name="room_types[]" value="Penthouse">
-                                                    Penthouse</label>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-md-6">
-                                        <label for="">Promotion Code</label>
-                                        <input type="text" name="" id=""
-                                            class="form-control p-2 bg-light">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="">Status</label>
-                                        <input type="text" name="" id=""
-                                            class="form-control p-2 bg-light">
-                                    </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-md-12">
-                                        <label for="">Description & Terms</label>
-                                        <input type="text" name="" id=""
-                                            class="form-control p-2 bg-light">
-                                    </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="d-flex align-items-center justify-content-end gap-4">
-                                        <button class="btn btn-primary shadow-0" type="submit">Save Changes</button>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -1414,123 +1291,140 @@
             </div>
         </div>
     </section>
+
+    @include('admin.pages.settings.partials.seasonal-rate-periods-modals')
+    @include('admin.pages.settings.partials.add-promotion-modal')
 @endsection
 
 @push('js')
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.js"></script>
+    <script>
+        new DataTable("#SeasonalRatePeriodsTable");
+        new DataTable("#PromotionsTables");
+    </script>
 
-    <!-- Include jQuery and jQuery UI for the datepicker -->
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script>
+        $("#AddPromotionBtn").click(function() {
+            $("#AddPromotionModal").modal('show');
+        })
+    </script>
+@endpush
+
+@push('js')
     <script>
         $(document).ready(function() {
-            let startDate = null;
-            let endDate = null;
+            // Toggle rate adjustment value field based on type (Add Modal)
+            $('#add_rate_adjustment_type').change(function() {
+                if ($(this).val() === 'base_rate') {
+                    $('#add_rateAdjustmentValueContainer').hide();
+                    $('#add_rate_adjustment_value').val('').removeAttr('required');
+                } else {
+                    $('#add_rateAdjustmentValueContainer').show();
+                    $('#add_rate_adjustment_value').attr('required', 'required');
+                }
+            }).trigger('change');
 
-            // Initialize start date calendar
-            $("#startDateCalendar").datepicker({
-                showOtherMonths: true,
-                selectOtherMonths: true,
-                changeMonth: true,
-                changeYear: true,
-                onSelect: function(dateText, inst) {
-                    startDate = new Date(dateText);
-                    $("#startDate").val(dateText);
-
-                    // Update end date calendar min date
-                    if (endDate && startDate > endDate) {
-                        endDate = null;
-                        $("#endDate").val('');
-                    }
-                    $("#endDateCalendar").datepicker("option", "minDate", startDate);
-
-                    highlightSelectedPeriod();
-                },
-                beforeShowDay: function(date) {
-                    // Highlight days in the selected period
-                    if (startDate && endDate) {
-                        return [true, date >= startDate && date <= endDate ? "highlight-period" : ""];
-                    }
-                    return [true, ""];
+            // Toggle rate adjustment value field based on type (Edit Modal)
+            $('#edit_rate_adjustment_type').change(function() {
+                if ($(this).val() === 'base_rate') {
+                    $('#edit_rateAdjustmentValueContainer').hide();
+                    $('#edit_rate_adjustment_value').val('').removeAttr('required');
+                } else {
+                    $('#edit_rateAdjustmentValueContainer').show();
+                    $('#edit_rate_adjustment_value').attr('required', 'required');
                 }
             });
 
-            // Initialize end date calendar
-            $("#endDateCalendar").datepicker({
-                showOtherMonths: true,
-                selectOtherMonths: true,
-                changeMonth: true,
-                changeYear: true,
-                onSelect: function(dateText, inst) {
-                    endDate = new Date(dateText);
-                    $("#endDate").val(dateText);
+            // Add form submission
+            $('#addSeasonalRatePeriodForm').submit(function(e) {
+                e.preventDefault();
 
-                    // Update start date calendar max date
-                    if (startDate && endDate < startDate) {
-                        startDate = null;
-                        $("#startDate").val('');
+                $.ajax({
+                    url: '/admin/seasonal-rate-periods',
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#addSeasonalRatePeriodModal').modal('hide');
+                        location.reload();
+                    },
+                    error: function(xhr) {
+                        alert('An error occurred. Please try again.');
+                        console.error(xhr.responseText);
                     }
-                    $("#startDateCalendar").datepicker("option", "maxDate", endDate);
-
-                    highlightSelectedPeriod();
-                },
-                beforeShowDay: function(date) {
-                    // Highlight days in the selected period
-                    if (startDate && endDate) {
-                        return [true, date >= startDate && date <= endDate ? "highlight-period" : ""];
-                    }
-                    return [true, ""];
-                }
+                });
             });
 
-            function highlightSelectedPeriod() {
-                $("#startDateCalendar").datepicker("refresh");
-                $("#endDateCalendar").datepicker("refresh");
-            }
+            // Edit button click
+            $(document).on('click', '.edit-btn-period', function() {
+                let periodId = $(this).data('id');
+
+                $.get('/admin/seasonal-rate-periods/' + periodId, function(data) {
+                    $('#edit_periodId').val(data.id);
+                    $('#edit_name').val(data.name);
+                    $('#edit_start_date').val(data.start_date);
+                    $('#edit_end_date').val(data.end_date);
+                    $('#edit_rate_adjustment_type').val(data.rate_adjustment_type).trigger(
+                        'change');
+                    $('#edit_rate_adjustment_value').val(data.rate_adjustment_value);
+                    $('#edit_is_active').prop('checked', data.is_active);
+
+                    $('#editSeasonalRatePeriodModal').modal('show');
+                }).fail(function(xhr) {
+                    alert('Failed to load period data');
+                    console.error(xhr.responseText);
+                });
+            });
+
+            // Edit form submission
+            $('#editSeasonalRatePeriodForm').submit(function(e) {
+                e.preventDefault();
+                let periodId = $('#edit_periodId').val();
+
+                $.ajax({
+                    url: '/admin/seasonal-rate-periods/' + periodId,
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#editSeasonalRatePeriodModal').modal('hide');
+                        location.reload();
+                    },
+                    error: function(xhr) {
+                        alert('An error occurred. Please try again.');
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+
+            // Delete button click
+            let deletePeriodId;
+            $(document).on('click', '.delete-period', function() {
+                deletePeriodId = $(this).data('id');
+                $('#deleteSeasonalRatePeriodModal').modal('show');
+            });
+
+            // Confirm delete
+            $('#confirmDelete').click(function() {
+                $.ajax({
+                    url: '/admin/seasonal-rate-periods/' + deletePeriodId,
+                    type: 'DELETE',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        $('#deleteSeasonalRatePeriodModal').modal('hide');
+                        location.reload();
+                    },
+                    error: function(xhr) {
+                        alert('Failed to delete period');
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+
+            // Reset add form when modal is shown
+            $('#addSeasonalRatePeriodModal').on('show.bs.modal', function() {
+                $('#addSeasonalRatePeriodForm')[0].reset();
+                $('#add_rate_adjustment_type').trigger('change');
+            });
         });
-    </script>
-    <!-- Add this to your head section -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-                    // Address autocomplete
-                    const addressInput = document.getElementById('
-                        ');
-                        const autocomplete = new google.maps.places.Autocomplete(addressInput, {
-                            types: ['address'],
-                            componentRestrictions: {
-                                country: document.getElementById('country').value
-                            }
-                        });
-
-                        autocomplete.addListener('place_changed', function() {
-                            const place = autocomplete.getPlace();
-                            if (!place.geometry) return;
-
-                            // Fill in address components
-                            const components = {};
-                            place.address_components.forEach(component => {
-                                const type = component.types[0];
-                                components[type] = component.long_name;
-                            });
-
-                            document.getElementById('city').value = components.locality || '';
-                            document.getElementById('state_province').value = components
-                                .administrative_area_level_1 ||
-                                '';
-                            document.getElementById('zip_postal_code').value = components.postal_code || '';
-                            document.getElementById('country').value = components.country || '';
-                            document.getElementById('latitude').value = place.geometry.location.lat();
-                            document.getElementById('longitude').value = place.geometry.location.lng();
-                        });
-
-                        // Update autocomplete country restriction when country changes
-                        document.getElementById('country').addEventListener('change', function() {
-                            autocomplete.setComponentRestrictions({
-                                country: this.value
-                            });
-                        });
-                    });
     </script>
 @endpush

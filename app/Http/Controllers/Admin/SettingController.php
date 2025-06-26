@@ -5,14 +5,41 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\HotelSetting;
 use Illuminate\Http\Request;
+use App\Models\PricingSetting;
+use App\Models\SeasonalRatePeriod;
+use App\Models\Promotion;
+use Illuminate\Support\Facades\DB;
 
 
 class SettingController extends Controller
 {
+    // Pricing rules setting keys
+    protected $pricingRuleKeys = [
+        'weekend_rate',
+        'extended_stay_discount',
+        'group_booking_discount',
+        'early_bird_discount',
+        'loyalty_program_discount',
+        'last_minute_surcharge'
+    ];
+
     public function index()
     {
+        // Get all pricing rules settings with default values
+        $Pricingsettings = [];
+
+        foreach ($this->pricingRuleKeys as $key) {
+            $setting = PricingSetting::where('key', $key)->first();
+            $Pricingsettings[$key] = $setting ? $setting->value : null;
+        }
+
         $settings = HotelSetting::firstOrNew(['id' => 1]);
-        return view('admin.pages.settings.index', compact('settings'));
+
+        $periods = SeasonalRatePeriod::all();
+        $promotions = Promotion::all();
+
+
+        return view('admin.pages.settings.index', compact('settings','Pricingsettings','periods','promotions'));
     }
 
     public function store(Request $request)
@@ -68,7 +95,7 @@ class SettingController extends Controller
         }
         // If a new logo is uploaded, save it
         if ($request->hasFile('hotel_logo')) {
-            
+
             $file = $request->file('hotel_logo');
             $path = 'assets/admin/images/hotel_logo/' . time() . '_' . $file->getClientOriginalName();
             $file->move(public_path('assets/admin/images/hotel_logo'), $path);
@@ -84,5 +111,31 @@ class SettingController extends Controller
         );
 
         return redirect()->route('admin.settings.index')->with('success', 'Settings updated successfully');
+    }
+
+    /**
+     * Update pricing rules settings
+     */
+    public function updatePricingRules(Request $request)
+    {
+        $validated = $request->validate([
+            'weekend_rate' => 'nullable|string',
+            'extended_stay_discount' => 'nullable|numeric',
+            'group_booking_discount' => 'nullable|numeric',
+            'early_bird_discount' => 'nullable|string',
+            'loyalty_program_discount' => 'nullable|numeric',
+            'last_minute_surcharge' => 'nullable|numeric',
+        ]);
+
+        DB::transaction(function () use ($validated) {
+            foreach ($validated as $key => $value) {
+                PricingSetting::updateOrCreate(
+                    ['key' => $key],
+                    ['value' => $value]
+                );
+            }
+        });
+
+        return redirect()->back()->with('success', 'Pricing rules updated successfully!');
     }
 }

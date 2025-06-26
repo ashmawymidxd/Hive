@@ -35,7 +35,8 @@
                     <div class="tab-pane fade show active" id="directory" role="tabpanel">
                         {{-- success message alert close --}}
                         @if (session('success'))
-                            <div class="alert alert-success alert-dismissible fade show border-start border-success border-4" role="alert">
+                            <div class="alert alert-success alert-dismissible fade show border-start border-success border-4"
+                                role="alert">
                                 {{ session('success') }}
                                 <button type="button" class="btn-close" data-mdb-dismiss="alert"
                                     aria-label="Close"></button>
@@ -43,7 +44,8 @@
                         @endif
                         {{-- Validate --}}
                         @if ($errors->any())
-                            <div class="alert alert-danger alert-dismissible fade show border-start border-danger border-4" role="alert">
+                            <div class="alert alert-danger alert-dismissible fade show border-start border-danger border-4"
+                                role="alert">
                                 <ul class="mb-0">
                                     @foreach ($errors->all() as $error)
                                         <li>{{ $error }}</li>
@@ -81,29 +83,32 @@
                                             <td>{{ $guest->country }}</td>
                                             <td>{{ $guest->reservations_count ?? $guest->reservations()->count() }}</td>
                                             <td>
-                                                <a href="{{ route('admin.guests.show', $guest->id) }}"
-                                                    class="btn btn-light border btn-sm shadow-0 me-1">
-                                                    <i class="fa fa-eye"></i>
-                                                </a>
-                                                <a href="{{ route('admin.guests.edit', $guest->id) }}"
-                                                    class="btn btn-light border btn-sm shadow-0 me-1">
-                                                    <i class="fa fa-edit"></i>
-                                                </a>
-                                                <form action="{{ route('admin.guests.destroy', $guest->id) }}"
-                                                    method="POST" class="d-inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-light border btn-sm shadow-0"
-                                                        onclick="return confirm('Are you sure?')">
-                                                        <i class="fa fa-trash"></i>
-                                                    </button>
-                                                </form>
+                                                <div class="d-flex gap-2">
 
-                                                <button class="btn btn-sm btn-danger shadow-0"
-                                                    onclick="openBlacklistModal({{ $guest->id }})"
-                                                    title="Add to Blacklist">
-                                                    <i class="fas fa-ban"></i>
-                                                </button>
+                                                    <a href="{{ route('admin.guests.show', $guest->id) }}"
+                                                        class="btn btn-light border btn-sm shadow-0 me-1">
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
+                                                    <a href="{{ route('admin.guests.edit', $guest->id) }}"
+                                                        class="btn btn-light border btn-sm shadow-0 me-1">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                    <form action="{{ route('admin.guests.destroy', $guest->id) }}"
+                                                        method="POST" class="d-inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-light border btn-sm shadow-0"
+                                                            onclick="return confirm('Are you sure?')">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    </form>
+
+                                                    <button class="btn btn-sm btn-danger shadow-0"
+                                                        onclick="openBlacklistModal({{ $guest->id }})"
+                                                        title="Add to Blacklist">
+                                                        <i class="fas fa-ban"></i>
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach

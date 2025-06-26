@@ -194,7 +194,7 @@
                                     <small class=""> Continue with Facebook</small>
                                 </a>
                             </div>
-                            <div class="auth-footer">
+                            <div class="auth-footer mt-0">
                                 Already have an account?
                                 <a href="{{ route('login') }}"
                                     class="text-decoration-none fw-semibold text-warning">Login</a>

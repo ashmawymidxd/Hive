@@ -201,7 +201,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <canvas id="revenueChart" class="w-100" height="400px"></canvas>
+                                <canvas id="revenueChart" class="w-100" height="350px"></canvas>
                             </div>
                         </div>
                     </div>

@@ -26,6 +26,8 @@ use App\Http\Controllers\Admin\TodoController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ReportsChartController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\SeasonalRatePeriodController;
+use App\Http\Controllers\Admin\PromotionController;
 /*
 |--------------------------------------------------------------------------
 | admin Routes
@@ -178,6 +180,14 @@ Route::middleware(['auth:admin', 'check.admin.status'])->name('admin.')->prefix(
     // settings
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingController::class, 'store'])->name('settings.store');
+
+    Route::get('/pricing-rules', [SettingController::class, 'showPricingRules'])->name('settings.pricing-rules');
+    Route::put('/pricing-rules', [SettingController::class, 'updatePricingRules'])->name('settings.pricing-rules.update');
+    Route::resource('seasonal-rate-periods',SeasonalRatePeriodController::class)->except(['create', 'edit','index']);
+    Route::resource('promotions', PromotionController::class)->except(['show','index']);
+
+
+
 });
 
 require __DIR__ . '/auth_admin.php';

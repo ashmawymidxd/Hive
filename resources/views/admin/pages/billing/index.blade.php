@@ -202,7 +202,8 @@
                                                             @endif
                                                         </td>
                                                         <td>
-                                                            <a href="{{ route('admin.invoices.show', $invoice) }}"
+                                                            <div class="d-flex gap-2">
+                                                                <a href="{{ route('admin.invoices.show', $invoice) }}"
                                                                 class="btn btn-light border btn-sm shadow-0">
                                                                 <i class="fa fa-eye"></i>
                                                             </a>
@@ -221,9 +222,10 @@
                                                                     data-guest-id="{{ $invoice->guest->id }}"
                                                                     data-amount="{{ $invoice->amount }}"
                                                                     onclick="openPaymentModal(this)">
-                                                                    <i class="fa fa-check"></i> Pay Now
+                                                                    <i class="fa fa-check"></i>
                                                                 </button>
                                                             @endif
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -424,24 +426,26 @@
                                                     <td>${{ number_format($expense->amount, 2) }}</td>
                                                     <td>{{ $expense->date->format('Y-m-d') }}</td>
                                                     <td>
-                                                        <a href="{{ route('admin.expenses.show', $expense) }}"
-                                                            class="btn btn-light border btn-sm shadow-0">
-                                                            <i class="fa fa-eye"></i>
-                                                        </a>
-                                                        <a href="{{ route('admin.expenses.edit', $expense) }}"
-                                                            class="btn btn-light border btn-sm shadow-0">
-                                                            <i class="fa fa-pencil"></i>
-                                                        </a>
-                                                        <form action="{{ route('admin.expenses.destroy', $expense) }}"
-                                                            method="POST" style="display: inline-block;">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit"
-                                                                class="btn btn-light border btn-sm shadow-0 delete-expense"
-                                                                onclick="return confirm('Are you sure?')">
-                                                                <i class="fa fa-trash"></i>
-                                                            </button>
-                                                        </form>
+                                                        <div class="d-flex gap-2">
+                                                            <a href="{{ route('admin.expenses.show', $expense) }}"
+                                                                class="btn btn-light border btn-sm shadow-0">
+                                                                <i class="fa fa-eye"></i>
+                                                            </a>
+                                                            <a href="{{ route('admin.expenses.edit', $expense) }}"
+                                                                class="btn btn-light border btn-sm shadow-0">
+                                                                <i class="fa fa-pencil"></i>
+                                                            </a>
+                                                            <form action="{{ route('admin.expenses.destroy', $expense) }}"
+                                                                method="POST" style="display: inline-block;">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit"
+                                                                    class="btn btn-light border btn-sm shadow-0 delete-expense"
+                                                                    onclick="return confirm('Are you sure?')">
+                                                                    <i class="fa fa-trash"></i>
+                                                                </button>
+                                                            </form>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -1423,9 +1427,9 @@
                     const isToday = dayDate.toDateString() === new Date().toDateString();
 
                     calendarHTML += `
-                    <div class="calendar-day 
-                        ${isSelected ? 'selected' : ''} 
-                        ${isToday ? 'today' : ''}" 
+                    <div class="calendar-day
+                        ${isSelected ? 'selected' : ''}
+                        ${isToday ? 'today' : ''}"
                         data-date="${dayDate.toISOString().split('T')[0]}">
                         ${day}
                     </div>
@@ -1609,7 +1613,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-6">
                                 <div class="card border shadow-sm mb-3">
                                     <div class="card-body">
@@ -1617,20 +1621,20 @@
                                         <ul class="list-unstyled mb-0">
                                             <li class="mb-2">
                                                 <i class="fas fa-money-bill-wave text-muted me-2"></i>
-                                                <strong>Amount:</strong> 
+                                                <strong>Amount:</strong>
                                                 <span class="fw-bold text-success">$${parseFloat(data.amount).toFixed(2)}</span>
                                             </li>
                                             <li class="mb-2">
                                                 <i class="fas fa-info-circle text-muted me-2"></i>
-                                                <strong>Status:</strong> 
-                                                <span class="badge bg-${ 
-                                                    data.status == 'Filed' ? 'info' : 
-                                                    (data.status == 'Paid' ? 'success' : 
+                                                <strong>Status:</strong>
+                                                <span class="badge bg-${
+                                                    data.status == 'Filed' ? 'info' :
+                                                    (data.status == 'Paid' ? 'success' :
                                                     (data.status == 'Overdue' ? 'danger' : 'warning'))
                                                 } rounded-pill">
                                                     <i class="fas ${
-                                                        data.status == 'Filed' ? 'fa-file-export' : 
-                                                        (data.status == 'Paid' ? 'fa-check-circle' : 
+                                                        data.status == 'Filed' ? 'fa-file-export' :
+                                                        (data.status == 'Paid' ? 'fa-check-circle' :
                                                         (data.status == 'Overdue' ? 'fa-exclamation-triangle' : 'fa-clock'))
                                                     } me-1"></i>
                                                     ${data.status}
@@ -1650,16 +1654,16 @@
                                         <ul class="list-unstyled mb-0">
                                             <li class="mb-2">
                                                 <i class="fas fa-calendar-plus text-muted me-2"></i>
-                                                <strong>Created:</strong> 
+                                                <strong>Created:</strong>
                                                 ${new Date(data.created_at).toLocaleString()}
                                             </li>
                                             ${data.updated_at ? `
-                                                                            <li class="mb-2">
-                                                                                <i class="fas fa-calendar-check text-muted me-2"></i>
-                                                                                <strong>Last Updated:</strong> 
-                                                                                ${new Date(data.updated_at).toLocaleString()}
-                                                                            </li>
-                                                                            ` : ''}
+                                                                                <li class="mb-2">
+                                                                                    <i class="fas fa-calendar-check text-muted me-2"></i>
+                                                                                    <strong>Last Updated:</strong>
+                                                                                    ${new Date(data.updated_at).toLocaleString()}
+                                                                                </li>
+                                                                                ` : ''}
                                         </ul>
                                     </div>
                                 </div>

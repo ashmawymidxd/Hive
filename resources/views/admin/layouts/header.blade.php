@@ -61,49 +61,49 @@
                </a>
                <ul class="dropdown-menu dropdown-menu-end p-3 shadow-0 border mt-2" aria-labelledby="settingsDropdown"
                    style="width: 300px;">
-                     <li class="border-bottom border-secondary">
-                          <a class="dropdown-item" href="">
-                            <i class="fas fa-cog me-2"></i> General Settings
-                          </a>
-                     </li>
-                     <li class="border-bottom border-secondary">
-                          <a class="dropdown-item" href="">
-                            <i class="fas fa-envelope me-2"></i> Email Settings
-                          </a>
-                     </li>
-                     <li class="">
-                          <a class="dropdown-item" href="">
-                            <i class="fas fa-credit-card me-2"></i> Payment Settings
-                          </a>
-                     </li>
+                   <li class="border-bottom border-secondary">
+                       <a class="dropdown-item" href="">
+                           <i class="fas fa-cog me-2"></i> General Settings
+                       </a>
+                   </li>
+                   <li class="border-bottom border-secondary">
+                       <a class="dropdown-item" href="">
+                           <i class="fas fa-envelope me-2"></i> Email Settings
+                       </a>
+                   </li>
+                   <li class="">
+                       <a class="dropdown-item" href="">
+                           <i class="fas fa-credit-card me-2"></i> Payment Settings
+                       </a>
+                   </li>
                </ul>
            </div>
 
            {{-- to do list --}}
-              <div class="dropdown todo-dropdown me-4">
-                <a class="list-group-item" href="#" id="todoDropdown" data-mdb-toggle="dropdown"
+           <div class="dropdown todo-dropdown me-4">
+               <a class="list-group-item" href="#" id="todoDropdown" data-mdb-toggle="dropdown"
                    aria-expanded="false">
                    <i class="fa-solid fa-list-check"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end p-3 shadow-0 border mt-2" aria-labelledby="todoDropdown"
+               </a>
+               <ul class="dropdown-menu dropdown-menu-end p-3 shadow-0 border mt-2" aria-labelledby="todoDropdown"
                    style="width: 300px;">
-                    <li class="border-bottom border-secondary">
-                        <a class="dropdown-item" href="{{ route('admin.todo.create') }}">
-                            <i class="fas fa-plus me-2"></i> Add New Task
-                        </a>
-                    </li>
-                    <li class="border-bottom border-secondary">
-                        <a class="dropdown-item" href="{{ route('admin.todo.index') }}">
-                            <i class="fas fa-tasks me-2"></i> View Tasks
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="{{ route('admin.todo.completed') }}">
-                            <i class="fas fa-check-circle me-2"></i> Completed Tasks
-                        </a>
-                    </li>
-                </ul>
-              </div>
+                   <li class="border-bottom border-secondary">
+                       <a class="dropdown-item" href="{{ route('admin.todo.create') }}">
+                           <i class="fas fa-plus me-2"></i> Add New Task
+                       </a>
+                   </li>
+                   <li class="border-bottom border-secondary">
+                       <a class="dropdown-item" href="{{ route('admin.todo.index') }}">
+                           <i class="fas fa-tasks me-2"></i> View Tasks
+                       </a>
+                   </li>
+                   <li>
+                       <a class="dropdown-item" href="{{ route('admin.todo.completed') }}">
+                           <i class="fas fa-check-circle me-2"></i> Completed Tasks
+                       </a>
+                   </li>
+               </ul>
+           </div>
 
            <div class="dropdown timer-dropdown me-2">
                <a class="list-group-item" href="#" id="timerDropdown" data-mdb-toggle="dropdown"
@@ -144,7 +144,6 @@
                    <span class="badge-notification">{{ auth()->user()->unreadNotifications->count() }}</span>
                @else
                    <i class="fas fa-bell-slash mx-3 notification-icon" id="notificationIcon"></i>
-                   <span class="badge-notification">0</span>
                @endif
                <div class="notification-content shadow-0 border" id="notificationDropdown">
                    <div class="notification-header d-flex justify-content-between align-items-center p-3">
