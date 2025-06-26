@@ -10,6 +10,7 @@
     rel="stylesheet">
 <!-- MDB -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.css" rel="stylesheet" />
+{{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.dark.min.css" rel="stylesheet" /> --}}
 <!-- custom css -->
 <link href="{{ asset('assets/admin/css/main.css') }}" rel="stylesheet">
 {{-- select2 --}}

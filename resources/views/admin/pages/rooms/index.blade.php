@@ -97,9 +97,9 @@
         <div class="d-flex align-items-center justify-content-between">
             <h3 class="font-bold text-dark" data-aos="fade-up-right" data-aos-delay="100">Room Management</h3>
             <div class="d-flex flex-md-row flex-column gap-3" data-aos="fade-up-right" data-aos-delay="200">
-                <button class="btn shadow-0 btn-secondary"><i class="fas fa-home mx-1"></i>Housekeeping</button>
+                {{-- <button class="btn shadow-0 btn-secondary"><i class="fas fa-home mx-1"></i>Housekeeping</button>
                 <button class="btn shadow-0 btn-secondary"> <i class="fas fa-tools mx-1"></i>
-                    Maintenance</button>
+                    Maintenance</button> --}}
                 <button class="btn btn-secondary btn-sm" data-mdb-toggle="modal" data-mdb-target="#amenitiesModal">
                     <i class="fa fa-list"></i> Amenities
                 </button>

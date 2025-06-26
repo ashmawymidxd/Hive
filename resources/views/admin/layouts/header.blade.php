@@ -40,7 +40,7 @@
            font-size: 10px;
        }
    </style>
-   <header class="main-header">
+   <header class="main-header bg-white">
        <button class="menu-toggle" id="menuToggle">
            <i class="fas fa-bars"></i>
        </button>
@@ -52,8 +52,6 @@
                aria-label="Search">
        </div>
        <div class="d-flex align-items-center justify-content-end flex-grow-1">
-
-           {{-- settings dropdown --}}
            <div class="dropdown settings-dropdown me-4">
                <a class="list-group-item" href="#" id="settingsDropdown" data-mdb-toggle="dropdown"
                    aria-expanded="false">
@@ -62,7 +60,7 @@
                <ul class="dropdown-menu dropdown-menu-end p-3 shadow-0 border mt-2" aria-labelledby="settingsDropdown"
                    style="width: 300px;">
                    <li class="border-bottom border-secondary">
-                       <a class="dropdown-item" href="">
+                       <a class="dropdown-item" href="{{ route('admin.settings.index') }}">
                            <i class="fas fa-cog me-2"></i> General Settings
                        </a>
                    </li>
@@ -109,6 +107,7 @@
                <a class="list-group-item" href="#" id="timerDropdown" data-mdb-toggle="dropdown"
                    aria-expanded="false">
                    <i class="fa-solid fa-clock fa-spin fa-spin-reverse"></i>
+                   <span id="timerDisplay">00:00:00</span>
                </a>
                <ul class="dropdown-menu dropdown-menu-end p-3 shadow-0 border mt-2" aria-labelledby="timerDropdown"
                    style="width: 300px;">
@@ -119,22 +118,24 @@
                        </small>
                    </li>
                    <li class="border-bottom border-secondary">
-                       <a class="dropdown-item" href="">
+                       <a class="dropdown-item start-timer" href="#" data-url="{{ route('admin.timer.start') }}">
                            <i class="fas fa-play me-2"></i> Start Timer
                        </a>
                    </li>
                    <li class="border-bottom border-secondary">
-                       <a class="dropdown-item" href="">
+                       <a class="dropdown-item stop-timer" href="#" data-url="{{ route('admin.timer.stop') }}">
                            <i class="fas fa-stop me-2"></i> Stop Timer
                        </a>
                    </li>
                    <li>
-                       <a class="dropdown-item" href="">
+                       <a class="dropdown-item reset-timer" href="#" data-url="{{ route('admin.timer.reset') }}">
                            <i class="fas fa-redo me-2"></i> Reset Timer
                        </a>
                    </li>
                </ul>
            </div>
+
+
 
 
 
@@ -205,7 +206,7 @@
 
                <!-- Profile Dropdown -->
                <div class="dropdown profile-dropdown">
-                   <button class="btn btn-primary rounded-circle p-2 bg-navy text-white shadow-0" type="button"
+                   <button class="btn btn-primary rounded-circle p-2 bg-navy text-white shadow-0 font-bold" type="button"
                        id="profileDropdown" data-mdb-toggle="dropdown" aria-expanded="false">
                        @auth
 
@@ -238,40 +239,164 @@
            </div>
        </header>
 
-       @push('scripts')
+
+
+       @push('js')
+           <!-- JS before closing body tag -->
+           <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+           <script>
+               // Configure toastr
+               toastr.options = {
+                   "closeButton": true,
+                   "debug": false,
+                   "newestOnTop": true,
+                   "progressBar": true,
+                   "positionClass": "toast-top-right",
+                   "preventDuplicates": false,
+                   "onclick": null,
+                   "showDuration": "300",
+                   "hideDuration": "1000",
+                   "timeOut": "5000",
+                   "extendedTimeOut": "1000",
+                   "showEasing": "swing",
+                   "hideEasing": "linear",
+                   "showMethod": "fadeIn",
+                   "hideMethod": "fadeOut"
+               };
+           </script>
            <script>
                $(document).ready(function() {
-                   // Toggle notification dropdown
-                   $('#notificationIcon').click(function(e) {
-                       e.stopPropagation();
-                       $('#notificationDropdown').toggleClass('show');
+                   // Set up CSRF token for all AJAX requests
+                   $.ajaxSetup({
+                       headers: {
+                           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                       }
                    });
 
-                   // Close dropdown when clicking outside
-                   $(document).click(function() {
-                       $('#notificationDropdown').removeClass('show');
-                   });
+                   // Timer variables
+                   let timerInterval;
+                   let totalSeconds = 0;
+                   let isRunning = false;
+                   let serverTimerStartedAt = null;
 
-                   // Mark notification as read when clicked
-                   $('.mark-as-read').click(function(e) {
-                       e.preventDefault();
-                       const notificationId = $(this).data('id');
-                       const url = $(this).attr('href');
+                   // Format time display
+                   function formatTime(seconds) {
+                       const hours = Math.floor(seconds / 3600);
+                       const minutes = Math.floor((seconds % 3600) / 60);
+                       const secs = seconds % 60;
+                       return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                   }
 
-                       // Mark as read via AJAX
-                       $.ajax({
-                           url: '/admin/notifications/' + notificationId + '/mark-as-read',
-                           type: 'POST',
-                           data: {
-                               _token: '{{ csrf_token() }}'
-                           },
-                           success: function() {
-                               window.location.href = url;
+                   // Update timer display
+                   function updateTimerDisplay() {
+                       $('#timerDisplay').text(formatTime(totalSeconds));
+                   }
+
+                   // Start the timer
+                   function startTimer() {
+                       if (!isRunning) {
+                           isRunning = true;
+                           timerInterval = setInterval(function() {
+                               totalSeconds++;
+                               updateTimerDisplay();
+                           }, 1000);
+                       }
+                   }
+
+                   // Stop the timer
+                   function stopTimer() {
+                       if (isRunning) {
+                           clearInterval(timerInterval);
+                           isRunning = false;
+                       }
+                   }
+
+                   // Reset the timer
+                   function resetTimer() {
+                       stopTimer();
+                       totalSeconds = 0;
+                       serverTimerStartedAt = null;
+                       updateTimerDisplay();
+                   }
+
+                   // Check timer status on page load
+                   function syncTimerStatus() {
+                       $.get("{{ route('admin.timer.status') }}", function(response) {
+                           totalSeconds = response.total_seconds;
+                           serverTimerStartedAt = response.timer_started_at;
+                           updateTimerDisplay();
+
+                           if (response.is_running) {
+                               startTimer();
+                           } else {
+                               stopTimer();
                            }
+                       });
+                   }
+
+                   // Initial sync
+                   syncTimerStatus();
+
+                   // Start timer button
+                   $('.start-timer').click(function(e) {
+                       e.preventDefault();
+                       const url = $(this).data('url');
+
+                       $.post(url, function(response) {
+                           if (response.success) {
+                               serverTimerStartedAt = response.timer_started_at;
+                               totalSeconds = response.total_seconds || 0;
+                               startTimer();
+                               toastr.success('Timer started');
+                           } else {
+                               toastr.warning(response.message);
+                               syncTimerStatus(); // Sync with server state
+                           }
+                       }).fail(function() {
+                           toastr.error('Error starting timer');
                        });
                    });
 
+                   // Stop timer button
+                   $('.stop-timer').click(function(e) {
+                       e.preventDefault();
+                       const url = $(this).data('url');
 
+                       // Calculate elapsed time on client side first
+                       const clientElapsed = isRunning ? 1 : 0;
+
+                       $.post(url, function(response) {
+                           if (response.success) {
+                               stopTimer();
+                               totalSeconds = response.total_seconds;
+                               serverTimerStartedAt = null;
+                               updateTimerDisplay();
+                               toastr.success('Timer stopped');
+                           } else {
+                               toastr.warning(response.message);
+                               syncTimerStatus(); // Sync with server state
+                           }
+                       }).fail(function() {
+                           toastr.error('Error stopping timer');
+                       });
+                   });
+
+                   // Reset timer button
+                   $('.reset-timer').click(function(e) {
+                       e.preventDefault();
+                       const url = $(this).data('url');
+
+                       $.post(url, function(response) {
+                           if (response.success) {
+                               resetTimer();
+                               toastr.success('Timer reset');
+                           }
+                       }).fail(function() {
+                           toastr.error('Error resetting timer');
+                       });
+                   });
+                   
                });
            </script>
        @endpush

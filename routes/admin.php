@@ -28,6 +28,7 @@ use App\Http\Controllers\Admin\ReportsChartController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SeasonalRatePeriodController;
 use App\Http\Controllers\Admin\PromotionController;
+use App\Http\Controllers\Admin\TimerController;
 /*
 |--------------------------------------------------------------------------
 | admin Routes
@@ -181,12 +182,23 @@ Route::middleware(['auth:admin', 'check.admin.status'])->name('admin.')->prefix(
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingController::class, 'store'])->name('settings.store');
 
+    // pricing
     Route::get('/pricing-rules', [SettingController::class, 'showPricingRules'])->name('settings.pricing-rules');
     Route::put('/pricing-rules', [SettingController::class, 'updatePricingRules'])->name('settings.pricing-rules.update');
+
+    // seasons
     Route::resource('seasonal-rate-periods',SeasonalRatePeriodController::class)->except(['create', 'edit','index']);
+
+    // promotions
     Route::resource('promotions', PromotionController::class)->except(['show','index']);
-
-
+    
+    // timmer
+    Route::prefix('timer')->group(function () {
+        Route::post('/start', [TimerController::class, 'start'])->name('timer.start');
+        Route::post('/stop', [TimerController::class, 'stop'])->name('timer.stop');
+        Route::post('/reset', [TimerController::class, 'reset'])->name('timer.reset');
+        Route::get('/status', [TimerController::class, 'status'])->name('timer.status');
+    });
 
 });
 

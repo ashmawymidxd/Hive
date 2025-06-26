@@ -26,11 +26,27 @@
 
 @section('content')
     <section>
-        <h3 class="font-bold text-dark">Dashboard</h3>
-        <p class="text-secondary">Welcome back to {{ app('settings')->hotel_name }} management system.</p>
+        <div class="" data-aos="fade-up" data-aos-delay="50">
+            <div class="d-flex align-items-center justify-content-between">
+                <h3 class="font-bold text-dark"> <span class="text-primary">Admin</span> Dashboard !</h3>
+                <span class="badge badge-primary rounded-pill px-3 py-2">
+                    <i class="fas fa-check-circle me-1"></i> {{ app('settings')->year_built }}
+                </span>
+            </div>
+            <div class="d-flex align-items-center justify-content-between">
+                <span class="text-secondary">Welcome back to {{ app('settings')->hotel_name }} management system.</span>
+                <div class="d-flex gap-2">
+                    <i class="fa fa-star text-primary"></i>
+                    <i class="fa fa-star text-primary"></i>
+                    <i class="fa fa-star text-primary"></i>
+                    <i class="fa fa-star text-primary"></i>
+                    <i class="fa fa-star text-info"></i>
+                </div>
+            </div>
+        </div>
         <div class="row mt-4">
             <div class="col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="100">
-                <div class="card p-3 shadow-2 ">
+                <div class="card p-3 shadow-2">
                     <div class="d-flex align-items-center justify-content-between">
                         <p class="text-secondary">Available Rooms</p>
                         <button class="btn btn-secondary btn-lg btn-floating">
@@ -160,7 +176,7 @@ $yesterdayRate = App\Models\OccupancyRecord::where('record_date', today()->subDa
     <section>
         <div class="row">
             <div class="col-md-12 col-lg-4 mt-1" data-aos="fade-up" data-aos-delay="500">
-                <div class="card shadow-2 p-3" style="height: 380px;">
+                <div class="card shadow-2 p-3 h-100">
                     @php
                         $totalRooms = App\Models\Room::count();
                         $available = App\Models\Room::where('status', 'available')->count();
@@ -184,34 +200,34 @@ $yesterdayRate = App\Models\OccupancyRecord::where('record_date', today()->subDa
 
                     <div class="mt-3">
                         <!-- Available Rooms Progress Bar -->
-                        <div class="progress" style="height: 10px;">
+                        <div class="progress bg-light p-2" style="height: 30px;">
                             <div class="progress-bar bg-success" role="progressbar"
                                 style="width: {{ $availablePercent }}%; border-radius: 0 20px 20px 0px;"
                                 aria-valuenow="{{ $availablePercent }}" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
 
                         <!-- Occupied Rooms Progress Bar -->
-                        <div class="progress" style="height: 10px; margin-top: 8px;">
+                        <div class="progress bg-light p-2" style="height: 30px; margin-top: 8px;">
                             <div class="progress-bar bg-info" role="progressbar"
                                 style="width: {{ $occupiedPercent }}%; border-radius: 0 20px 20px 0px;"
                                 aria-valuenow="{{ $occupiedPercent }}" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
 
                         <!-- Cleaning Rooms Progress Bar -->
-                        <div class="progress" style="height: 10px; margin-top: 8px;">
+                        <div class="progress bg-light p-2" style="height: 30px; margin-top: 8px;">
                             <div class="progress-bar bg-warning" role="progressbar"
                                 style="width: {{ $cleaningPercent }}%; border-radius: 0 20px 20px 0px;"
                                 aria-valuenow="{{ $cleaningPercent }}" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
 
                         <!-- Maintenance Rooms Progress Bar -->
-                        <div class="progress" style="height: 10px; margin-top: 8px;">
+                        <div class="progress bg-light p-2" style="height: 30px; margin-top: 8px;">
                             <div class="progress-bar bg-danger" role="progressbar"
                                 style="width: {{ $maintenancePercent }}%; border-radius: 0 20px 20px 0px;"
                                 aria-valuenow="{{ $maintenancePercent }}" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                         <!-- Reserved Rooms Progress Bar -->
-                        <div class="progress" style="height: 10px; margin-top: 8px;">
+                        <div class="progress bg-light p-2" style="height: 30px; margin-top: 8px;">
                             <div class="progress-bar bg-secondary" role="progressbar"
                                 style="width: {{ $reservedPercent }}%; border-radius: 0 20px 20px 0px;"
                                 aria-valuenow="{{ $reservedPercent }}" aria-valuemin="0" aria-valuemax="100"></div>
@@ -244,16 +260,17 @@ $yesterdayRate = App\Models\OccupancyRecord::where('record_date', today()->subDa
             </div>
 
             <div class="col-md-12 col-lg-8 mt-1" data-aos="fade-up" data-aos-delay="600">
-                <div class="card shadow-2 p-3 " style="height: 380px">
+                <div class="card shadow-2 p-3">
                     <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
                         <h5 class="font-bold">Occupancy Rate</h5>
                         <div class="d-flex justify-content-end mb-3">
-                            <button id="dailyBtn" class="btn btn-primary btn-sm me-2 shadow-0 bg-navy">Daily</button>
-                            <button id="weeklyBtn" class="btn btn-secondary btn-sm me-2">Weekly</button>
-                            <button id="monthlyBtn" class="btn btn-secondary btn-sm">Monthly</button>
+                            <button id="dailyBtn"
+                                class="btn btn-primary btn-sm me-2 shadow-0 bg-navy shadow-0">Daily</button>
+                            <button id="weeklyBtn" class="btn btn-secondary btn-sm me-2 shadow-0">Weekly</button>
+                            <button id="monthlyBtn" class="btn btn-secondary btn-sm shadow-0">Monthly</button>
                         </div>
                     </div>
-                    <canvas class="p-3 w-100" id="occupancyChart" height="400">
+                    <canvas class="p-3 w-100" id="occupancyChart">
                     </canvas>
                 </div>
             </div>
@@ -273,9 +290,9 @@ $yesterdayRate = App\Models\OccupancyRecord::where('record_date', today()->subDa
                             <div
                                 class="hover-primary rounded-3 border d-flex flex-column align-items-center justify-content-center p-3">
                                 <span
-                                    class="bg-primary p-3 rounded-circle d-flex align-items-center justify-content-center"
+                                    class="badge-primary p-3 rounded-circle d-flex align-items-center justify-content-center"
                                     style="width: 50px; height: 50px;">
-                                    <i class="fa fa-bars text-white"></i>
+                                    <i class="fa fa-bars "></i>
                                 </span>
                                 <h6 class="mt-3 text-dark font-bold">New Booking</h6>
                             </div>
@@ -285,9 +302,9 @@ $yesterdayRate = App\Models\OccupancyRecord::where('record_date', today()->subDa
                             <div
                                 class="hover-primary rounded-3 border d-flex flex-column align-items-center justify-content-center p-3">
                                 <span
-                                    class="bg-success p-3 rounded-circle d-flex align-items-center justify-content-center"
+                                    class="badge-success p-3 rounded-circle d-flex align-items-center justify-content-center"
                                     style="width: 50px; height: 50px;">
-                                    <i class="fa-solid fa-arrow-right-to-bracket text-white"></i>
+                                    <i class="fa-solid fa-arrow-right-to-bracket "></i>
                                 </span>
                                 <h6 class="mt-3 text-dark font-bold">Check In</h6>
                             </div>
@@ -297,9 +314,9 @@ $yesterdayRate = App\Models\OccupancyRecord::where('record_date', today()->subDa
                             <div
                                 class="hover-primary rounded-3 border d-flex flex-column align-items-center justify-content-center p-3">
                                 <span
-                                    class="bg-warning p-3 rounded-circle d-flex align-items-center justify-content-center"
+                                    class="badge-warning p-3 rounded-circle d-flex align-items-center justify-content-center"
                                     style="width: 50px; height: 50px;">
-                                    <i class="fa-solid fa-arrow-right-from-bracket text-white"></i>
+                                    <i class="fa-solid fa-arrow-right-from-bracket "></i>
                                 </span>
                                 <h6 class="mt-3 text-dark font-bold">Check Out</h6>
                             </div>
@@ -309,9 +326,9 @@ $yesterdayRate = App\Models\OccupancyRecord::where('record_date', today()->subDa
                             <div
                                 class="hover-primary rounded-3 border d-flex flex-column align-items-center justify-content-center p-3">
                                 <span
-                                    class="bg-primary p-3 rounded-circle d-flex align-items-center justify-content-center"
+                                    class="badge-primary p-3 rounded-circle d-flex align-items-center justify-content-center"
                                     style="width: 50px; height: 50px;">
-                                    <i class="fa fa-bed text-white"></i>
+                                    <i class="fa fa-bed "></i>
                                 </span>
                                 <h6 class="mt-3 text-dark font-bold">Room Status</h6>
                             </div>
@@ -330,7 +347,7 @@ $yesterdayRate = App\Models\OccupancyRecord::where('record_date', today()->subDa
                         <h6 class="font-bold text-dark">Recent Bookings</h6>
                     </div>
                     <div class="table-responsive">
-                        <table class="table table-striped">
+                        <table class="table table-hover">
                             <thead class="bg-light">
                                 <tr>
                                     <th>ID</th>
@@ -357,11 +374,11 @@ $yesterdayRate = App\Models\OccupancyRecord::where('record_date', today()->subDa
                                         <td>
                                             @php
                                                 $statusClasses = [
-                                                    'confirmed' => 'bg-success',
-                                                    'pending' => 'bg-info',
-                                                    'cancelled' => 'bg-warning',
-                                                    'checked_in' => 'bg-checked_in',
-                                                    'checked_out' => 'bg-checked_out',
+                                                    'confirmed' => 'badge-success',
+                                                    'pending' => 'badge-info',
+                                                    'cancelled' => 'badge-warning',
+                                                    'checked_in' => 'badge-checked_in',
+                                                    'checked_out' => 'badge-checked_out',
                                                     'no_show' => 'bg-no_show',
                                                 ];
                                             @endphp
@@ -422,9 +439,9 @@ $yesterdayRate = App\Models\OccupancyRecord::where('record_date', today()->subDa
                                 @endphp
 
                                 <span
-                                    class="bg-{{ $config['color'] }} p-1 rounded-circle d-flex align-items-center justify-content-center"
-                                    style="width: 35px; height: 35px;">
-                                    <i class="fa-solid {{ $config['icon'] }} text-white"></i>
+                                    class="badge-{{ $config['color'] }} rounded-circle d-flex align-items-center justify-content-center"
+                                    style="width: 45px; height: 45px;">
+                                    <i class="fa-solid {{ $config['icon'] }} "></i>
                                 </span>
                                 <div class="d-flex flex-column">
                                     <span
@@ -518,8 +535,16 @@ $yesterdayRate = App\Models\OccupancyRecord::where('record_date', today()->subDa
                         datasets: [{
                             label: chartTitle,
                             data: data.data,
-                            backgroundColor: 'rgba(59, 130, 246, 1)',
-                            borderRadius: 7,
+                            backgroundColor: 'rgba(99, 102, 241, 1)',
+                            borderRadius: {
+                                topLeft: 8,
+                                topRight: 8,
+                                bottomLeft: 0,
+                                bottomRight: 0
+                            },
+                            hoverBackgroundColor: 'rgba(79, 70, 239, 1)',
+                            barPercentage: 1,
+                            categoryPercentage: 0.8,
                         }]
                     },
 

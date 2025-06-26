@@ -72,7 +72,7 @@
                     type="button" role="tab" aria-controls="season-rates" aria-selected="false">Season Rates &
                     Promotions</button>
             </li>
-            <li class="nav-item" role="presentation">
+            {{-- <li class="nav-item" role="presentation">
                 <button class="nav-link" id="preferences-tab" data-mdb-toggle="tab" data-mdb-target="#preferences"
                     type="button" role="tab" aria-controls="preferences" aria-selected="false">System
                     Preferences</button>
@@ -80,7 +80,7 @@
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="accounts-tab" data-mdb-toggle="tab" data-mdb-target="#accounts" type="button"
                     role="tab" aria-controls="accounts" aria-selected="false">User Accounts</button>
-            </li>
+            </li> --}}
         </ul>
 
         <!-- Tab panes -->

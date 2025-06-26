@@ -30,7 +30,12 @@
                     @csrf
                     @method('PUT')
                     <div class="card shadow-0 border p-3">
-                        <h4 class="text-dark">Profile Information</h4>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h4 class="text-dark">Profile Information</h4>
+                            <span class="badge badge-primary rounded-pill px-3 py-2">
+                                <i class="fas fa-check-circle me-1"></i> {{ $admin->status }}
+                            </span>
+                        </div>
 
                         @if ($errors->profile->any())
                             <div class="alert alert-danger">
@@ -63,7 +68,8 @@
                             <div class="">
                                 <div class="d-flex align-items-center gap-2">
                                     <h3 class="font-bold text-dark">{{ $admin->fullName }}</h3>
-                                    <small class="badge bg-primary rounded-5">{{ $admin->role->name }}</small>
+                                    <small class="badge badge-primary rounded-5">{{ $admin->role->name }}</small>
+
                                 </div>
                                 <p class="text-secondary">{{ $admin->email }}</p>
                             </div>
