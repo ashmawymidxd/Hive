@@ -711,7 +711,8 @@
                                                         method="POST" style="display: inline-block;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-light border shadow-0 btn-sm"
+                                                        <button type="submit"
+                                                            class="btn btn-light border shadow-0 btn-sm"
                                                             onclick="return confirm('Are you sure?')">
                                                             <i class="fa fa-trash"></i>
                                                         </button>
@@ -728,329 +729,421 @@
             </div>
 
             <div class="tab-pane fade" id="preferences" role="tabpanel" aria-labelledby="preferences-tab">
-                <div class="d-flex align-items-center justify-content-between">
-                    <h4 class="text-dark font-bold">System Preferences</h4>
-                    <button class="btn btn-primary shadow-0">Save All Settings</button>
-                </div>
-                <ul class="nav nav-tabs border-bottom" id="settingsTabs" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="general-tab" data-mdb-toggle="tab"
-                            data-mdb-target="#general" type="button" role="tab" aria-controls="general"
-                            aria-selected="true">
-                            General
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="booking-tab" data-mdb-toggle="tab" data-mdb-target="#booking"
-                            type="button" role="tab" aria-controls="booking" aria-selected="false">
-                            Booking
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="notifications-tab" data-mdb-toggle="tab"
-                            data-mdb-target="#notifications" type="button" role="tab" aria-controls="notifications"
-                            aria-selected="false">
-                            Notifications
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="security-tab" data-mdb-toggle="tab" data-mdb-target="#security"
-                            type="button" role="tab" aria-controls="security" aria-selected="false">
-                            Security
-                        </button>
-                    </li>
-                </ul>
-                <div class="tab-content mt-4" id="settingsTabsContent">
-                    <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="card shadow-0 border p-3">
-                                    <h4 class="text-dark">Regional Settings</h4>
-                                    <div class="row mt-3">
-                                        <div class="col-md-4">
-                                            <label for="">Default Language</label>
-                                            <input type=" text" class="form-control p-2 bg-light">
+                <form action="{{ route('admin.system-preferences.update') }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h4 class="text-dark font-bold">System Preferences</h4>
+                        <button class="btn btn-primary shadow-0" type="submit">Save All Settings</button>
+                    </div>
+                    <ul class="nav nav-tabs border-bottom" id="settingsTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="general-tab" data-mdb-toggle="tab"
+                                data-mdb-target="#general" type="button" role="tab" aria-controls="general"
+                                aria-selected="true">
+                                General
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="booking-tab" data-mdb-toggle="tab" data-mdb-target="#booking"
+                                type="button" role="tab" aria-controls="booking" aria-selected="false">
+                                Booking
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="notifications-tab" data-mdb-toggle="tab"
+                                data-mdb-target="#notifications" type="button" role="tab"
+                                aria-controls="notifications" aria-selected="false">
+                                Notifications
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="security-tab" data-mdb-toggle="tab" data-mdb-target="#security"
+                                type="button" role="tab" aria-controls="security" aria-selected="false">
+                                Security
+                            </button>
+                        </li>
+                    </ul>
+                    <div class="tab-content mt-4" id="settingsTabsContent">
+                        <div class="tab-pane fade show active" id="general" role="tabpanel"
+                            aria-labelledby="general-tab">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card shadow-0 border p-3">
+                                        <h4 class="text-dark">Regional Settings</h4>
+                                        <div class="row mt-3">
+                                            <div class="col-md-4">
+                                                <label for="default_language">Default Language</label>
+                                                <select name="default_language" id="default_language"
+                                                    class="form-control p-2 bg-light">
+                                                    <option value="en"
+                                                        {{ $preferences->default_language == 'en' ? 'selected' : '' }}>
+                                                        English</option>
+                                                    <option value="fr"
+                                                        {{ $preferences->default_language == 'fr' ? 'selected' : '' }}>
+                                                        French</option>
+                                                    <option value="es"
+                                                        {{ $preferences->default_language == 'es' ? 'selected' : '' }}>
+                                                        Spanish</option>
+                                                    <option value="de"
+                                                        {{ $preferences->default_language == 'de' ? 'selected' : '' }}>
+                                                        German</option>
+                                                    <option value="ar"
+                                                        {{ $preferences->default_language == 'ar' ? 'selected' : '' }}>
+                                                        Arabic</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="timezone">Timezone</label>
+                                                <select name="timezone" id="timezone" class="form-control p-2 bg-light">
+                                                    @foreach (timezone_identifiers_list() as $tz)
+                                                        <option value="{{ $tz }}"
+                                                            {{ $preferences->timezone == $tz ? 'selected' : '' }}>
+                                                            {{ $tz }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="date_format">Date Format</label>
+                                                <select name="date_format" id="date_format"
+                                                    class="form-control p-2 bg-light">
+                                                    <option value="Y-m-d"
+                                                        {{ $preferences->date_format == 'Y-m-d' ? 'selected' : '' }}>
+                                                        YYYY-MM-DD</option>
+                                                    <option value="d/m/Y"
+                                                        {{ $preferences->date_format == 'd/m/Y' ? 'selected' : '' }}>
+                                                        DD/MM/YYYY</option>
+                                                    <option value="m/d/Y"
+                                                        {{ $preferences->date_format == 'm/d/Y' ? 'selected' : '' }}>
+                                                        MM/DD/YYYY</option>
+                                                    <option value="d M Y"
+                                                        {{ $preferences->date_format == 'd M Y' ? 'selected' : '' }}>DD
+                                                        Mon YYYY</option>
+                                                    <option value="jS F Y"
+                                                        {{ $preferences->date_format == 'jS F Y' ? 'selected' : '' }}>jS F
+                                                        Y (e.g., 1st January 2023)</option>
+                                                </select>
+                                            </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <label for="">Timezone</label>
-                                            <input type=" text" class="form-control p-2 bg-light">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="">Date Format</label>
-                                            <input type=" text" class="form-control p-2 bg-light">
+                                        <div class="row mt-3">
+                                            <div class="col-md-6">
+                                                <label for="currency_format">Currency Format</label>
+                                                <select name="currency_format" id="currency_format"
+                                                    class="form-control p-2 bg-light">
+                                                    <option value="$0,0.00"
+                                                        {{ $preferences->currency_format == '$0,0.00' ? 'selected' : '' }}>
+                                                        $1,000.00 (USD)</option>
+                                                    <option value="€0,0.00"
+                                                        {{ $preferences->currency_format == '€0,0.00' ? 'selected' : '' }}>
+                                                        €1.000,00 (EUR)</option>
+                                                    <option value="¥0,0"
+                                                        {{ $preferences->currency_format == '¥0,0' ? 'selected' : '' }}>
+                                                        ¥1,000 (JPY)</option>
+                                                    <option value="0,0.00£"
+                                                        {{ $preferences->currency_format == '0,0.00£' ? 'selected' : '' }}>
+                                                        1,000.00£ (GBP)</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="measurement_system">Measurement System</label>
+                                                <select name="measurement_system" id="measurement_system"
+                                                    class="form-control p-2 bg-light">
+                                                    <option value="metric"
+                                                        {{ $preferences->measurement_system == 'metric' ? 'selected' : '' }}>
+                                                        Metric (km, m, kg)</option>
+                                                    <option value="imperial"
+                                                        {{ $preferences->measurement_system == 'imperial' ? 'selected' : '' }}>
+                                                        Imperial (miles, feet, lbs)</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="row mt-3">
-                                        <div class="col-md-6">
-                                            <label for="">Currency Format</label>
-                                            <input type=" text" class="form-control p-2 bg-light">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="">Measurement System</label>
-                                            <input type=" text" class="form-control p-2 bg-light">
-                                        </div>
+                                </div>
+                            </div>
 
+                            <div class="row mt-4">
+                                <div class="col-md-12">
+                                    <div class="card shadow-0 border p-3">
+                                        <h4 class="text-dark">User Interface</h4>
+                                        <div class="row mt-4">
+                                            <div class="col-md-6">
+                                                <label for="ui_theme_color">UI Theme Color</label>
+                                                <select name="ui_theme_color" id="ui_theme_color"
+                                                    class="form-control bg-light p-2">
+                                                    <option value="">Select a color</option>
+                                                    @include('admin.pages.settings.partials.colors')
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+
+                                                <label for="default_loader">Default Loader Per Page</label>
+                                                <select name="default_loader" id="default_loader"
+                                                    class="form-control bg-light p-2">
+                                                    <option value="none"
+                                                        {{ $preferences->default_loader == 'none' ? 'selected' : '' }}>
+                                                        None</option>
+                                                    <option value="elegant_spinner"
+                                                        {{ $preferences->default_loader == 'elegant_spinner' ? 'selected' : '' }}>
+                                                        Elegant Spinner</option>
+                                                    <option value="modern_dot_pulse"
+                                                        {{ $preferences->default_loader == 'modern_dot_pulse' ? 'selected' : '' }}>
+                                                        Modern Dot Pulse</option>
+                                                    <option value="simple_bar"
+                                                        {{ $preferences->default_loader == 'simple_bar' ? 'selected' : '' }}>
+                                                        Simple Bar</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="mt-4 d-flex align-items-center justify-content-between">
+                                            <strong>Compact Mode</strong>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" name="compact_mode"
+                                                    id="compact_mode" {{ $preferences->compact_mode ? 'checked' : '' }}>
+                                            </div>
+                                        </div>
+                                        <div class="mt-4 d-flex align-items-center justify-content-between">
+                                            <strong>Auto-refresh Dashboard</strong>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox"
+                                                    name="auto_refresh_dashboard" id="auto_refresh_dashboard"
+                                                    {{ $preferences->auto_refresh_dashboard ? 'checked' : '' }}>
+                                            </div>
+                                        </div>
+                                        <div class="mt-4 d-flex align-items-center justify-content-between">
+                                            <strong>Enable Animations</strong>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" name="enable_animations"
+                                                    id="enable_animations"
+                                                    {{ $preferences->enable_animations ? 'checked' : '' }}>
+                                            </div>
+                                        </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
-                        <div class="row mt-4">
-                            <div class="col-md-12">
-                                <div class="card shadow-0 border p-3">
-                                    <h4 class="text-dark">User Interface</h4>
-                                    <div class="row mt-4">
-                                        <div class="col-md-6">
-                                            <label for="">UI Theme</label>
-                                            <input type="text" class="form-control bg-light p-2">
+                        <div class="tab-pane fade" id="booking" role="tabpanel" aria-labelledby="booking-tab">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card shadow-0 border p-3">
+                                        <h4 class="text-dark">Booking Settings</h4>
+                                        <div class="row mt-4">
+                                            <div class="col-md-4">
+                                                <label for="">Default Check-in Time</label>
+                                                <input type="text" class="form-control bg-light p-2">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="">Default Check-out Time</label>
+                                                <input type="text" class="form-control bg-light p-2">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="">Minimum Advance Booking</label>
+                                                <input type="text" class="form-control bg-light p-2">
+                                            </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <label for="">Default Rows Per Page</label>
-                                            <input type="text" class="form-control bg-light p-2">
+                                        <div class="row mt-4">
+                                            <div class="col-md-4">
+                                                <label for="">Maximum Advance Booking</label>
+                                                <input type="text" class="form-control bg-light p-2">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="">Default Minimum Stay</label>
+                                                <input type="text" class="form-control bg-light p-2">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="">Default Cancellation Policy</label>
+                                                <input type="text" class="form-control bg-light p-2">
+                                            </div>
+                                        </div>
+                                        <div class="mt-4 d-flex align-items-center justify-content-between">
+                                            <strong>Allow Overbooking</strong>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="status">
+                                            </div>
+                                        </div>
+                                        <div class="mt-4 d-flex align-items-center justify-content-between">
+                                            <strong>Auto-confirm Online Bookings</strong>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="status" checked>
+                                            </div>
+                                        </div>
+                                        <div class="mt-4 d-flex align-items-center justify-content-between">
+                                            <strong>Require Credit Card for Reservation</strong>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="status" checked>
+                                            </div>
+                                        </div>
+                                        <div class="mt-4 d-flex align-items-center justify-content-between">
+                                            <strong>Block Blacklisted Guests</strong>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="status" checked>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="mt-4 d-flex align-items-center justify-content-between">
-                                        <strong>Compact Mode</strong>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="status">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="notifications" role="tabpanel"
+                            aria-labelledby="notifications-tab">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card shadow-0 border p-3">
+                                        <h4 class="text-dark">Email Notifications</h4>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <label for="">Sender Email Address</label>
+                                                <input type="text" class="p-2 form-control bg-light">
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-4 d-flex align-items-center justify-content-between">
+                                            <strong>New Booking Confirmation</strong>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="status">
+                                            </div>
+                                        </div>
+                                        <div class="mt-4 d-flex align-items-center justify-content-between">
+                                            <strong>Booking Cancellation</strong>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="status" checked>
+                                            </div>
+                                        </div>
+                                        <div class="mt-4 d-flex align-items-center justify-content-between">
+                                            <strong>Booking Modification</strong>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="status" checked>
+                                            </div>
+                                        </div>
+                                        <div class="mt-4 d-flex align-items-center justify-content-between">
+                                            <strong>Check-in Reminder (24h before)</strong>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="status" checked>
+                                            </div>
+                                        </div>
+                                        <div class="mt-4 d-flex align-items-center justify-content-between">
+                                            <strong>Post-stay Thank You</strong>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="status" checked>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-md-12">
+                                    <div class="card shadow-0 border p-3">
+                                        <h4 class="text-dark">System Alerts</h4>
+
+                                        <div class="mt-4 d-flex align-items-center justify-content-between">
+                                            <strong>Low Inventory Alerts</strong>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="status">
+                                            </div>
+                                        </div>
+                                        <div class="mt-4 d-flex align-items-center justify-content-between">
+                                            <strong>Maintenance Issues</strong>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="status" checked>
+                                            </div>
+                                        </div>
+                                        <div class="mt-4 d-flex align-items-center justify-content-between">
+                                            <strong>Guest Complaints</strong>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="status" checked>
+                                            </div>
+                                        </div>
+                                        <div class="mt-4 d-flex align-items-center justify-content-between">
+                                            <strong>VIP Guest Arrival</strong>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="status" checked>
+                                            </div>
+                                        </div>
+                                        <div class="mt-4 d-flex align-items-center justify-content-between">
+                                            <strong>Overdue Payments</strong>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="status" checked>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-md-6 mt-1">
+                                                <label for="">Alert Email Recipients</label>
+                                                <input type="text" class="form-control p-2 bg-light" name=""
+                                                    id="">
+                                            </div>
+                                            <div class="col-md-6 mt-1">
+                                                <label for="">Alert Frequency Limit</label>
+                                                <input type="text" class="form-control p-2 bg-light" name=""
+                                                    id="">
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="mt-4 d-flex align-items-center justify-content-between">
-                                        <strong>Auto-refresh Dashboard</strong>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="status" checked>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="security" role="tabpanel" aria-labelledby="security-tab">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card shadow-0 border p-3">
+                                        <h4 class="text-dark">Security Settings</h4>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label for="">Password Policy</label>
+                                                <input type="text" class="form-control p-2 bg-light">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="">Password Expiry</label>
+                                                <input type="text" class="form-control p-2 bg-light">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="mt-4 d-flex align-items-center justify-content-between">
-                                        <strong>Enable Animations</strong>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="status" checked>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label for="">Session Timeout</label>
+                                                <input type="text" class="form-control p-2 bg-light">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="">Max Failed Login Attempts</label>
+                                                <input type="text" class="form-control p-2 bg-light">
+                                            </div>
+                                        </div>
+                                        <div class="mt-4 d-flex align-items-center justify-content-between">
+                                            <strong>Require Two-Factor Authentication</strong>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="status" checked>
+                                            </div>
+                                        </div>
+                                        <div class="mt-4 d-flex align-items-center justify-content-between">
+                                            <strong>IP Address Restrictions</strong>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="status">
+                                            </div>
+                                        </div>
+                                        <div class="mt-4 d-flex align-items-center justify-content-between">
+                                            <strong>Enhanced PCI Compliance Mode</strong>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="status" checked>
+                                            </div>
+                                        </div>
+                                        <div class="mt-4 d-flex align-items-center justify-content-between">
+                                            <strong>Detailed Audit Logs</strong>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="status" checked>
+                                            </div>
+                                        </div>
+                                        <div class="mt-4">
+                                            <strong>Data Retention Policy</strong>
+                                            <div class="p-3 bg-light">
+                                                <p class="text-secondary">Guest data is retained for 7 years after last
+                                                    stay. Credit card information is encrypted and purged after 18
+                                                    months of inactivity. All access to sensitive data is logged.</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="booking" role="tabpanel" aria-labelledby="booking-tab">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="card shadow-0 border p-3">
-                                    <h4 class="text-dark">Booking Settings</h4>
-                                    <div class="row mt-4">
-                                        <div class="col-md-4">
-                                            <label for="">Default Check-in Time</label>
-                                            <input type="text" class="form-control bg-light p-2">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="">Default Check-out Time</label>
-                                            <input type="text" class="form-control bg-light p-2">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="">Minimum Advance Booking</label>
-                                            <input type="text" class="form-control bg-light p-2">
-                                        </div>
-                                    </div>
-                                    <div class="row mt-4">
-                                        <div class="col-md-4">
-                                            <label for="">Maximum Advance Booking</label>
-                                            <input type="text" class="form-control bg-light p-2">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="">Default Minimum Stay</label>
-                                            <input type="text" class="form-control bg-light p-2">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="">Default Cancellation Policy</label>
-                                            <input type="text" class="form-control bg-light p-2">
-                                        </div>
-                                    </div>
-                                    <div class="mt-4 d-flex align-items-center justify-content-between">
-                                        <strong>Allow Overbooking</strong>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="status">
-                                        </div>
-                                    </div>
-                                    <div class="mt-4 d-flex align-items-center justify-content-between">
-                                        <strong>Auto-confirm Online Bookings</strong>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="status" checked>
-                                        </div>
-                                    </div>
-                                    <div class="mt-4 d-flex align-items-center justify-content-between">
-                                        <strong>Require Credit Card for Reservation</strong>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="status" checked>
-                                        </div>
-                                    </div>
-                                    <div class="mt-4 d-flex align-items-center justify-content-between">
-                                        <strong>Block Blacklisted Guests</strong>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="status" checked>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="notifications" role="tabpanel" aria-labelledby="notifications-tab">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="card shadow-0 border p-3">
-                                    <h4 class="text-dark">Email Notifications</h4>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <label for="">Sender Email Address</label>
-                                            <input type="text" class="p-2 form-control bg-light">
-                                        </div>
-                                    </div>
-
-                                    <div class="mt-4 d-flex align-items-center justify-content-between">
-                                        <strong>New Booking Confirmation</strong>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="status">
-                                        </div>
-                                    </div>
-                                    <div class="mt-4 d-flex align-items-center justify-content-between">
-                                        <strong>Booking Cancellation</strong>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="status" checked>
-                                        </div>
-                                    </div>
-                                    <div class="mt-4 d-flex align-items-center justify-content-between">
-                                        <strong>Booking Modification</strong>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="status" checked>
-                                        </div>
-                                    </div>
-                                    <div class="mt-4 d-flex align-items-center justify-content-between">
-                                        <strong>Check-in Reminder (24h before)</strong>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="status" checked>
-                                        </div>
-                                    </div>
-                                    <div class="mt-4 d-flex align-items-center justify-content-between">
-                                        <strong>Post-stay Thank You</strong>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="status" checked>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mt-4">
-                            <div class="col-md-12">
-                                <div class="card shadow-0 border p-3">
-                                    <h4 class="text-dark">System Alerts</h4>
-
-                                    <div class="mt-4 d-flex align-items-center justify-content-between">
-                                        <strong>Low Inventory Alerts</strong>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="status">
-                                        </div>
-                                    </div>
-                                    <div class="mt-4 d-flex align-items-center justify-content-between">
-                                        <strong>Maintenance Issues</strong>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="status" checked>
-                                        </div>
-                                    </div>
-                                    <div class="mt-4 d-flex align-items-center justify-content-between">
-                                        <strong>Guest Complaints</strong>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="status" checked>
-                                        </div>
-                                    </div>
-                                    <div class="mt-4 d-flex align-items-center justify-content-between">
-                                        <strong>VIP Guest Arrival</strong>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="status" checked>
-                                        </div>
-                                    </div>
-                                    <div class="mt-4 d-flex align-items-center justify-content-between">
-                                        <strong>Overdue Payments</strong>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="status" checked>
-                                        </div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col-md-6 mt-1">
-                                            <label for="">Alert Email Recipients</label>
-                                            <input type="text" class="form-control p-2 bg-light" name=""
-                                                id="">
-                                        </div>
-                                        <div class="col-md-6 mt-1">
-                                            <label for="">Alert Frequency Limit</label>
-                                            <input type="text" class="form-control p-2 bg-light" name=""
-                                                id="">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="security" role="tabpanel" aria-labelledby="security-tab">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="card shadow-0 border p-3">
-                                    <h4 class="text-dark">Security Settings</h4>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="">Password Policy</label>
-                                            <input type="text" class="form-control p-2 bg-light">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="">Password Expiry</label>
-                                            <input type="text" class="form-control p-2 bg-light">
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="">Session Timeout</label>
-                                            <input type="text" class="form-control p-2 bg-light">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="">Max Failed Login Attempts</label>
-                                            <input type="text" class="form-control p-2 bg-light">
-                                        </div>
-                                    </div>
-                                    <div class="mt-4 d-flex align-items-center justify-content-between">
-                                        <strong>Require Two-Factor Authentication</strong>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="status" checked>
-                                        </div>
-                                    </div>
-                                    <div class="mt-4 d-flex align-items-center justify-content-between">
-                                        <strong>IP Address Restrictions</strong>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="status">
-                                        </div>
-                                    </div>
-                                    <div class="mt-4 d-flex align-items-center justify-content-between">
-                                        <strong>Enhanced PCI Compliance Mode</strong>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="status" checked>
-                                        </div>
-                                    </div>
-                                    <div class="mt-4 d-flex align-items-center justify-content-between">
-                                        <strong>Detailed Audit Logs</strong>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="status" checked>
-                                        </div>
-                                    </div>
-                                    <div class="mt-4">
-                                        <strong>Data Retention Policy</strong>
-                                        <div class="p-3 bg-light">
-                                            <p class="text-secondary">Guest data is retained for 7 years after last
-                                                stay. Credit card information is encrypted and purged after 18
-                                                months of inactivity. All access to sensitive data is logged.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                </form>
             </div>
 
             <div class="tab-pane fade" id="accounts" role="tabpanel" aria-labelledby="accounts-tab">

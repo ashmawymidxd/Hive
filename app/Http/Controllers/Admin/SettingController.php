@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\PricingSetting;
 use App\Models\SeasonalRatePeriod;
 use App\Models\Promotion;
+use App\Models\SystemPreference;
 use Illuminate\Support\Facades\DB;
 
 
@@ -36,10 +37,12 @@ class SettingController extends Controller
         $settings = HotelSetting::firstOrNew(['id' => 1]);
 
         $periods = SeasonalRatePeriod::all();
+
         $promotions = Promotion::all();
 
+        $preferences = SystemPreference::getPreferences();
 
-        return view('admin.pages.settings.index', compact('settings','Pricingsettings','periods','promotions'));
+        return view('admin.pages.settings.index', compact('settings','Pricingsettings','periods','promotions','preferences'));
     }
 
     public function store(Request $request)

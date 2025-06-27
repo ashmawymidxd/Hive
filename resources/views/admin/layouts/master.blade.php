@@ -12,13 +12,30 @@
 
 </head>
 
-<body class="bg-light">
+<body style="background-color: {{ app('preferences')->ui_theme_color }}">
+
+    {{-- loaders --}}
+    @switch(app('preferences')->default_loader)
+        @case('elegant_spinner')
+            @include('admin/layouts/loaders/ElegantSpinner')
+        @break
+
+        @case('modern_dot_pulse')
+            @include('admin/layouts/loaders/ModernDotPulse')
+        @break
+
+        @case('simple_bar')
+            @include('admin/layouts/loaders/SimpleBar')
+        @break
+
+        @default
+    @endswitch
+    
     <!-- Sidebar -->
     @include('admin/layouts/sidebar')
 
     <!-- Header -->
     @include('admin/layouts/header')
-
 
     <!-- Main Content -->
     <main class="main-content">
@@ -26,10 +43,6 @@
     </main>
 
     @include('admin/layouts/scripts')
-    {{-- @include('admin/layouts/loaders/ElegantSpinner') --}}
-    @include('admin/layouts/loaders/ModernDotPulse')
-    {{-- @include('admin/layouts/loaders/SimpleBar') --}}
-    {{-- aliceblue, antiquewhite, aqua, aquamarine, azure, beige, bisque, blanchedalmond, cyan, gainsboro, ghostwhite --}}
 
 </body>
 

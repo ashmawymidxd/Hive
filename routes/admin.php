@@ -26,6 +26,7 @@ use App\Http\Controllers\Admin\TodoController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ReportsChartController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\SystemPreferenceController;
 use App\Http\Controllers\Admin\SeasonalRatePeriodController;
 use App\Http\Controllers\Admin\PromotionController;
 use App\Http\Controllers\Admin\TimerController;
@@ -181,6 +182,12 @@ Route::middleware(['auth:admin', 'check.admin.status'])->name('admin.')->prefix(
     // settings
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingController::class, 'store'])->name('settings.store');
+    
+    // preferences
+    Route::prefix('settings')->group(function () {
+        Route::get('system-preferences', [SystemPreferenceController::class, 'index'])->name('system-preferences.index');
+        Route::put('system-preferences', [SystemPreferenceController::class, 'update'])->name('system-preferences.update');
+    });
 
     // pricing
     Route::get('/pricing-rules', [SettingController::class, 'showPricingRules'])->name('settings.pricing-rules');

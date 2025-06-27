@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
             ExpenseCategorySeeder::class,
             ExpenseSeeder::class,
             HotelSettingSeeder::class,
+            SystemPreferencesSeeder::class
             // Other seeders...
         ]);
     }

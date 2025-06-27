@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Models\HotelSetting;
+use App\Models\SystemPreference;
 
 class HotelSettingsServiceProvider extends ServiceProvider
 {
@@ -17,6 +18,14 @@ class HotelSettingsServiceProvider extends ServiceProvider
                 return HotelSetting::factory()->make();
             });
         });
+
+        $this->app->singleton('preferences', function () {
+            return SystemPreference::firstOr(function () {
+                return SystemPreference::factory()->make();
+            });
+        });
+
+
     }
 
     /**
