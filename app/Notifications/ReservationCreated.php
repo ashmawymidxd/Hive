@@ -32,7 +32,7 @@ class ReservationCreated extends Notification implements ShouldQueue
             ->line('Reservation Details:')
             ->line('Check-in: ' . $this->reservation->check_in)
             ->line('Check-out: ' . $this->reservation->check_out)
-            ->line('Room Type: ' . $this->reservation->type)
+            ->line('Room Type: ' . $this->reservation->room->type)
             ->action('View Your Reservation', url('/reservations/' . $this->reservation->id))
             ->line('Thank you for choosing our hotel!');
     }

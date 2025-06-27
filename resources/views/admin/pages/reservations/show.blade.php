@@ -41,7 +41,8 @@
                 @endif
                 {{-- display success message with close btn --}}
                 @if (session('success'))
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <div class="alert alert-success alert-dismissible fade show border-start border-success border-3"
+                        role="alert">
                         <strong>Success!</strong> {{ session('success') }}
                         <button type="button" class="btn-close" data-mdb-dismiss="alert" aria-label="Close"></button>
                     </div>
@@ -55,7 +56,7 @@
                             </h4>
                             <small class="text-muted">Last updated: {{ $reservation->updated_at->diffForHumans() }}</small>
                         </div>
-                        <a href="{{ route('admin.reservations.index') }}" class="btn btn-outline-secondary btn-sm">
+                        <a href="{{ route('admin.reservations.index') }}" class="btn btn-secondary btn-sm">
                             <i class="fas fa-arrow-left me-1"></i> Back to List
                         </a>
                     </div>
@@ -228,10 +229,10 @@
                         <!-- Action Buttons -->
                         <div class="d-flex flex-wrap justify-content-between align-items-center border-top pt-4 mt-3">
                             <div class="mb-3">
-                                <button class="btn btn-outline-secondary me-2" onclick="window.print()">
+                                <button class="btn btn-light border me-2" onclick="window.print()">
                                     <i class="fas fa-print me-1"></i> Print
                                 </button>
-                                <button class="btn btn-outline-secondary" data-mdb-toggle="modal"
+                                <button class="btn btn-light border" data-mdb-toggle="modal"
                                     data-mdb-target="#emailModal">
                                     <i class="fas fa-envelope me-1"></i> Email Guest
                                 </button>
@@ -296,21 +297,27 @@
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form>
+                                <form action="{{ route('admin.reservations.send-email', $reservation) }}" method="POST">
+                                    @csrf
                                     <div class="mb-3">
                                         <label class="form-label">Subject</label>
-                                        <input type="text" class="form-control" placeholder="Email subject">
+                                        <input type="text" name="subject" class="form-control"
+                                            placeholder="Email subject" required>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Message</label>
-                                        <textarea class="form-control" rows="5" placeholder="Your message to the guest"></textarea>
+                                        <textarea class="form-control" name="message" rows="5" placeholder="Your message to the guest" required></textarea>
                                     </div>
+                                    <button type="submit" class="btn btn-primary shadow-0 w-100">Send Email</button>
                                 </form>
+
+                                @if (session('success'))
+                                    <div class="alert alert-success mt-3">
+                                        {{ session('success') }}
+                                    </div>
+                                @endif
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Cancel</button>
-                                <button type="button" class="btn btn-primary">Send Email</button>
-                            </div>
+
                         </div>
                     </div>
                 </div>

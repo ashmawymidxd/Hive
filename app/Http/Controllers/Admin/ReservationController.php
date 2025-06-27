@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Admin;
 use App\Models\Reservation;
 use App\Models\Guest;
 use App\Models\Room;
@@ -11,7 +10,8 @@ use App\Models\Staff;
 use Illuminate\Http\Request;
 use App\Notifications\ReservationCreatedNotification;
 use App\Notifications\ReservationCreated;
-
+use Illuminate\Support\Facades\Mail;
+use App\Mail\GuestMessage;
 class ReservationController extends Controller
 {
     public function index()
@@ -172,5 +172,23 @@ class ReservationController extends Controller
 
         return redirect()->route('admin.reservations.index')
             ->with('success', 'Reservation deleted successfully.');
+    }
+
+    public function sendEmail(Request $request, Reservation $reservation)
+    {
+        $request->validate([
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string',
+        ]);
+
+        // Send email to guest
+       Mail::to($reservation->guest->email)
+        ->queue(new GuestMessage(
+            $request->subject,
+            $request->message,
+            $reservation
+        ));
+
+        return back()->with('success', 'Email sent successfully to guest!');
     }
 }

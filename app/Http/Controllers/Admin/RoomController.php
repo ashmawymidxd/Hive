@@ -7,7 +7,7 @@ use App\Models\Amenity;
 use App\Models\RoomImage;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-
+use Illuminate\Support\Facades\DB;
 class RoomController extends Controller
 {
     public function index()
@@ -113,7 +113,24 @@ class RoomController extends Controller
 
     public function destroy(Room $room)
     {
-        $room->delete();
+        // Delete related images
+        foreach ($room->images as $image) {
+            // Delete file from public directory
+            if (file_exists(public_path($image->image_path))) {
+                unlink(public_path($image->image_path));
+            }
+            $image->delete();
+        }
+
+        DB::transaction(function () use ($room) {
+            $room->invoices()->each(function($invoice) {
+                $invoice->payments()->delete();
+                $invoice->delete();
+            });
+            $room->delete();
+        });
+
+
         return response()->json(['success' => 'Room deleted successfully.']);
     }
 }

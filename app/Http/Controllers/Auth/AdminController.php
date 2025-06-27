@@ -18,9 +18,11 @@ class AdminController extends Controller
             return redirect()->intended(RouteServiceProvider::ADMIN);
         }
 
-        return redirect()->back()->withErrors(['name' => ('These credentials do not match our records here.')]);
+        return redirect()->back()->withErrors(['name' => 'The provided credentials do not match our records.'])
+            ->withInput($request->only('name', 'remember'));
 
     }
+
 
     public function destroy(Request $request)
     {

@@ -8,7 +8,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow-0" id="mainNavbar">
         <div class="container-fluid">
-            <a class="navbar-brand main-font fs-2" href="#">Spada fters</a>
+            <a class="navbar-brand main-font fs-2" href="#">{{app('settings')->hotel_name}}</a>
             {{-- select lang section --}}
             <div class="mx-2">
                 <i class="fa fa-globe text-white me-1"></i>

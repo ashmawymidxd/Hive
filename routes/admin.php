@@ -68,7 +68,7 @@ Route::middleware(['auth:admin', 'check.admin.status'])->name('admin.')->prefix(
     Route::post('reservations/{reservation}/check-in', [ReservationStatusController::class, 'checkIn'])->name('reservations.check-in')->middleware('admin.permission:reservation_check_in');
     Route::post('reservations/{reservation}/check-out', [ReservationStatusController::class, 'checkOut'])->name('reservations.check-out')->middleware('admin.permission:reservation_check_out');
     Route::post('reservations/{reservation}/no-show', [ReservationStatusController::class, 'markAsNoShow'])->name('reservations.no-show')->middleware('admin.permission:reservation_no_show');
-
+    Route::post('/reservations/{reservation}/send-email', [ReservationController::class, 'sendEmail'])->name('reservations.send-email');
     // Guests
     Route::resource('guests', GuestController::class)->middleware('admin.permission:manage_guests');
     Route::get('guests/search', [GuestController::class, 'index'])->name('guests.search')->middleware('admin.permission:search_guests');
@@ -191,7 +191,7 @@ Route::middleware(['auth:admin', 'check.admin.status'])->name('admin.')->prefix(
 
     // promotions
     Route::resource('promotions', PromotionController::class)->except(['show','index']);
-    
+
     // timmer
     Route::prefix('timer')->group(function () {
         Route::post('/start', [TimerController::class, 'start'])->name('timer.start');

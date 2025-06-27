@@ -203,8 +203,8 @@
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="maintenance-tab" data-mdb-toggle="tab"
-                                    data-mdb-target="#maintenance" type="button" role="tab" aria-controls="maintenance"
-                                    aria-selected="false">Maintenance</button>
+                                    data-mdb-target="#maintenance" type="button" role="tab"
+                                    aria-controls="maintenance" aria-selected="false">Maintenance</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="cleaning-tab" data-mdb-toggle="tab"
@@ -263,20 +263,23 @@
                                                         @endforeach
                                                     </td>
                                                     <td>
-                                                        <a href="{{ route('admin.rooms.show', $room->id) }}"
-                                                            class="btn btn-light border btn-sm shadow-0 me-1">
-                                                            <i class="fa fa-eye"></i>
-                                                        </a>
-                                                        <button class="btn btn-light border btn-sm shadow-0 edit-room-btn"
-                                                            data-room="{{ json_encode($room) }}"
-                                                            data-amenities="{{ json_encode($room->amenities->pluck('id')->toArray()) }}">
-                                                            <i class="fa fa-edit"></i>
-                                                        </button>
-                                                        <button
-                                                            class="btn btn-light border btn-sm shadow-0 delete-room-btn"
-                                                            data-id="{{ $room->id }}">
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
+                                                        <div class="d-flex gap-2">
+                                                            <a href="{{ route('admin.rooms.show', $room->id) }}"
+                                                                class="btn btn-light border btn-sm shadow-0 me-1">
+                                                                <i class="fa fa-eye"></i>
+                                                            </a>
+                                                            <button
+                                                                class="btn btn-light border btn-sm shadow-0 edit-room-btn"
+                                                                data-room="{{ json_encode($room) }}"
+                                                                data-amenities="{{ json_encode($room->amenities->pluck('id')->toArray()) }}">
+                                                                <i class="fa fa-edit"></i>
+                                                            </button>
+                                                            <button
+                                                                class="btn btn-light border btn-sm shadow-0 delete-room-btn"
+                                                                data-id="{{ $room->id }}">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -590,6 +593,7 @@
         </div>
     </section>
     @include('admin.pages.rooms.partials.add-room-modal')
+    @include('admin.pages.rooms.partials.delete-room-modal')
     @include('admin.pages.rooms.partials.edit-room-modal')
     @include('admin.pages.rooms.partials.amenities-modal')
 @endsection
@@ -701,7 +705,11 @@
                             _token: '{{ csrf_token() }}'
                         },
                         success: function(response) {
-                            location.reload();
+                            $("#deleteRoomModal").modal('show');
+                            $('.deleteMessage').text(response.success);
+                            setTimeout(function() {
+                                location.reload();
+                            }, 1000);
                         }
                     });
                 }

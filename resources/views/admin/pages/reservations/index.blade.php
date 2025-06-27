@@ -8,18 +8,24 @@
     <style>
         /* Status badges */
         .bg-checked_in {
-            background-color: #17a2b8 !important;
-            /* Cyan for checked-in */
+            background-color: #17a3b846 !important;
+            color: blue;
+            padding: 5px
+                /* Cyan for checked-in */
         }
 
         .bg-checked_out {
-            background-color: #6c757d !important;
-            /* Gray for checked-out */
+            background-color: #6c757d4b !important;
+            color: blue;
+            padding: 5px
+                /* Gray for checked-out */
         }
 
         .bg-no_show {
-            background-color: #dc3545 !important;
-            /* Red for no-show */
+            background-color: #dc35467c !important;
+            color: blue;
+            padding: 5px
+                /* Red for no-show */
         }
     </style>
 @endpush
@@ -70,7 +76,8 @@
                 <div class="row mt-4">
                     <div class="col-md-12">
                         @if (session('success'))
-                            <div class="alert alert-success alert-dismissible fade show border-start border-success border-4" role="alert">
+                            <div class="alert alert-success alert-dismissible fade show border-start border-success border-4"
+                                role="alert">
                                 {{ session('success') }}
                                 <button type="button" class="btn-close" data-mdb-dismiss="alert"
                                     aria-label="Close"></button>
@@ -78,7 +85,8 @@
                         @endif
 
                         @if (session('error'))
-                            <div class="alert alert-danger alert-dismissible fade show border-start border-danger border-4" role="alert">
+                            <div class="alert alert-danger alert-dismissible fade show border-start border-danger border-4"
+                                role="alert">
                                 {{ session('error') }}
                                 <button type="button" class="btn-close" data-mdb-dismiss="alert"
                                     aria-label="Close"></button>
@@ -86,7 +94,8 @@
                         @endif
 
                         @if ($errors->any())
-                            <div class="alert alert-danger alert-dismissible fade show border-start border-danger border-4" role="alert">
+                            <div class="alert alert-danger alert-dismissible fade show border-start border-danger border-4"
+                                role="alert">
                                 <ul class="mb-0">
                                     @foreach ($errors->all() as $error)
                                         <li>{{ $error }}</li>
@@ -130,75 +139,81 @@
                                                 <td>
                                                     @php
                                                         $statusClasses = [
-                                                            'confirmed' => 'bg-success',
-                                                            'pending' => 'bg-info',
-                                                            'cancelled' => 'bg-warning',
+                                                            'confirmed' => 'badge-success',
+                                                            'pending' => 'badge-info',
+                                                            'cancelled' => 'badge-warning',
                                                             'checked_in' => 'bg-checked_in',
                                                             'checked_out' => 'bg-checked_out',
                                                             'no_show' => 'bg-no_show',
                                                         ];
                                                     @endphp
                                                     <span
-                                                        class="badge {{ $statusClasses[$reservation->status] ?? 'bg-secondary' }}">
+                                                        class="badge {{ $statusClasses[$reservation->status] ?? 'badge-secondary' }}">
                                                         {{ ucfirst($reservation->status) }}
                                                     </span>
                                                 </td>
                                                 <td>${{ number_format($reservation->amount, 2) }}</td>
                                                 <td>
-                                                    <a href="{{ route('admin.reservations.show', $reservation->id) }}"
-                                                        class="btn btn-light border btn-sm shadow-0 me-1">
-                                                        <i class="fa fa-eye"></i>
-                                                    </a>
-                                                    <a href="{{ route('admin.reservations.edit', $reservation->id) }}"
-                                                        class="btn btn-light border btn-sm shadow-0 me-1">
-                                                        <i class="fa fa-edit"></i>
-                                                    </a>
-                                                    <form
-                                                        action="{{ route('admin.reservations.destroy', $reservation->id) }}"
-                                                        method="POST" class="d-inline">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-light border btn-sm shadow-0"
-                                                            onclick="return confirm('Are you sure?')">
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
-                                                    </form>
-
-                                                    @if ($reservation->status === 'confirmed')
+                                                    <div class="d-flex gap-2">
+                                                        <a href="{{ route('admin.reservations.show', $reservation->id) }}"
+                                                            class="btn btn-light border btn-sm shadow-0 me-1">
+                                                            <i class="fa fa-eye"></i>
+                                                        </a>
+                                                        <a href="{{ route('admin.reservations.edit', $reservation->id) }}"
+                                                            class="btn btn-light border btn-sm shadow-0 me-1">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
                                                         <form
-                                                            action="{{ route('admin.reservations.check-in', $reservation->id) }}"
+                                                            action="{{ route('admin.reservations.destroy', $reservation->id) }}"
                                                             method="POST" class="d-inline">
                                                             @csrf
-                                                            <button type="submit" class="btn btn-success btn-sm shadow-0"
-                                                                title="Check In">
-                                                                <i class="fa fa-sign-in-alt"></i>
+                                                            @method('DELETE')
+                                                            <button type="submit"
+                                                                class="btn btn-light border btn-sm shadow-0"
+                                                                onclick="return confirm('Are you sure?')">
+                                                                <i class="fa fa-trash"></i>
                                                             </button>
                                                         </form>
-                                                    @endif
 
-                                                    @if ($reservation->isCheckedIn())
-                                                        <form
-                                                            action="{{ route('admin.reservations.check-out', $reservation->id) }}"
-                                                            method="POST" class="d-inline">
-                                                            @csrf
-                                                            <button type="submit" class="btn btn-warning btn-sm shadow-0"
-                                                                title="Check Out">
-                                                                <i class="fa fa-sign-out-alt"></i>
-                                                            </button>
-                                                        </form>
-                                                    @endif
+                                                        @if ($reservation->status === 'confirmed')
+                                                            <form
+                                                                action="{{ route('admin.reservations.check-in', $reservation->id) }}"
+                                                                method="POST" class="d-inline">
+                                                                @csrf
+                                                                <button type="submit"
+                                                                    class="btn btn-success btn-sm shadow-0"
+                                                                    title="Check In">
+                                                                    <i class="fa fa-sign-in-alt"></i>
+                                                                </button>
+                                                            </form>
+                                                        @endif
 
-                                                    @if ($reservation->status === 'confirmed' && $reservation->check_in->isPast())
-                                                        <form
-                                                            action="{{ route('admin.reservations.no-show', $reservation->id) }}"
-                                                            method="POST" class="d-inline">
-                                                            @csrf
-                                                            <button type="submit" class="btn btn-danger btn-sm shadow-0"
-                                                                title="Mark as No Show">
-                                                                <i class="fa fa-user-times"></i>
-                                                            </button>
-                                                        </form>
-                                                    @endif
+                                                        @if ($reservation->isCheckedIn())
+                                                            <form
+                                                                action="{{ route('admin.reservations.check-out', $reservation->id) }}"
+                                                                method="POST" class="d-inline">
+                                                                @csrf
+                                                                <button type="submit"
+                                                                    class="btn btn-warning btn-sm shadow-0"
+                                                                    title="Check Out">
+                                                                    <i class="fa fa-sign-out-alt"></i>
+                                                                </button>
+                                                            </form>
+                                                        @endif
+
+                                                        @if ($reservation->status === 'confirmed' && $reservation->check_in->isPast())
+                                                            <form
+                                                                action="{{ route('admin.reservations.no-show', $reservation->id) }}"
+                                                                method="POST" class="d-inline">
+                                                                @csrf
+                                                                <button type="submit"
+                                                                    class="btn btn-danger btn-sm shadow-0"
+                                                                    title="Mark as No Show">
+                                                                    <i class="fa fa-user-times"></i>
+                                                                </button>
+                                                            </form>
+                                                        @endif
+                                                    </div>
 
                                                 </td>
                                             </tr>

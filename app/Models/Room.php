@@ -43,4 +43,18 @@ class Room extends Model
     {
         return $query->where('status', 'maintenance');
     }
+
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
+    }
+
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
+    }
+
+    public function payments(){
+        return $this->hasMany(Payment::class);
+    }
 }

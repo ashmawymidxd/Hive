@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('auth.admin-login');
+    return view('website.index');
 })->name('home');
 
 

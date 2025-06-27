@@ -65,12 +65,12 @@
                        </a>
                    </li>
                    <li class="border-bottom border-secondary">
-                       <a class="dropdown-item" href="">
+                       <a class="dropdown-item" href="{{ route('admin.settings.index') }}">
                            <i class="fas fa-envelope me-2"></i> Email Settings
                        </a>
                    </li>
                    <li class="">
-                       <a class="dropdown-item" href="">
+                       <a class="dropdown-item" href="{{ route('admin.settings.index') }}">
                            <i class="fas fa-credit-card me-2"></i> Payment Settings
                        </a>
                    </li>
@@ -222,7 +222,7 @@
                            </a>
                        </li>
                        <li class="border-bottom border-secondary">
-                           <a class="dropdown-item" href="">
+                           <a class="dropdown-item" href="{{route('admin.settings.index')}}">
                                <i class="fas fa-cog me-2"></i> Settings
                            </a>
                        </li>
@@ -396,7 +396,7 @@
                            toastr.error('Error resetting timer');
                        });
                    });
-                   
+
                });
            </script>
        @endpush
