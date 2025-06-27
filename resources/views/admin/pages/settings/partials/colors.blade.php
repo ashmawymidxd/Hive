@@ -107,3 +107,5 @@
         style="background-color: #f8f9fa">Bootstrap Light (#f8f9fa)</option>
     <option value="#e9ecef" {{ $preferences->ui_theme_color == '#e9ecef' ? 'selected' : '' }}
         style="background-color: #e9ecef">Bootstrap Gray (#e9ecef)</option>
+    <option value="#545454" {{ $preferences->ui_theme_color == '#646464' ? 'selected' : '' }}
+        style="background-color: #646464">Bootstrap dark</option>

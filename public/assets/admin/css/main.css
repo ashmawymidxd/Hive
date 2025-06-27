@@ -4,6 +4,11 @@
     box-sizing: border-box;
 }
 
+body::selection{
+    background-color: #ffffff;
+    color: #4c00ff;
+}
+
 .s-font {
     font-family: "Playwrite CU", cursive;
     font-optical-sizing: auto;

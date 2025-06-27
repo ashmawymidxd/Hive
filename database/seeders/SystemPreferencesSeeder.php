@@ -15,7 +15,7 @@ class SystemPreferencesSeeder extends Seeder
             'date_format' => 'Y-m-d',
             'currency_format' => '$0,0.00',
             'measurement_system' => 'metric',
-            'ui_theme_color' => '#fcfcfc',
+            'ui_theme_color' => '#f8f9fa',
             'default_loader' => 'elegant_spinner',
             'compact_mode' => false,
             'auto_refresh_dashboard' => true,
