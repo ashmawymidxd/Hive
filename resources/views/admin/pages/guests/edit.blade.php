@@ -46,11 +46,11 @@
                             </div>
                               <div class="col-md-6 mb-3">
                                 <label for="age" class="form-label">Age</label>
-                                <input type="text" class="form-control" id="age" name="age">
+                                <input type="text" class="form-control" id="age" name="age" value="{{ $guest->age }}">
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="purpose_of_stay" class="form-label">purpose of stay</label>
-                                <input type="text" class="form-control" id="purpose_of_stay" name="purpose_of_stay">
+                                <input type="text" class="form-control" id="purpose_of_stay" name="purpose_of_stay" value="{{ $guest->purpose_of_stay }}">
                             </div>
                             <div class="col-12">
                                 <button type="submit" class="btn btn-primary">Update Guest</button>

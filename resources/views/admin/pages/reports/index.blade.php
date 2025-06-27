@@ -201,7 +201,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <canvas id="revenueChart" class="w-100" height="350px"></canvas>
+                                <canvas id="revenueChart" class="w-100" height="300px"></canvas>
                             </div>
                         </div>
                     </div>
@@ -1047,7 +1047,7 @@
                             backgroundColor: 'rgba(75, 192, 192, 0.1)',
                             borderColor: 'rgba(75, 192, 192, 1)',
                             borderWidth: 3,
-                            tension: 0.3,
+                            tension: 0.1,
                             fill: true,
                             pointBackgroundColor: 'rgba(75, 192, 192, 1)',
                             pointRadius: 4,

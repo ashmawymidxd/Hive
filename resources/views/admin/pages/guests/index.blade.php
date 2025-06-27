@@ -64,8 +64,6 @@
                                         <th>Name</th>
                                         <th>Email</th>
                                         <th>Phone</th>
-                                        <th>Age</th>
-                                        <th>Purpose Of Stay</th>
                                         <th>Country</th>
                                         <th>Reservations</th>
                                         <th>Actions</th>
@@ -78,8 +76,6 @@
                                             <td>{{ $guest->full_name }}</td>
                                             <td>{{ $guest->email }}</td>
                                             <td>{{ $guest->phone }}</td>
-                                            <td>{{ $guest->age }}</td>
-                                            <td>{{ $guest->purpose_of_stay }}</td>
                                             <td>{{ $guest->country }}</td>
                                             <td>{{ $guest->reservations_count ?? $guest->reservations()->count() }}</td>
                                             <td>

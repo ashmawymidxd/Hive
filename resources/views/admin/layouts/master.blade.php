@@ -14,10 +14,10 @@
 
 <body class="bg-light">
     <!-- Sidebar -->
-   @include('admin/layouts/sidebar')
+    @include('admin/layouts/sidebar')
 
-   <!-- Header -->
-   @include('admin/layouts/header')
+    <!-- Header -->
+    @include('admin/layouts/header')
 
 
     <!-- Main Content -->
@@ -26,6 +26,10 @@
     </main>
 
     @include('admin/layouts/scripts')
+    {{-- @include('admin/layouts/loaders/ElegantSpinner') --}}
+    @include('admin/layouts/loaders/ModernDotPulse')
+    {{-- @include('admin/layouts/loaders/SimpleBar') --}}
+    {{-- aliceblue, antiquewhite, aqua, aquamarine, azure, beige, bisque, blanchedalmond, cyan, gainsboro, ghostwhite --}}
 
 </body>
 
