@@ -10,8 +10,12 @@
 @section('content')
     <section>
         <h3 class="font-bold text-dark">Admin Profile</h3>
-        <p class="text-secondary">Manage your administrator account settings and preferences</p>
-
+        <div class="d-flex align-items-center justify-content-between">
+            <span class="text-secondary">Manage your administrator account settings and preferences</span>
+            <span class="badge badge-primary rounded-pill px-3 py-2">
+                <i class="fas fa-check-circle me-1"></i> {{ $admin->status }}
+            </span>
+        </div>
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show border-start border-success border-3 w-25 m-3 z-50"
                 style="position: fixed;bottom:10px;right:10px;z-index:1000;" data-aos="flip-up" data-aos-delay="100">
@@ -30,13 +34,6 @@
                     @csrf
                     @method('PUT')
                     <div class="card shadow-0 border p-3">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <h4 class="text-dark">Profile Information</h4>
-                            <span class="badge badge-primary rounded-pill px-3 py-2">
-                                <i class="fas fa-check-circle me-1"></i> {{ $admin->status }}
-                            </span>
-                        </div>
-
                         @if ($errors->profile->any())
                             <div class="alert alert-danger">
                                 <ul>
@@ -60,16 +57,15 @@
                                 </div>
                                 <input type="file" name="image" id="image" class="d-none" accept="image/*">
                                 <label for="image"
-                                    class="position-absolute bottom-0 end-0 bg-primary text-white rounded-circle p-1 d-flex align-items-center justify-content-center"
+                                    class="position-absolute bottom-0 end-0 badge-primary text-white rounded-circle p-1 d-flex align-items-center justify-content-center"
                                     style="width:30px;height:30px;cursor:pointer;">
                                     <i class="fa fa-camera fa-xs"></i>
                                 </label>
                             </div>
-                            <div class="">
-                                <div class="d-flex align-items-center gap-2">
+                            <div class="w-100">
+                                <div class="d-flex align-items-center justify-content-between">
                                     <h3 class="font-bold text-dark">{{ $admin->fullName }}</h3>
                                     <small class="badge badge-primary rounded-5">{{ $admin->role->name }}</small>
-
                                 </div>
                                 <p class="text-secondary">{{ $admin->email }}</p>
                             </div>
@@ -124,8 +120,6 @@
                     @csrf
                     @method('PUT')
                     <div class="card shadow-0 border p-3">
-                        <h4 class="text-dark">Security Settings</h4>
-
                         @if ($errors->security->any())
                             <div class="alert alert-danger">
                                 <ul>
