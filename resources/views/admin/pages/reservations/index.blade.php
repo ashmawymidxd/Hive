@@ -70,7 +70,7 @@
         </ul>
 
         <!-- Tab Content -->
-        <div class="tab-content" id="reservationTabsContent" data-aos="fade-up" data-aos-delay="100">
+        <div class="tab-content" id="reservationTabsContent">
             <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
                 <!-- Content for All Reservations -->
                 <div class="row mt-4">

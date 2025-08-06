@@ -41,7 +41,7 @@ class AdminProfileController extends Controller
         // Handle image upload
         if ($request->hasFile('image')) {
             $uploadPath = public_path('assets/admin/img/admin');
-            
+
             // Create directory if it doesn't exist
             if (!File::exists($uploadPath)) {
                 File::makeDirectory($uploadPath, 0755, true, true);
@@ -57,7 +57,7 @@ class AdminProfileController extends Controller
 
             $image = $request->file('image');
             $imageName = time().'_'.$image->getClientOriginalName();
-            
+
             // Move image to public directory
             $image->move($uploadPath, $imageName);
             $admin->image_path = $imageName;
@@ -109,25 +109,4 @@ class AdminProfileController extends Controller
         return redirect()->back()->with('success', 'Password updated successfully!');
     }
 
-    // Update preferences
-    public function updatePreferences(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'timezone' => 'required|string|timezone',
-            'language' => 'required|string|in:en,fr,es,ar', // Add more languages as needed
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator, 'preferences')
-                ->withInput();
-        }
-
-        $admin = Auth::guard('admin')->user();
-        $admin->timezone = $request->timezone;
-        $admin->language = $request->language;
-        $admin->save();
-
-        return redirect()->back()->with('success', 'Preferences updated successfully!');
-    }
 }

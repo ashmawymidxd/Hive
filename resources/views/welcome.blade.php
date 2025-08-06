@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="shortcut icon" href="{{ asset(app('settings')->logo_path) }}" type="image/x-icon">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
     <title>Document</title>
 </head>
 
@@ -30,14 +31,22 @@
                     <i class="fa fa-star text-primary"></i>
                     <i class="fa fa-star text-info"></i>
                 </div>
-                <a href="{{route('login-admin')}}" class="btn btn-light border shadow-0  mt-5"> Login</a>
+                <a href="{{ route('login-admin') }}" class="btn btn-light border shadow-0  mt-5"> Login</a>
             </div>
             <div class="bg-white border shadow-0 p-3 rounded-5 mt-5 px-5">
                 <div class="d-flex align-items-center justify-content-between">
                     <span>Copy &copy; right by ahmed hassan</span>
-                    <button class="btn btn-primary shadow-0 btn-rounded">Profile</button>
+                    {{-- profile link circle --}}
+                    <a href="" class="badge badge-primary rounded-circle d-flex align-items-center justify-content-center"
+                        style="width: 40px; height: 40px;">
+                        <i class="fas fa-user"></i>
+                    </a>
 
                 </div>
+            </div>
+            <div class="bg-white border shadow-0 p-3 rounded-5 mt-5 px-5">
+               <h5>Dashboard Overview</h5>
+               <img class="w-100" src="{{asset('assets/admin/img/sample/home.png')}}" alt="">
             </div>
         </div>
     </div>
